@@ -1,0 +1,44 @@
+{
+  "name": "JobTaskOrder",
+  "fields": [
+    {
+      "fieldName": "taskSeqId",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "jobTaskStatusFlag",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "configVersion",
+      "fieldType": "Float"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "job",
+      "otherEntityRelationshipName": "jobTaskOrder",
+      "relationshipName": "job",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "task",
+      "otherEntityRelationshipName": "jobTaskOrder",
+      "relationshipName": "task",
+      "otherEntityField": "id"
+    }
+  ],
+  "changelogDate": "20201025224723",
+  "entityTableName": "job_task_order",
+  "dto": "no",
+  "pagination": "infinite-scroll",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": true,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": ["pipeline"]
+}

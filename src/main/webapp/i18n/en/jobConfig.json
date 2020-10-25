@@ -1,0 +1,25 @@
+{
+  "pipelineApp": {
+    "jobConfig": {
+      "home": {
+        "title": "Job Configs",
+        "createLabel": "Create a new Job Config",
+        "createOrEditLabel": "Create or edit a Job Config",
+        "notFound": "No Job Configs found"
+      },
+      "created": "A new Job Config is created with identifier {{ param }}",
+      "updated": "A Job Config is updated with identifier {{ param }}",
+      "deleted": "A Job Config is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Job Config {{ id }}?"
+      },
+      "detail": {
+        "title": "Job Config"
+      },
+      "configKey": "Config Key",
+      "configValue": "Config Value",
+      "configType": "Config Type",
+      "job": "Job"
+    }
+  }
+}

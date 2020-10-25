@@ -1,0 +1,77 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="pipelineApp.taskExecution.home.title">Task Executions</span>
+
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-task-execution" [routerLink]="['/task-execution/new']">
+            <fa-icon icon="plus"></fa-icon>
+            <span  jhiTranslate="pipelineApp.taskExecution.home.createLabel">
+            Create a new Task Execution
+            </span>
+        </button>
+    </h2>
+
+    <jhi-alert-error></jhi-alert-error>
+
+    <jhi-alert></jhi-alert>
+
+    <div class="alert alert-warning" id="no-result" *ngIf="taskExecutions?.length === 0">
+        <span jhiTranslate="pipelineApp.taskExecution.home.notFound">No taskExecutions found</span>
+    </div>
+
+    <div class="table-responsive" id="entities" *ngIf="taskExecutions && taskExecutions.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
+                    <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="taskExecutionTimestamp"><span jhiTranslate="pipelineApp.taskExecution.taskExecutionTimestamp">Task Execution Timestamp</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="jobOrderTimestamp"><span jhiTranslate="pipelineApp.taskExecution.jobOrderTimestamp">Job Order Timestamp</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="taskExecutionStatus"><span jhiTranslate="pipelineApp.taskExecution.taskExecutionStatus">Task Execution Status</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="task.id"><span jhiTranslate="pipelineApp.taskExecution.task">Task</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="jobExecution.id"><span jhiTranslate="pipelineApp.taskExecution.jobExecution">Job Execution</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+                <tr *ngFor="let taskExecution of taskExecutions ;trackBy: trackId">
+                    <td><a [routerLink]="['/task-execution', taskExecution.id, 'view']">{{ taskExecution.id }}</a></td>
+                    <td>{{ taskExecution.taskExecutionTimestamp | date:'medium' }}</td>
+                    <td>{{ taskExecution.jobOrderTimestamp | date:'medium' }}</td>
+                    <td>{{ taskExecution.taskExecutionStatus }}</td>
+                    <td>
+                        <div *ngIf="taskExecution.task">
+                            <a [routerLink]="['/task', taskExecution.task?.id, 'view']" >{{ taskExecution.task?.id }}</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div *ngIf="taskExecution.jobExecution">
+                            <a [routerLink]="['/job-execution', taskExecution.jobExecution?.id, 'view']" >{{ taskExecution.jobExecution?.id }}</a>
+                        </div>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group">
+                            <button type="submit"
+                                    [routerLink]="['/task-execution', taskExecution.id, 'view']"
+                                    class="btn btn-info btn-sm">
+                                <fa-icon icon="eye"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                            </button>
+
+                            <button type="submit"
+                                    [routerLink]="['/task-execution', taskExecution.id, 'edit']"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                            </button>
+
+                            <button type="submit" (click)="delete(taskExecution)"
+                                    class="btn btn-danger btn-sm">
+                                <fa-icon icon="times"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

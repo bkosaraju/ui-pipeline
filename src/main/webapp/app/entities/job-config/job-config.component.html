@@ -1,0 +1,71 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="pipelineApp.jobConfig.home.title">Job Configs</span>
+
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-job-config" [routerLink]="['/job-config/new']">
+            <fa-icon icon="plus"></fa-icon>
+            <span  jhiTranslate="pipelineApp.jobConfig.home.createLabel">
+            Create a new Job Config
+            </span>
+        </button>
+    </h2>
+
+    <jhi-alert-error></jhi-alert-error>
+
+    <jhi-alert></jhi-alert>
+
+    <div class="alert alert-warning" id="no-result" *ngIf="jobConfigs?.length === 0">
+        <span jhiTranslate="pipelineApp.jobConfig.home.notFound">No jobConfigs found</span>
+    </div>
+
+    <div class="table-responsive" id="entities" *ngIf="jobConfigs && jobConfigs.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
+                    <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="configKey"><span jhiTranslate="pipelineApp.jobConfig.configKey">Config Key</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="configValue"><span jhiTranslate="pipelineApp.jobConfig.configValue">Config Value</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="configType"><span jhiTranslate="pipelineApp.jobConfig.configType">Config Type</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="job.id"><span jhiTranslate="pipelineApp.jobConfig.job">Job</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+                <tr *ngFor="let jobConfig of jobConfigs ;trackBy: trackId">
+                    <td><a [routerLink]="['/job-config', jobConfig.id, 'view']">{{ jobConfig.id }}</a></td>
+                    <td>{{ jobConfig.configKey }}</td>
+                    <td>{{ jobConfig.configValue }}</td>
+                    <td>{{ jobConfig.configType }}</td>
+                    <td>
+                        <div *ngIf="jobConfig.job">
+                            <a [routerLink]="['/job', jobConfig.job?.id, 'view']" >{{ jobConfig.job?.id }}</a>
+                        </div>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group">
+                            <button type="submit"
+                                    [routerLink]="['/job-config', jobConfig.id, 'view']"
+                                    class="btn btn-info btn-sm">
+                                <fa-icon icon="eye"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                            </button>
+
+                            <button type="submit"
+                                    [routerLink]="['/job-config', jobConfig.id, 'edit']"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                            </button>
+
+                            <button type="submit" (click)="delete(jobConfig)"
+                                    class="btn btn-danger btn-sm">
+                                <fa-icon icon="times"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

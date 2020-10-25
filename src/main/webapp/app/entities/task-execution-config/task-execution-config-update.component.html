@@ -1,0 +1,52 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-task-execution-config-heading" jhiTranslate="pipelineApp.taskExecutionConfig.home.createOrEditLabel">Create or edit a Task Execution Config</h2>
+
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="pipelineApp.taskExecutionConfig.configKey" for="field_configKey">Config Key</label>
+                    <input type="text" class="form-control" name="configKey" id="field_configKey"
+                           formControlName="configKey"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="pipelineApp.taskExecutionConfig.configValue" for="field_configValue">Config Value</label>
+                    <input type="text" class="form-control" name="configValue" id="field_configValue"
+                           formControlName="configValue"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="pipelineApp.taskExecutionConfig.configVersion" for="field_configVersion">Config Version</label>
+                    <input type="text" class="form-control" name="configVersion" id="field_configVersion"
+                           formControlName="configVersion"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="pipelineApp.taskExecutionConfig.taskExecution" for="field_taskExecution">Task Execution</label>
+                    <select class="form-control" id="field_taskExecution" name="taskExecution" formControlName="taskExecution">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="taskExecutionOption.id === editForm.get('taskExecution')!.value?.id ? editForm.get('taskExecution')!.value : taskExecutionOption" *ngFor="let taskExecutionOption of taskexecutions; trackBy: trackById">{{ taskExecutionOption.id }}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
