@@ -1,0 +1,26 @@
+{
+  "pipelineApp": {
+    "taskConfig": {
+      "home": {
+        "title": "Task Configs",
+        "createLabel": "Create a new Task Config",
+        "createOrEditLabel": "Create or edit a Task Config",
+        "notFound": "No Task Configs found"
+      },
+      "created": "A new Task Config is created with identifier {{ param }}",
+      "updated": "A Task Config is updated with identifier {{ param }}",
+      "deleted": "A Task Config is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Task Config {{ id }}?"
+      },
+      "detail": {
+        "title": "Task Config"
+      },
+      "configKey": "Config Key",
+      "configValue": "Config Value",
+      "configType": "Config Type",
+      "configVersion": "Config Version",
+      "task": "Task"
+    }
+  }
+}

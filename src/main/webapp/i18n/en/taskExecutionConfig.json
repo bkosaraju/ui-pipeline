@@ -1,0 +1,25 @@
+{
+  "pipelineApp": {
+    "taskExecutionConfig": {
+      "home": {
+        "title": "Task Execution Configs",
+        "createLabel": "Create a new Task Execution Config",
+        "createOrEditLabel": "Create or edit a Task Execution Config",
+        "notFound": "No Task Execution Configs found"
+      },
+      "created": "A new Task Execution Config is created with identifier {{ param }}",
+      "updated": "A Task Execution Config is updated with identifier {{ param }}",
+      "deleted": "A Task Execution Config is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Task Execution Config {{ id }}?"
+      },
+      "detail": {
+        "title": "Task Execution Config"
+      },
+      "configKey": "Config Key",
+      "configValue": "Config Value",
+      "configVersion": "Config Version",
+      "taskExecution": "Task Execution"
+    }
+  }
+}

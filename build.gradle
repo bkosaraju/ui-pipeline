@@ -18,6 +18,7 @@ plugins {
     id "org.springframework.boot"
     id "com.google.cloud.tools.jib"
     id "com.gorylenko.gradle-git-properties"
+    id "org.openapi.generator"
     id "com.github.node-gradle.node"
     id "net.ltgt.apt-eclipse"
     id "net.ltgt.apt-idea"
@@ -28,7 +29,7 @@ plugins {
     //jhipster-needle-gradle-plugins - JHipster will add additional gradle plugins here
 }
 
-group = "io.github.bkosaraju"
+group = "io.github.bkosaraju.pipeline"
 version = "0.0.1-SNAPSHOT"
 
 description = ""
@@ -39,6 +40,7 @@ assert System.properties["java.specification.version"] == "1.8" || "11" || "12" 
 
 apply from: "gradle/docker.gradle"
 apply from: "gradle/sonar.gradle"
+apply from: "gradle/swagger.gradle"
 //jhipster-needle-gradle-apply-from - JHipster will add additional gradle scripts to be applied here
 
 if (project.hasProperty("prod") || project.hasProperty("gae")) {
@@ -84,7 +86,7 @@ eclipse {
 defaultTasks "bootRun"
 
 springBoot {
-    mainClassName = "io.github.bkosaraju.PipelineApp"
+    mainClassName = "io.github.bkosaraju.pipeline.PipelineApp"
 }
 
 test {
@@ -155,7 +157,7 @@ liquibase {
             username "pipeline"
             password ""
             changeLogFile project.ext.diffChangelogFile
-            referenceUrl "hibernate:spring:io.github.bkosaraju.domain?dialect=&hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy"
+            referenceUrl "hibernate:spring:io.github.bkosaraju.pipeline.domain?dialect=&hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy"
             defaultSchemaName ""
             logLevel "debug"
             classpath "$buildDir/classes/java/main"
@@ -221,6 +223,7 @@ dependencies {
     implementation "javax.cache:cache-api"
     implementation "org.hibernate:hibernate-core"
     implementation "com.zaxxer:HikariCP"
+    implementation "org.openapitools:jackson-databind-nullable:${jackson_databind_nullable_version}"
     implementation "javax.transaction:javax.transaction-api"
     implementation "org.ehcache:ehcache"
     implementation "org.hibernate:hibernate-jcache"
@@ -299,6 +302,10 @@ if (project.hasProperty("nodeInstall")) {
         yarnVersion = "${yarn_version}"
         download = true
     }
+}
+
+bootJar {
+    launchScript()
 }
 compileJava.dependsOn processResources
 processResources.dependsOn bootBuildInfo

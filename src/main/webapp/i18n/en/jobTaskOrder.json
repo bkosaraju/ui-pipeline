@@ -1,0 +1,26 @@
+{
+  "pipelineApp": {
+    "jobTaskOrder": {
+      "home": {
+        "title": "Job Task Orders",
+        "createLabel": "Create a new Job Task Order",
+        "createOrEditLabel": "Create or edit a Job Task Order",
+        "notFound": "No Job Task Orders found"
+      },
+      "created": "A new Job Task Order is created with identifier {{ param }}",
+      "updated": "A Job Task Order is updated with identifier {{ param }}",
+      "deleted": "A Job Task Order is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Job Task Order {{ id }}?"
+      },
+      "detail": {
+        "title": "Job Task Order"
+      },
+      "taskSeqId": "Task Seq Id",
+      "jobTaskStatusFlag": "Job Task Status Flag",
+      "configVersion": "Config Version",
+      "job": "Job",
+      "task": "Task"
+    }
+  }
+}

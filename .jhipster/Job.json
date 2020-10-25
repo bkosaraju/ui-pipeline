@@ -1,0 +1,48 @@
+{
+  "name": "Job",
+  "fields": [
+    {
+      "fieldName": "jobName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "jobStatusFlag",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "createTimeStamp",
+      "fieldType": "ZonedDateTime"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "jobConfig",
+      "otherEntityRelationshipName": "job",
+      "relationshipName": "jobConfig"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "jobTaskOrder",
+      "otherEntityRelationshipName": "job",
+      "relationshipName": "jobTaskOrder"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "jobExecution",
+      "otherEntityRelationshipName": "job",
+      "relationshipName": "jobExecution"
+    }
+  ],
+  "changelogDate": "20201025224523",
+  "entityTableName": "job",
+  "dto": "no",
+  "pagination": "infinite-scroll",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": true,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": ["pipeline"]
+}

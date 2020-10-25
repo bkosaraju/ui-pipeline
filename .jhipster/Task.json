@@ -1,0 +1,49 @@
+{
+  "name": "Task",
+  "fields": [
+    {
+      "fieldName": "taskName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "taskType",
+      "fieldType": "TaskType",
+      "fieldValues": "SFTP,SHELL,SPARK,SPRAK_ON_DATABRICS,SPRAK_ON_KUBERNETES,SPRAK_ON_EMR"
+    },
+    {
+      "fieldName": "createTimeStamp",
+      "fieldType": "ZonedDateTime"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "taskConfig",
+      "otherEntityRelationshipName": "task",
+      "relationshipName": "taskConfig"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "jobTaskOrder",
+      "otherEntityRelationshipName": "task",
+      "relationshipName": "jobTaskOrder"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "taskExecution",
+      "otherEntityRelationshipName": "task",
+      "relationshipName": "taskExecution"
+    }
+  ],
+  "changelogDate": "20201025224623",
+  "entityTableName": "task",
+  "dto": "no",
+  "pagination": "infinite-scroll",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": true,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": ["pipeline"]
+}
