@@ -1,0 +1,113 @@
+application {
+  config {
+    applicationType monolith,
+    languages [en],
+    authenticationType session,
+    baseName pipeline,
+    clientTheme sandstone,
+    clientThemeVariant primary,
+    embeddableLaunchScript true,
+    buildTool gradle,
+	cacheProvider ehcache,
+    devDatabaseType h2Memory,
+    enableSwaggerCodegen true,
+    packageName io.github.bkosaraju.pipeline,
+	prodDatabaseType postgresql,
+    serverPort 8080,
+    
+  }
+    entities all
+}
+entity Job {
+ jobName String,
+ jobStatusFlag Integer,
+ createTimeStamp ZonedDateTime 
+}
+
+enum TaskType {
+        SFTP,
+        SHELL,
+        SPARK,
+        SPRAK_ON_DATABRICS,
+        SPRAK_ON_KUBERNETES,
+        SPRAK_ON_EMR
+}
+
+entity Task {
+ taskName String,
+ taskType TaskType,
+ createTimeStamp ZonedDateTime 
+}
+
+entity JobTaskOrder {
+ taskSeqId Integer,
+ jobTaskStatusFlag Boolean,
+ configVersion Float 
+}
+
+entity GlobalConfig {
+  configKey String,
+  configValue String,
+  configType String
+}
+
+
+entity JobConfig {
+  configKey String,
+  configValue String,
+  configType String
+}
+
+
+entity TaskConfig {
+  configKey String,
+  configValue String,
+  configType String,
+  configVersion String 
+}
+
+entity JobExecution {
+    jobExecutionTimestamp ZonedDateTime,
+    jobOrderTimestamp ZonedDateTime,
+    jobExecutionStatus String
+}
+
+entity TaskExecution {
+    taskExecutionTimestamp ZonedDateTime,
+    jobOrderTimestamp ZonedDateTime,
+    taskExecutionStatus String
+}
+
+entity TaskExecutionConfig {
+    configKey String,
+    configValue String,
+    configVersion String
+}
+
+//Config Entities
+
+relationship OneToMany {
+    Job to JobConfig{job},
+    Task to TaskConfig{task},
+    Job to JobTaskOrder{job},
+    Task to JobTaskOrder{task}
+}
+
+
+// Execution Entities
+
+relationship OneToMany {
+    Job to JobExecution{job}
+    Task to TaskExecution{task}
+    JobExecution to TaskExecution{jobExecution}
+    TaskExecution to TaskExecutionConfig{taskExecution}
+}
+
+
+//Filters
+filter all
+//Empty Fields
+//jhipster entity EntityName --skip-server
+paginate all with infinite-scroll
+//Services (for future Use)
+service all with serviceImpl
