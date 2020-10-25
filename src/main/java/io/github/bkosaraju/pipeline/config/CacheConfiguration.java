@@ -49,23 +49,6 @@ public class CacheConfiguration {
             createCache(cm, io.github.bkosaraju.pipeline.domain.User.class.getName() + ".authorities");
             createCache(cm, io.github.bkosaraju.pipeline.domain.PersistentToken.class.getName());
             createCache(cm, io.github.bkosaraju.pipeline.domain.User.class.getName() + ".persistentTokens");
-            createCache(cm, io.github.bkosaraju.pipeline.domain.Job.class.getName());
-            createCache(cm, io.github.bkosaraju.pipeline.domain.Job.class.getName() + ".jobConfigs");
-            createCache(cm, io.github.bkosaraju.pipeline.domain.Job.class.getName() + ".jobTaskOrders");
-            createCache(cm, io.github.bkosaraju.pipeline.domain.Job.class.getName() + ".jobExecutions");
-            createCache(cm, io.github.bkosaraju.pipeline.domain.Task.class.getName());
-            createCache(cm, io.github.bkosaraju.pipeline.domain.Task.class.getName() + ".taskConfigs");
-            createCache(cm, io.github.bkosaraju.pipeline.domain.Task.class.getName() + ".jobTaskOrders");
-            createCache(cm, io.github.bkosaraju.pipeline.domain.Task.class.getName() + ".taskExecutions");
-            createCache(cm, io.github.bkosaraju.pipeline.domain.JobTaskOrder.class.getName());
-            createCache(cm, io.github.bkosaraju.pipeline.domain.GlobalConfig.class.getName());
-            createCache(cm, io.github.bkosaraju.pipeline.domain.JobConfig.class.getName());
-            createCache(cm, io.github.bkosaraju.pipeline.domain.TaskConfig.class.getName());
-            createCache(cm, io.github.bkosaraju.pipeline.domain.JobExecution.class.getName());
-            createCache(cm, io.github.bkosaraju.pipeline.domain.JobExecution.class.getName() + ".taskExecutions");
-            createCache(cm, io.github.bkosaraju.pipeline.domain.TaskExecution.class.getName());
-            createCache(cm, io.github.bkosaraju.pipeline.domain.TaskExecution.class.getName() + ".taskExecutionConfigs");
-            createCache(cm, io.github.bkosaraju.pipeline.domain.TaskExecutionConfig.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

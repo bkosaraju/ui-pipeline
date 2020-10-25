@@ -7,15 +7,6 @@
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Entities",
-        "job": "Job",
-        "task": "Task",
-        "jobTaskOrder": "Job Task Order",
-        "globalConfig": "Global Config",
-        "jobConfig": "Job Config",
-        "taskConfig": "Task Config",
-        "jobExecution": "Job Execution",
-        "taskExecution": "Task Execution",
-        "taskExecutionConfig": "Task Execution Config",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
