@@ -35,10 +35,10 @@
       "relationshipName": "taskExecution"
     }
   ],
-  "changelogDate": "20201025224623",
+  "changelogDate": "20201025235108",
   "entityTableName": "task",
   "dto": "no",
-  "pagination": "infinite-scroll",
+  "pagination": "pagination",
   "service": "serviceImpl",
   "jpaMetamodelFiltering": true,
   "fluentMethods": true,

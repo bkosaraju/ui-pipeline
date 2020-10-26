@@ -1,15 +1,9 @@
 package io.github.bkosaraju.pipeline.config;
 
-import static springfox.documentation.builders.PathSelectors.regex;
-
 import com.google.common.base.Predicates;
 import io.github.jhipster.config.JHipsterConstants;
 import io.github.jhipster.config.JHipsterProperties;
 import io.github.jhipster.config.apidoc.customizer.SwaggerCustomizer;
-import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -21,19 +15,31 @@ import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+
+import static springfox.documentation.builders.PathSelectors.regex;
+
 @Configuration
 @Profile(JHipsterConstants.SPRING_PROFILE_SWAGGER)
 public class OpenApiConfiguration {
 
     @Bean
     public SwaggerCustomizer noApiFirstCustomizer() {
-        return docket -> docket.select().apis(Predicates.not(RequestHandlerSelectors.basePackage("io.github.bkosaraju.pipeline.web.api")));
+        return docket -> docket.select()
+            .apis(Predicates.not(RequestHandlerSelectors.basePackage("io.github.bkosaraju.pipeline.web.api")));
     }
 
     @Bean
     public Docket apiFirstDocket(JHipsterProperties jHipsterProperties) {
         JHipsterProperties.Swagger properties = jHipsterProperties.getSwagger();
-        Contact contact = new Contact(properties.getContactName(), properties.getContactUrl(), properties.getContactEmail());
+        Contact contact = new Contact(
+            properties.getContactName(),
+            properties.getContactUrl(),
+            properties.getContactEmail()
+        );
 
         ApiInfo apiInfo = new ApiInfo(
             "API First " + properties.getTitle(),
@@ -61,4 +67,6 @@ public class OpenApiConfiguration {
             .paths(regex(properties.getDefaultIncludePattern()))
             .build();
     }
+
+
 }

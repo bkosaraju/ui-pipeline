@@ -1,8 +1,5 @@
 package io.github.bkosaraju.pipeline.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
-
 import io.github.bkosaraju.pipeline.PipelineApp;
 import io.github.bkosaraju.pipeline.config.Constants;
 import io.github.bkosaraju.pipeline.domain.PersistentToken;
@@ -10,13 +7,9 @@ import io.github.bkosaraju.pipeline.domain.User;
 import io.github.bkosaraju.pipeline.repository.PersistentTokenRepository;
 import io.github.bkosaraju.pipeline.repository.UserRepository;
 import io.github.bkosaraju.pipeline.service.dto.UserDTO;
+
 import io.github.jhipster.security.RandomUtil;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-import java.util.Optional;
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,12 +22,23 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
+
 /**
  * Integration tests for {@link UserService}.
  */
 @SpringBootTest(classes = PipelineApp.class)
 @Transactional
 public class UserServiceIT {
+
     private static final String DEFAULT_LOGIN = "johndoe";
 
     private static final String DEFAULT_EMAIL = "johndoe@localhost";
@@ -223,6 +227,9 @@ public class UserServiceIT {
         }
         final PageRequest pageable = PageRequest.of(0, (int) userRepository.count());
         final Page<UserDTO> allManagedUsers = userService.getAllManagedUsers(pageable);
-        assertThat(allManagedUsers.getContent().stream().noneMatch(user -> Constants.ANONYMOUS_USER.equals(user.getLogin()))).isTrue();
+        assertThat(allManagedUsers.getContent().stream()
+            .noneMatch(user -> Constants.ANONYMOUS_USER.equals(user.getLogin())))
+            .isTrue();
     }
+
 }

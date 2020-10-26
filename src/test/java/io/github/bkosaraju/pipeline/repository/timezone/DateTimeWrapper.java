@@ -1,13 +1,14 @@
 package io.github.bkosaraju.pipeline.repository.timezone;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.*;
 import java.util.Objects;
-import javax.persistence.*;
 
 @Entity
 @Table(name = "jhi_date_time_wrapper")
 public class DateTimeWrapper implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     @Id

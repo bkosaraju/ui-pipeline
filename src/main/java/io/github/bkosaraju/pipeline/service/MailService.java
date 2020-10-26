@@ -1,11 +1,14 @@
 package io.github.bkosaraju.pipeline.service;
 
 import io.github.bkosaraju.pipeline.domain.User;
+
 import io.github.jhipster.config.JHipsterProperties;
+
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
@@ -24,6 +27,7 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
  */
 @Service
 public class MailService {
+
     private final Logger log = LoggerFactory.getLogger(MailService.class);
 
     private static final String USER = "user";
@@ -38,12 +42,9 @@ public class MailService {
 
     private final SpringTemplateEngine templateEngine;
 
-    public MailService(
-        JHipsterProperties jHipsterProperties,
-        JavaMailSender javaMailSender,
-        MessageSource messageSource,
-        SpringTemplateEngine templateEngine
-    ) {
+    public MailService(JHipsterProperties jHipsterProperties, JavaMailSender javaMailSender,
+            MessageSource messageSource, SpringTemplateEngine templateEngine) {
+
         this.jHipsterProperties = jHipsterProperties;
         this.javaMailSender = javaMailSender;
         this.messageSource = messageSource;
@@ -52,14 +53,8 @@ public class MailService {
 
     @Async
     public void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml) {
-        log.debug(
-            "Send email[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}",
-            isMultipart,
-            isHtml,
-            to,
-            subject,
-            content
-        );
+        log.debug("Send email[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}",
+            isMultipart, isHtml, to, subject, content);
 
         // Prepare message using a Spring helper
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
@@ -71,7 +66,7 @@ public class MailService {
             message.setText(content, isHtml);
             javaMailSender.send(mimeMessage);
             log.debug("Sent email to User '{}'", to);
-        } catch (MailException | MessagingException e) {
+        }  catch (MailException | MessagingException e) {
             log.warn("Email could not be sent to user '{}'", to, e);
         }
     }

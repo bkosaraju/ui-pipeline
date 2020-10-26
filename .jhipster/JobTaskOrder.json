@@ -30,10 +30,10 @@
       "otherEntityField": "id"
     }
   ],
-  "changelogDate": "20201025224723",
+  "changelogDate": "20201025235208",
   "entityTableName": "job_task_order",
   "dto": "no",
-  "pagination": "infinite-scroll",
+  "pagination": "pagination",
   "service": "serviceImpl",
   "jpaMetamodelFiltering": true,
   "fluentMethods": true,

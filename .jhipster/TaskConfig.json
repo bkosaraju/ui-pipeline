@@ -15,7 +15,7 @@
     },
     {
       "fieldName": "configVersion",
-      "fieldType": "String"
+      "fieldType": "Float"
     }
   ],
   "relationships": [
@@ -27,10 +27,10 @@
       "otherEntityField": "id"
     }
   ],
-  "changelogDate": "20201025225023",
+  "changelogDate": "20201025235508",
   "entityTableName": "task_config",
   "dto": "no",
-  "pagination": "infinite-scroll",
+  "pagination": "pagination",
   "service": "serviceImpl",
   "jpaMetamodelFiltering": true,
   "fluentMethods": true,

@@ -1,21 +1,23 @@
 package io.github.bkosaraju.pipeline.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.github.bkosaraju.pipeline.config.Constants;
-import java.io.Serializable;
-import java.time.Instant;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import org.apache.commons.lang3.StringUtils;
-import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
+import java.io.Serializable;
+import java.time.Instant;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
 
 /**
  * A user.
@@ -24,6 +26,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "jhi_user")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class User extends AbstractAuditingEntity implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -85,9 +88,8 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @ManyToMany
     @JoinTable(
         name = "jhi_user_authority",
-        joinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id") },
-        inverseJoinColumns = { @JoinColumn(name = "authority_name", referencedColumnName = "name") }
-    )
+        joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+        inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "name")})
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @BatchSize(size = 20)
     private Set<Authority> authorities = new HashSet<>();

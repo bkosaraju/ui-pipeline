@@ -1,14 +1,16 @@
 package io.github.bkosaraju.pipeline.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.Objects;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import java.io.Serializable;
+import java.util.Objects;
+import java.time.LocalDate;
 
 /**
  * Persistent tokens are used by Spring Security to automatically log in users.
@@ -19,6 +21,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "jhi_persistent_token")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class PersistentToken implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     private static final int MAX_USER_AGENT_LEN = 255;
@@ -30,7 +33,7 @@ public class PersistentToken implements Serializable {
     @NotNull
     @Column(name = "token_value", nullable = false)
     private String tokenValue;
-
+    
     @Column(name = "token_date")
     private LocalDate tokenDate;
 

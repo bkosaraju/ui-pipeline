@@ -1,0 +1,81 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="pipelineApp.taskExecutionConfig.home.title">Task Execution Configs</span>
+
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-task-execution-config" [routerLink]="['/task-execution-config/new']">
+            <fa-icon icon="plus"></fa-icon>
+            <span  jhiTranslate="pipelineApp.taskExecutionConfig.home.createLabel">
+            Create a new Task Execution Config
+            </span>
+        </button>
+    </h2>
+
+    <jhi-alert-error></jhi-alert-error>
+
+    <jhi-alert></jhi-alert>
+
+    <div class="alert alert-warning" id="no-result" *ngIf="taskExecutionConfigs?.length === 0">
+        <span jhiTranslate="pipelineApp.taskExecutionConfig.home.notFound">No taskExecutionConfigs found</span>
+    </div>
+
+    <div class="table-responsive" id="entities" *ngIf="taskExecutionConfigs && taskExecutionConfigs.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+                    <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="configKey"><span jhiTranslate="pipelineApp.taskExecutionConfig.configKey">Config Key</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="configValue"><span jhiTranslate="pipelineApp.taskExecutionConfig.configValue">Config Value</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="configVersion"><span jhiTranslate="pipelineApp.taskExecutionConfig.configVersion">Config Version</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="taskExecution.id"><span jhiTranslate="pipelineApp.taskExecutionConfig.taskExecution">Task Execution</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let taskExecutionConfig of taskExecutionConfigs ;trackBy: trackId">
+                    <td><a [routerLink]="['/task-execution-config', taskExecutionConfig.id, 'view']">{{ taskExecutionConfig.id }}</a></td>
+                    <td>{{ taskExecutionConfig.configKey }}</td>
+                    <td>{{ taskExecutionConfig.configValue }}</td>
+                    <td>{{ taskExecutionConfig.configVersion }}</td>
+                    <td>
+                        <div *ngIf="taskExecutionConfig.taskExecution">
+                            <a [routerLink]="['/task-execution', taskExecutionConfig.taskExecution?.id, 'view']" >{{ taskExecutionConfig.taskExecution?.id }}</a>
+                        </div>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group">
+                            <button type="submit"
+                                    [routerLink]="['/task-execution-config', taskExecutionConfig.id, 'view']"
+                                    class="btn btn-info btn-sm">
+                                <fa-icon icon="eye"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                            </button>
+
+                            <button type="submit"
+                                    [routerLink]="['/task-execution-config', taskExecutionConfig.id, 'edit']"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                            </button>
+
+                            <button type="submit" (click)="delete(taskExecutionConfig)"
+                                    class="btn btn-danger btn-sm">
+                                <fa-icon icon="times"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div *ngIf="taskExecutionConfigs && taskExecutionConfigs.length > 0">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="ngbPaginationPage" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage($event)"></ngb-pagination>
+        </div>
+    </div>
+</div>

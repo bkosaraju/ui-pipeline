@@ -1,17 +1,20 @@
 package io.github.bkosaraju.pipeline.service.dto;
 
 import io.github.bkosaraju.pipeline.config.Constants;
+
 import io.github.bkosaraju.pipeline.domain.Authority;
 import io.github.bkosaraju.pipeline.domain.User;
+
+import javax.validation.constraints.*;
 import java.time.Instant;
 import java.util.Set;
 import java.util.stream.Collectors;
-import javax.validation.constraints.*;
 
 /**
  * A DTO representing a user, with his authorities.
  */
 public class UserDTO {
+
     private Long id;
 
     @NotBlank
@@ -64,7 +67,9 @@ public class UserDTO {
         this.createdDate = user.getCreatedDate();
         this.lastModifiedBy = user.getLastModifiedBy();
         this.lastModifiedDate = user.getLastModifiedDate();
-        this.authorities = user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet());
+        this.authorities = user.getAuthorities().stream()
+            .map(Authority::getName)
+            .collect(Collectors.toSet());
     }
 
     public Long getId() {

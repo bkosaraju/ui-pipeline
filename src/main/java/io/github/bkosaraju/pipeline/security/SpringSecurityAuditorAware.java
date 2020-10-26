@@ -1,7 +1,9 @@
 package io.github.bkosaraju.pipeline.security;
 
 import io.github.bkosaraju.pipeline.config.Constants;
+
 import java.util.Optional;
+
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Component;
 

@@ -13,7 +13,7 @@ application {
     enableSwaggerCodegen true,
     packageName io.github.bkosaraju.pipeline,
 	prodDatabaseType postgresql,
-    serverPort 8080,
+    serverPort 8081,
     
   }
     entities all
@@ -63,7 +63,7 @@ entity TaskConfig {
   configKey String,
   configValue String,
   configType String,
-  configVersion String 
+  configVersion Float 
 }
 
 entity JobExecution {
@@ -81,7 +81,7 @@ entity TaskExecution {
 entity TaskExecutionConfig {
     configKey String,
     configValue String,
-    configVersion String
+    configVersion Float
 }
 
 //Config Entities
@@ -108,6 +108,6 @@ relationship OneToMany {
 filter all
 //Empty Fields
 //jhipster entity EntityName --skip-server
-paginate all with infinite-scroll
+paginate all with pagination
 //Services (for future Use)
 service all with serviceImpl

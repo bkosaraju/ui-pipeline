@@ -1,12 +1,5 @@
 package io.github.bkosaraju.pipeline.web.rest;
 
-import static io.github.bkosaraju.pipeline.web.rest.AccountResourceIT.TEST_USER_LOGIN;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 import io.github.bkosaraju.pipeline.PipelineApp;
 import io.github.bkosaraju.pipeline.config.Constants;
 import io.github.bkosaraju.pipeline.domain.PersistentToken;
@@ -20,9 +13,6 @@ import io.github.bkosaraju.pipeline.service.dto.PasswordChangeDTO;
 import io.github.bkosaraju.pipeline.service.dto.UserDTO;
 import io.github.bkosaraju.pipeline.web.rest.vm.KeyAndPasswordVM;
 import io.github.bkosaraju.pipeline.web.rest.vm.ManagedUserVM;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.util.*;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,6 +25,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.*;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static io.github.bkosaraju.pipeline.web.rest.AccountResourceIT.TEST_USER_LOGIN;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Integration tests for the {@link AccountResource} REST controller.
@@ -66,25 +67,20 @@ public class AccountResourceIT {
     @Test
     @WithUnauthenticatedMockUser
     public void testNonAuthenticatedUser() throws Exception {
-        restAccountMockMvc
-            .perform(get("/api/authenticate").accept(MediaType.APPLICATION_JSON))
+        restAccountMockMvc.perform(get("/api/authenticate")
+            .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().string(""));
     }
 
     @Test
     public void testAuthenticatedUser() throws Exception {
-        restAccountMockMvc
-            .perform(
-                get("/api/authenticate")
-                    .with(
-                        request -> {
-                            request.setRemoteUser(TEST_USER_LOGIN);
-                            return request;
-                        }
-                    )
-                    .accept(MediaType.APPLICATION_JSON)
-            )
+        restAccountMockMvc.perform(get("/api/authenticate")
+            .with(request -> {
+                request.setRemoteUser(TEST_USER_LOGIN);
+                return request;
+            })
+            .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().string(TEST_USER_LOGIN));
     }
@@ -104,8 +100,8 @@ public class AccountResourceIT {
         user.setAuthorities(authorities);
         userService.createUser(user);
 
-        restAccountMockMvc
-            .perform(get("/api/account").accept(MediaType.APPLICATION_JSON))
+        restAccountMockMvc.perform(get("/api/account")
+            .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.login").value(TEST_USER_LOGIN))
@@ -119,8 +115,8 @@ public class AccountResourceIT {
 
     @Test
     public void testGetUnknownAccount() throws Exception {
-        restAccountMockMvc
-            .perform(get("/api/account").accept(MediaType.APPLICATION_PROBLEM_JSON))
+        restAccountMockMvc.perform(get("/api/account")
+            .accept(MediaType.APPLICATION_PROBLEM_JSON))
             .andExpect(status().isInternalServerError());
     }
 
@@ -138,13 +134,11 @@ public class AccountResourceIT {
         validUser.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
         assertThat(userRepository.findOneByLogin("test-register-valid").isPresent()).isFalse();
 
-        restAccountMockMvc
-            .perform(
-                post("/api/register")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(validUser))
-                    .with(csrf())
-            )
+        restAccountMockMvc.perform(
+            post("/api/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(TestUtil.convertObjectToJsonBytes(validUser))
+                .with(csrf()))
             .andExpect(status().isCreated());
 
         assertThat(userRepository.findOneByLogin("test-register-valid").isPresent()).isTrue();
@@ -154,7 +148,7 @@ public class AccountResourceIT {
     @Transactional
     public void testRegisterInvalidLogin() throws Exception {
         ManagedUserVM invalidUser = new ManagedUserVM();
-        invalidUser.setLogin("funky-log(n"); // <-- invalid
+        invalidUser.setLogin("funky-log(n");// <-- invalid
         invalidUser.setPassword("password");
         invalidUser.setFirstName("Funky");
         invalidUser.setLastName("One");
@@ -164,13 +158,11 @@ public class AccountResourceIT {
         invalidUser.setLangKey(Constants.DEFAULT_LANGUAGE);
         invalidUser.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
 
-        restAccountMockMvc
-            .perform(
-                post("/api/register")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(invalidUser))
-                    .with(csrf())
-            )
+        restAccountMockMvc.perform(
+            post("/api/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(TestUtil.convertObjectToJsonBytes(invalidUser))
+                .with(csrf()))
             .andExpect(status().isBadRequest());
 
         Optional<User> user = userRepository.findOneByEmailIgnoreCase("funky@example.com");
@@ -185,19 +177,17 @@ public class AccountResourceIT {
         invalidUser.setPassword("password");
         invalidUser.setFirstName("Bob");
         invalidUser.setLastName("Green");
-        invalidUser.setEmail("invalid"); // <-- invalid
+        invalidUser.setEmail("invalid");// <-- invalid
         invalidUser.setActivated(true);
         invalidUser.setImageUrl("http://placehold.it/50x50");
         invalidUser.setLangKey(Constants.DEFAULT_LANGUAGE);
         invalidUser.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
 
-        restAccountMockMvc
-            .perform(
-                post("/api/register")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(invalidUser))
-                    .with(csrf())
-            )
+        restAccountMockMvc.perform(
+            post("/api/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(TestUtil.convertObjectToJsonBytes(invalidUser))
+                .with(csrf()))
             .andExpect(status().isBadRequest());
 
         Optional<User> user = userRepository.findOneByLogin("bob");
@@ -209,7 +199,7 @@ public class AccountResourceIT {
     public void testRegisterInvalidPassword() throws Exception {
         ManagedUserVM invalidUser = new ManagedUserVM();
         invalidUser.setLogin("bob");
-        invalidUser.setPassword("123"); // password with only 3 digits
+        invalidUser.setPassword("123");// password with only 3 digits
         invalidUser.setFirstName("Bob");
         invalidUser.setLastName("Green");
         invalidUser.setEmail("bob@example.com");
@@ -218,13 +208,11 @@ public class AccountResourceIT {
         invalidUser.setLangKey(Constants.DEFAULT_LANGUAGE);
         invalidUser.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
 
-        restAccountMockMvc
-            .perform(
-                post("/api/register")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(invalidUser))
-                    .with(csrf())
-            )
+        restAccountMockMvc.perform(
+            post("/api/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(TestUtil.convertObjectToJsonBytes(invalidUser))
+                .with(csrf()))
             .andExpect(status().isBadRequest());
 
         Optional<User> user = userRepository.findOneByLogin("bob");
@@ -236,7 +224,7 @@ public class AccountResourceIT {
     public void testRegisterNullPassword() throws Exception {
         ManagedUserVM invalidUser = new ManagedUserVM();
         invalidUser.setLogin("bob");
-        invalidUser.setPassword(null); // invalid null password
+        invalidUser.setPassword(null);// invalid null password
         invalidUser.setFirstName("Bob");
         invalidUser.setLastName("Green");
         invalidUser.setEmail("bob@example.com");
@@ -245,13 +233,11 @@ public class AccountResourceIT {
         invalidUser.setLangKey(Constants.DEFAULT_LANGUAGE);
         invalidUser.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
 
-        restAccountMockMvc
-            .perform(
-                post("/api/register")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(invalidUser))
-                    .with(csrf())
-            )
+        restAccountMockMvc.perform(
+            post("/api/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(TestUtil.convertObjectToJsonBytes(invalidUser))
+                .with(csrf()))
             .andExpect(status().isBadRequest());
 
         Optional<User> user = userRepository.findOneByLogin("bob");
@@ -288,23 +274,19 @@ public class AccountResourceIT {
         secondUser.setAuthorities(new HashSet<>(firstUser.getAuthorities()));
 
         // First user
-        restAccountMockMvc
-            .perform(
-                post("/api/register")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(firstUser))
-                    .with(csrf())
-            )
+        restAccountMockMvc.perform(
+            post("/api/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(TestUtil.convertObjectToJsonBytes(firstUser))
+                .with(csrf()))
             .andExpect(status().isCreated());
 
         // Second (non activated) user
-        restAccountMockMvc
-            .perform(
-                post("/api/register")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(secondUser))
-                    .with(csrf())
-            )
+        restAccountMockMvc.perform(
+            post("/api/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(TestUtil.convertObjectToJsonBytes(secondUser))
+                .with(csrf()))
             .andExpect(status().isCreated());
 
         Optional<User> testUser = userRepository.findOneByEmailIgnoreCase("alice2@example.com");
@@ -313,13 +295,11 @@ public class AccountResourceIT {
         userRepository.save(testUser.get());
 
         // Second (already activated) user
-        restAccountMockMvc
-            .perform(
-                post("/api/register")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(secondUser))
-                    .with(csrf())
-            )
+        restAccountMockMvc.perform(
+            post("/api/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(TestUtil.convertObjectToJsonBytes(secondUser))
+                .with(csrf()))
             .andExpect(status().is4xxClientError());
     }
 
@@ -338,13 +318,11 @@ public class AccountResourceIT {
         firstUser.setAuthorities(Collections.singleton(AuthoritiesConstants.USER));
 
         // Register first user
-        restAccountMockMvc
-            .perform(
-                post("/api/register")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(firstUser))
-                    .with(csrf())
-            )
+        restAccountMockMvc.perform(
+            post("/api/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(TestUtil.convertObjectToJsonBytes(firstUser))
+                .with(csrf()))
             .andExpect(status().isCreated());
 
         Optional<User> testUser1 = userRepository.findOneByLogin("test-register-duplicate-email");
@@ -362,13 +340,11 @@ public class AccountResourceIT {
         secondUser.setAuthorities(new HashSet<>(firstUser.getAuthorities()));
 
         // Register second (non activated) user
-        restAccountMockMvc
-            .perform(
-                post("/api/register")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(secondUser))
-                    .with(csrf())
-            )
+        restAccountMockMvc.perform(
+            post("/api/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(TestUtil.convertObjectToJsonBytes(secondUser))
+                .with(csrf()))
             .andExpect(status().isCreated());
 
         Optional<User> testUser2 = userRepository.findOneByLogin("test-register-duplicate-email");
@@ -390,13 +366,11 @@ public class AccountResourceIT {
         userWithUpperCaseEmail.setAuthorities(new HashSet<>(firstUser.getAuthorities()));
 
         // Register third (not activated) user
-        restAccountMockMvc
-            .perform(
-                post("/api/register")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(userWithUpperCaseEmail))
-                    .with(csrf())
-            )
+        restAccountMockMvc.perform(
+            post("/api/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(TestUtil.convertObjectToJsonBytes(userWithUpperCaseEmail))
+                .with(csrf()))
             .andExpect(status().isCreated());
 
         Optional<User> testUser4 = userRepository.findOneByLogin("test-register-duplicate-email-3");
@@ -407,13 +381,11 @@ public class AccountResourceIT {
         userService.updateUser((new UserDTO(testUser4.get())));
 
         // Register 4th (already activated) user
-        restAccountMockMvc
-            .perform(
-                post("/api/register")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(secondUser))
-                    .with(csrf())
-            )
+        restAccountMockMvc.perform(
+            post("/api/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(TestUtil.convertObjectToJsonBytes(secondUser))
+                .with(csrf()))
             .andExpect(status().is4xxClientError());
     }
 
@@ -431,19 +403,16 @@ public class AccountResourceIT {
         validUser.setLangKey(Constants.DEFAULT_LANGUAGE);
         validUser.setAuthorities(Collections.singleton(AuthoritiesConstants.ADMIN));
 
-        restAccountMockMvc
-            .perform(
-                post("/api/register")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(validUser))
-                    .with(csrf())
-            )
+        restAccountMockMvc.perform(
+            post("/api/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(TestUtil.convertObjectToJsonBytes(validUser))
+                .with(csrf()))
             .andExpect(status().isCreated());
 
         Optional<User> userDup = userRepository.findOneWithAuthoritiesByLogin("badguy");
         assertThat(userDup.isPresent()).isTrue();
-        assertThat(userDup.get().getAuthorities())
-            .hasSize(1)
+        assertThat(userDup.get().getAuthorities()).hasSize(1)
             .containsExactly(authorityRepository.findById(AuthoritiesConstants.USER).get());
     }
 
@@ -460,7 +429,8 @@ public class AccountResourceIT {
 
         userRepository.saveAndFlush(user);
 
-        restAccountMockMvc.perform(get("/api/activate?key={activationKey}", activationKey)).andExpect(status().isOk());
+        restAccountMockMvc.perform(get("/api/activate?key={activationKey}", activationKey))
+            .andExpect(status().isOk());
 
         user = userRepository.findOneByLogin(user.getLogin()).orElse(null);
         assertThat(user.getActivated()).isTrue();
@@ -469,7 +439,8 @@ public class AccountResourceIT {
     @Test
     @Transactional
     public void testActivateAccountWithWrongKey() throws Exception {
-        restAccountMockMvc.perform(get("/api/activate?key=wrongActivationKey")).andExpect(status().isInternalServerError());
+        restAccountMockMvc.perform(get("/api/activate?key=wrongActivationKey"))
+            .andExpect(status().isInternalServerError());
     }
 
     @Test
@@ -493,13 +464,11 @@ public class AccountResourceIT {
         userDTO.setLangKey(Constants.DEFAULT_LANGUAGE);
         userDTO.setAuthorities(Collections.singleton(AuthoritiesConstants.ADMIN));
 
-        restAccountMockMvc
-            .perform(
-                post("/api/account")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(userDTO))
-                    .with(csrf())
-            )
+        restAccountMockMvc.perform(
+            post("/api/account")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(TestUtil.convertObjectToJsonBytes(userDTO))
+                .with(csrf()))
             .andExpect(status().isOk());
 
         User updatedUser = userRepository.findOneWithAuthoritiesByLogin(user.getLogin()).orElse(null);
@@ -535,13 +504,11 @@ public class AccountResourceIT {
         userDTO.setLangKey(Constants.DEFAULT_LANGUAGE);
         userDTO.setAuthorities(Collections.singleton(AuthoritiesConstants.ADMIN));
 
-        restAccountMockMvc
-            .perform(
-                post("/api/account")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(userDTO))
-                    .with(csrf())
-            )
+        restAccountMockMvc.perform(
+            post("/api/account")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(TestUtil.convertObjectToJsonBytes(userDTO))
+                .with(csrf()))
             .andExpect(status().isBadRequest());
 
         assertThat(userRepository.findOneByEmailIgnoreCase("invalid email")).isNotPresent();
@@ -576,13 +543,11 @@ public class AccountResourceIT {
         userDTO.setLangKey(Constants.DEFAULT_LANGUAGE);
         userDTO.setAuthorities(Collections.singleton(AuthoritiesConstants.ADMIN));
 
-        restAccountMockMvc
-            .perform(
-                post("/api/account")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(userDTO))
-                    .with(csrf())
-            )
+        restAccountMockMvc.perform(
+            post("/api/account")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(TestUtil.convertObjectToJsonBytes(userDTO))
+                .with(csrf()))
             .andExpect(status().isBadRequest());
 
         User updatedUser = userRepository.findOneByLogin("save-existing-email").orElse(null);
@@ -610,13 +575,11 @@ public class AccountResourceIT {
         userDTO.setLangKey(Constants.DEFAULT_LANGUAGE);
         userDTO.setAuthorities(Collections.singleton(AuthoritiesConstants.ADMIN));
 
-        restAccountMockMvc
-            .perform(
-                post("/api/account")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(userDTO))
-                    .with(csrf())
-            )
+        restAccountMockMvc.perform(
+            post("/api/account")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(TestUtil.convertObjectToJsonBytes(userDTO))
+                .with(csrf()))
             .andExpect(status().isOk());
 
         User updatedUser = userRepository.findOneByLogin("save-existing-email-and-login").orElse(null);
@@ -634,13 +597,10 @@ public class AccountResourceIT {
         user.setEmail("change-password-wrong-existing-password@example.com");
         userRepository.saveAndFlush(user);
 
-        restAccountMockMvc
-            .perform(
-                post("/api/account/change-password")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(new PasswordChangeDTO("1" + currentPassword, "new password")))
-                    .with(csrf())
-            )
+        restAccountMockMvc.perform(post("/api/account/change-password")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(new PasswordChangeDTO("1"+currentPassword, "new password")))
+            .with(csrf()))
             .andExpect(status().isBadRequest());
 
         User updatedUser = userRepository.findOneByLogin("change-password-wrong-existing-password").orElse(null);
@@ -659,13 +619,10 @@ public class AccountResourceIT {
         user.setEmail("change-password@example.com");
         userRepository.saveAndFlush(user);
 
-        restAccountMockMvc
-            .perform(
-                post("/api/account/change-password")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(new PasswordChangeDTO(currentPassword, "new password")))
-                    .with(csrf())
-            )
+        restAccountMockMvc.perform(post("/api/account/change-password")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(new PasswordChangeDTO(currentPassword, "new password")))
+            .with(csrf()))
             .andExpect(status().isOk());
 
         User updatedUser = userRepository.findOneByLogin("change-password").orElse(null);
@@ -685,13 +642,10 @@ public class AccountResourceIT {
 
         String newPassword = RandomStringUtils.random(ManagedUserVM.PASSWORD_MIN_LENGTH - 1);
 
-        restAccountMockMvc
-            .perform(
-                post("/api/account/change-password")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(new PasswordChangeDTO(currentPassword, newPassword)))
-                    .with(csrf())
-            )
+        restAccountMockMvc.perform(post("/api/account/change-password")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(new PasswordChangeDTO(currentPassword, newPassword)))
+            .with(csrf()))
             .andExpect(status().isBadRequest());
 
         User updatedUser = userRepository.findOneByLogin("change-password-too-small").orElse(null);
@@ -711,13 +665,10 @@ public class AccountResourceIT {
 
         String newPassword = RandomStringUtils.random(ManagedUserVM.PASSWORD_MAX_LENGTH + 1);
 
-        restAccountMockMvc
-            .perform(
-                post("/api/account/change-password")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(new PasswordChangeDTO(currentPassword, newPassword)))
-                    .with(csrf())
-            )
+        restAccountMockMvc.perform(post("/api/account/change-password")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(new PasswordChangeDTO(currentPassword, newPassword)))
+            .with(csrf()))
             .andExpect(status().isBadRequest());
 
         User updatedUser = userRepository.findOneByLogin("change-password-too-long").orElse(null);
@@ -735,13 +686,10 @@ public class AccountResourceIT {
         user.setEmail("change-password-empty@example.com");
         userRepository.saveAndFlush(user);
 
-        restAccountMockMvc
-            .perform(
-                post("/api/account/change-password")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(new PasswordChangeDTO(currentPassword, "")))
-                    .with(csrf())
-            )
+        restAccountMockMvc.perform(post("/api/account/change-password")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(new PasswordChangeDTO(currentPassword, "")))
+            .with(csrf()))
             .andExpect(status().isBadRequest());
 
         User updatedUser = userRepository.findOneByLogin("change-password-empty").orElse(null);
@@ -767,8 +715,7 @@ public class AccountResourceIT {
         token.setUserAgent("Test agent");
         persistentTokenRepository.saveAndFlush(token);
 
-        restAccountMockMvc
-            .perform(get("/api/account/sessions"))
+        restAccountMockMvc.perform(get("/api/account/sessions"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.[*].series").value(hasItem(token.getSeries())))
             .andExpect(jsonPath("$.[*].ipAddress").value(hasItem(token.getIpAddress())))
@@ -797,7 +744,8 @@ public class AccountResourceIT {
 
         assertThat(persistentTokenRepository.findByUser(user)).hasSize(1);
 
-        restAccountMockMvc.perform(delete("/api/account/sessions/invalidate-session").with(csrf())).andExpect(status().isOk());
+        restAccountMockMvc.perform(delete("/api/account/sessions/invalidate-session").with(csrf()))
+            .andExpect(status().isOk());
 
         assertThat(persistentTokenRepository.findByUser(user)).isEmpty();
     }
@@ -812,8 +760,9 @@ public class AccountResourceIT {
         user.setEmail("password-reset@example.com");
         userRepository.saveAndFlush(user);
 
-        restAccountMockMvc
-            .perform(post("/api/account/reset-password/init").content("password-reset@example.com").with(csrf()))
+        restAccountMockMvc.perform(post("/api/account/reset-password/init")
+            .content("password-reset@example.com")
+            .with(csrf()))
             .andExpect(status().isOk());
     }
 
@@ -827,15 +776,18 @@ public class AccountResourceIT {
         user.setEmail("password-reset-upper-case@example.com");
         userRepository.saveAndFlush(user);
 
-        restAccountMockMvc
-            .perform(post("/api/account/reset-password/init").content("password-reset-upper-case@EXAMPLE.COM").with(csrf()))
+        restAccountMockMvc.perform(post("/api/account/reset-password/init")
+            .content("password-reset-upper-case@EXAMPLE.COM")
+            .with(csrf()))
             .andExpect(status().isOk());
     }
 
     @Test
     public void testRequestPasswordResetWrongEmail() throws Exception {
-        restAccountMockMvc
-            .perform(post("/api/account/reset-password/init").content("password-reset-wrong-email@example.com").with(csrf()))
+        restAccountMockMvc.perform(
+            post("/api/account/reset-password/init")
+                .content("password-reset-wrong-email@example.com")
+                .with(csrf()))
             .andExpect(status().isOk());
     }
 
@@ -854,13 +806,11 @@ public class AccountResourceIT {
         keyAndPassword.setKey(user.getResetKey());
         keyAndPassword.setNewPassword("new password");
 
-        restAccountMockMvc
-            .perform(
-                post("/api/account/reset-password/finish")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(keyAndPassword))
-                    .with(csrf())
-            )
+        restAccountMockMvc.perform(
+            post("/api/account/reset-password/finish")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(TestUtil.convertObjectToJsonBytes(keyAndPassword))
+                .with(csrf()))
             .andExpect(status().isOk());
 
         User updatedUser = userRepository.findOneByLogin(user.getLogin()).orElse(null);
@@ -882,13 +832,11 @@ public class AccountResourceIT {
         keyAndPassword.setKey(user.getResetKey());
         keyAndPassword.setNewPassword("foo");
 
-        restAccountMockMvc
-            .perform(
-                post("/api/account/reset-password/finish")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(keyAndPassword))
-                    .with(csrf())
-            )
+        restAccountMockMvc.perform(
+            post("/api/account/reset-password/finish")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(TestUtil.convertObjectToJsonBytes(keyAndPassword))
+                .with(csrf()))
             .andExpect(status().isBadRequest());
 
         User updatedUser = userRepository.findOneByLogin(user.getLogin()).orElse(null);
@@ -902,13 +850,11 @@ public class AccountResourceIT {
         keyAndPassword.setKey("wrong reset key");
         keyAndPassword.setNewPassword("new password");
 
-        restAccountMockMvc
-            .perform(
-                post("/api/account/reset-password/finish")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(keyAndPassword))
-                    .with(csrf())
-            )
+        restAccountMockMvc.perform(
+            post("/api/account/reset-password/finish")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(TestUtil.convertObjectToJsonBytes(keyAndPassword))
+                .with(csrf()))
             .andExpect(status().isInternalServerError());
     }
 }

@@ -1,8 +1,10 @@
 package io.github.bkosaraju.pipeline.config;
 
 import io.github.bkosaraju.pipeline.security.*;
+
 import io.github.jhipster.config.JHipsterProperties;
 import io.github.jhipster.security.*;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
@@ -24,6 +26,7 @@ import org.zalando.problem.spring.web.advice.security.SecurityProblemSupport;
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @Import(SecurityProblemSupport.class)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
     private final JHipsterProperties jHipsterProperties;
 
     private final RememberMeServices rememberMeServices;
@@ -31,12 +34,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final CorsFilter corsFilter;
     private final SecurityProblemSupport problemSupport;
 
-    public SecurityConfiguration(
-        JHipsterProperties jHipsterProperties,
-        RememberMeServices rememberMeServices,
-        CorsFilter corsFilter,
-        SecurityProblemSupport problemSupport
-    ) {
+    public SecurityConfiguration(JHipsterProperties jHipsterProperties, RememberMeServices rememberMeServices, CorsFilter corsFilter, SecurityProblemSupport problemSupport) {
         this.jHipsterProperties = jHipsterProperties;
         this.rememberMeServices = rememberMeServices;
         this.corsFilter = corsFilter;
@@ -65,8 +63,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) {
-        web
-            .ignoring()
+        web.ignoring()
             .antMatchers(HttpMethod.OPTIONS, "/**")
             .antMatchers("/app/**/*.{js,html}")
             .antMatchers("/i18n/**")

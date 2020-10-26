@@ -1,12 +1,9 @@
 package io.github.bkosaraju.pipeline.security;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-
 import io.github.bkosaraju.pipeline.PipelineApp;
 import io.github.bkosaraju.pipeline.domain.User;
 import io.github.bkosaraju.pipeline.repository.UserRepository;
-import java.util.Locale;
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,12 +13,18 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Locale;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+
 /**
  * Integrations tests for {@link DomainUserDetailsService}.
  */
 @SpringBootTest(classes = PipelineApp.class)
 @Transactional
 public class DomainUserDetailsServiceIT {
+
     private static final String USER_ONE_LOGIN = "test-user-one";
     private static final String USER_ONE_EMAIL = "test-user-one@localhost";
     private static final String USER_TWO_LOGIN = "test-user-two";
@@ -105,7 +108,8 @@ public class DomainUserDetailsServiceIT {
 
     @Test
     public void assertThatUserNotActivatedExceptionIsThrownForNotActivatedUsers() {
-        assertThatExceptionOfType(UserNotActivatedException.class)
-            .isThrownBy(() -> domainUserDetailsService.loadUserByUsername(USER_THREE_LOGIN));
+        assertThatExceptionOfType(UserNotActivatedException.class).isThrownBy(
+            () -> domainUserDetailsService.loadUserByUsername(USER_THREE_LOGIN));
     }
+
 }

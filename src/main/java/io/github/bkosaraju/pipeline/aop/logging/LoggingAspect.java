@@ -1,7 +1,7 @@
 package io.github.bkosaraju.pipeline.aop.logging;
 
 import io.github.jhipster.config.JHipsterConstants;
-import java.util.Arrays;
+
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
 
+import java.util.Arrays;
+
 /**
  * Aspect for logging execution of service and repository Spring components.
  *
@@ -20,6 +22,7 @@ import org.springframework.core.env.Profiles;
  */
 @Aspect
 public class LoggingAspect {
+
     private final Environment env;
 
     public LoggingAspect(Environment env) {
@@ -29,11 +32,9 @@ public class LoggingAspect {
     /**
      * Pointcut that matches all repositories, services and Web REST endpoints.
      */
-    @Pointcut(
-        "within(@org.springframework.stereotype.Repository *)" +
+    @Pointcut("within(@org.springframework.stereotype.Repository *)" +
         " || within(@org.springframework.stereotype.Service *)" +
-        " || within(@org.springframework.web.bind.annotation.RestController *)"
-    )
+        " || within(@org.springframework.web.bind.annotation.RestController *)")
     public void springBeanPointcut() {
         // Method is empty as this is just a Pointcut, the implementations are in the advices.
     }
@@ -41,11 +42,9 @@ public class LoggingAspect {
     /**
      * Pointcut that matches all Spring beans in the application's main packages.
      */
-    @Pointcut(
-        "within(io.github.bkosaraju.pipeline.repository..*)" +
-        " || within(io.github.bkosaraju.pipeline.service..*)" +
-        " || within(io.github.bkosaraju.pipeline.web.rest..*)"
-    )
+    @Pointcut("within(io.github.bkosaraju.pipeline.repository..*)"+
+        " || within(io.github.bkosaraju.pipeline.service..*)"+
+        " || within(io.github.bkosaraju.pipeline.web.rest..*)")
     public void applicationPackagePointcut() {
         // Method is empty as this is just a Pointcut, the implementations are in the advices.
     }

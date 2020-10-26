@@ -34,10 +34,10 @@
       "relationshipName": "jobExecution"
     }
   ],
-  "changelogDate": "20201025224523",
+  "changelogDate": "20201025235008",
   "entityTableName": "job",
   "dto": "no",
-  "pagination": "infinite-scroll",
+  "pagination": "pagination",
   "service": "serviceImpl",
   "jpaMetamodelFiltering": true,
   "fluentMethods": true,

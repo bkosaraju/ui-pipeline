@@ -15,10 +15,10 @@
     }
   ],
   "relationships": [],
-  "changelogDate": "20201025224823",
+  "changelogDate": "20201025235308",
   "entityTableName": "global_config",
   "dto": "no",
-  "pagination": "infinite-scroll",
+  "pagination": "pagination",
   "service": "serviceImpl",
   "jpaMetamodelFiltering": true,
   "fluentMethods": true,

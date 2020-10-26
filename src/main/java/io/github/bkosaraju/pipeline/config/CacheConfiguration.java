@@ -1,18 +1,21 @@
 package io.github.bkosaraju.pipeline.config;
 
-import io.github.jhipster.config.JHipsterProperties;
-import io.github.jhipster.config.cache.PrefixedKeyGenerator;
 import java.time.Duration;
+
 import org.ehcache.config.builders.*;
 import org.ehcache.jsr107.Eh107Configuration;
+
 import org.hibernate.cache.jcache.ConfigSettings;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.github.jhipster.config.JHipsterProperties;
+
 import org.springframework.boot.autoconfigure.cache.JCacheManagerCustomizer;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.info.GitProperties;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.KeyGenerator;
+import org.springframework.beans.factory.annotation.Autowired;
+import io.github.jhipster.config.cache.PrefixedKeyGenerator;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.*;
 
 @Configuration
@@ -25,13 +28,11 @@ public class CacheConfiguration {
     public CacheConfiguration(JHipsterProperties jHipsterProperties) {
         JHipsterProperties.Cache.Ehcache ehcache = jHipsterProperties.getCache().getEhcache();
 
-        jcacheConfiguration =
-            Eh107Configuration.fromEhcacheCacheConfiguration(
-                CacheConfigurationBuilder
-                    .newCacheConfigurationBuilder(Object.class, Object.class, ResourcePoolsBuilder.heap(ehcache.getMaxEntries()))
-                    .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(Duration.ofSeconds(ehcache.getTimeToLiveSeconds())))
-                    .build()
-            );
+        jcacheConfiguration = Eh107Configuration.fromEhcacheCacheConfiguration(
+            CacheConfigurationBuilder.newCacheConfigurationBuilder(Object.class, Object.class,
+                ResourcePoolsBuilder.heap(ehcache.getMaxEntries()))
+                .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(Duration.ofSeconds(ehcache.getTimeToLiveSeconds())))
+                .build());
     }
 
     @Bean
@@ -49,6 +50,23 @@ public class CacheConfiguration {
             createCache(cm, io.github.bkosaraju.pipeline.domain.User.class.getName() + ".authorities");
             createCache(cm, io.github.bkosaraju.pipeline.domain.PersistentToken.class.getName());
             createCache(cm, io.github.bkosaraju.pipeline.domain.User.class.getName() + ".persistentTokens");
+            createCache(cm, io.github.bkosaraju.pipeline.domain.Job.class.getName());
+            createCache(cm, io.github.bkosaraju.pipeline.domain.Job.class.getName() + ".jobConfigs");
+            createCache(cm, io.github.bkosaraju.pipeline.domain.Job.class.getName() + ".jobTaskOrders");
+            createCache(cm, io.github.bkosaraju.pipeline.domain.Job.class.getName() + ".jobExecutions");
+            createCache(cm, io.github.bkosaraju.pipeline.domain.Task.class.getName());
+            createCache(cm, io.github.bkosaraju.pipeline.domain.Task.class.getName() + ".taskConfigs");
+            createCache(cm, io.github.bkosaraju.pipeline.domain.Task.class.getName() + ".jobTaskOrders");
+            createCache(cm, io.github.bkosaraju.pipeline.domain.Task.class.getName() + ".taskExecutions");
+            createCache(cm, io.github.bkosaraju.pipeline.domain.JobTaskOrder.class.getName());
+            createCache(cm, io.github.bkosaraju.pipeline.domain.GlobalConfig.class.getName());
+            createCache(cm, io.github.bkosaraju.pipeline.domain.JobConfig.class.getName());
+            createCache(cm, io.github.bkosaraju.pipeline.domain.TaskConfig.class.getName());
+            createCache(cm, io.github.bkosaraju.pipeline.domain.JobExecution.class.getName());
+            createCache(cm, io.github.bkosaraju.pipeline.domain.JobExecution.class.getName() + ".taskExecutions");
+            createCache(cm, io.github.bkosaraju.pipeline.domain.TaskExecution.class.getName());
+            createCache(cm, io.github.bkosaraju.pipeline.domain.TaskExecution.class.getName() + ".taskExecutionConfigs");
+            createCache(cm, io.github.bkosaraju.pipeline.domain.TaskExecutionConfig.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }
