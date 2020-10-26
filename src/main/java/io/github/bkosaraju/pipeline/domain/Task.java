@@ -41,7 +41,7 @@ public class Task implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<TaskConfig> taskConfigs = new HashSet<>();
 
-    @OneToMany(mappedBy = "task")CacheConcurrencyStrategy
+    @OneToMany(mappedBy = "task")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<JobTaskOrder> jobTaskOrders = new HashSet<>();
 
