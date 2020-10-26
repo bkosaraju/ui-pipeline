@@ -24,15 +24,16 @@ describe('Service Tests', () => {
       httpMock = injector.get(HttpTestingController);
       currentDate = moment();
 
-      elemDefault = new JobExecution(0, currentDate, currentDate, 'AAAAAAA');
+      elemDefault = new JobExecution(0, currentDate, 'AAAAAAA', currentDate, currentDate);
     });
 
     describe('Service methods', () => {
       it('should find an element', () => {
         const returnedFromService = Object.assign(
           {
-            jobExecutionTimestamp: currentDate.format(DATE_TIME_FORMAT),
             jobOrderTimestamp: currentDate.format(DATE_TIME_FORMAT),
+            jobExecutionEndTimestamp: currentDate.format(DATE_TIME_FORMAT),
+            jobExecutionStartTimestamp: currentDate.format(DATE_TIME_FORMAT),
           },
           elemDefault
         );
@@ -48,16 +49,18 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             id: 0,
-            jobExecutionTimestamp: currentDate.format(DATE_TIME_FORMAT),
             jobOrderTimestamp: currentDate.format(DATE_TIME_FORMAT),
+            jobExecutionEndTimestamp: currentDate.format(DATE_TIME_FORMAT),
+            jobExecutionStartTimestamp: currentDate.format(DATE_TIME_FORMAT),
           },
           elemDefault
         );
 
         const expected = Object.assign(
           {
-            jobExecutionTimestamp: currentDate,
             jobOrderTimestamp: currentDate,
+            jobExecutionEndTimestamp: currentDate,
+            jobExecutionStartTimestamp: currentDate,
           },
           returnedFromService
         );
@@ -72,17 +75,19 @@ describe('Service Tests', () => {
       it('should update a JobExecution', () => {
         const returnedFromService = Object.assign(
           {
-            jobExecutionTimestamp: currentDate.format(DATE_TIME_FORMAT),
             jobOrderTimestamp: currentDate.format(DATE_TIME_FORMAT),
             jobExecutionStatus: 'BBBBBB',
+            jobExecutionEndTimestamp: currentDate.format(DATE_TIME_FORMAT),
+            jobExecutionStartTimestamp: currentDate.format(DATE_TIME_FORMAT),
           },
           elemDefault
         );
 
         const expected = Object.assign(
           {
-            jobExecutionTimestamp: currentDate,
             jobOrderTimestamp: currentDate,
+            jobExecutionEndTimestamp: currentDate,
+            jobExecutionStartTimestamp: currentDate,
           },
           returnedFromService
         );
@@ -97,17 +102,19 @@ describe('Service Tests', () => {
       it('should return a list of JobExecution', () => {
         const returnedFromService = Object.assign(
           {
-            jobExecutionTimestamp: currentDate.format(DATE_TIME_FORMAT),
             jobOrderTimestamp: currentDate.format(DATE_TIME_FORMAT),
             jobExecutionStatus: 'BBBBBB',
+            jobExecutionEndTimestamp: currentDate.format(DATE_TIME_FORMAT),
+            jobExecutionStartTimestamp: currentDate.format(DATE_TIME_FORMAT),
           },
           elemDefault
         );
 
         const expected = Object.assign(
           {
-            jobExecutionTimestamp: currentDate,
             jobOrderTimestamp: currentDate,
+            jobExecutionEndTimestamp: currentDate,
+            jobExecutionStartTimestamp: currentDate,
           },
           returnedFromService
         );

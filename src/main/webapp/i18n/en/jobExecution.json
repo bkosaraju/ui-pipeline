@@ -16,9 +16,10 @@
       "detail": {
         "title": "Job Execution"
       },
-      "jobExecutionTimestamp": "Job Execution Timestamp",
       "jobOrderTimestamp": "Job Order Timestamp",
       "jobExecutionStatus": "Job Execution Status",
+      "jobExecutionEndTimestamp": "Job Execution End Timestamp",
+      "jobExecutionStartTimestamp": "Job Execution Start Timestamp",
       "taskExecution": "Task Execution",
       "job": "Job"
     }

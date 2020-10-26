@@ -26,14 +26,17 @@ public class TaskExecution implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "task_execution_timestamp")
-    private ZonedDateTime taskExecutionTimestamp;
-
     @Column(name = "job_order_timestamp")
     private ZonedDateTime jobOrderTimestamp;
 
     @Column(name = "task_execution_status")
     private String taskExecutionStatus;
+
+    @Column(name = "task_execution_start_timestamp")
+    private ZonedDateTime taskExecutionStartTimestamp;
+
+    @Column(name = "task_execution_end_timestamp")
+    private ZonedDateTime taskExecutionEndTimestamp;
 
     @OneToMany(mappedBy = "taskExecution")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -54,19 +57,6 @@ public class TaskExecution implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public ZonedDateTime getTaskExecutionTimestamp() {
-        return taskExecutionTimestamp;
-    }
-
-    public TaskExecution taskExecutionTimestamp(ZonedDateTime taskExecutionTimestamp) {
-        this.taskExecutionTimestamp = taskExecutionTimestamp;
-        return this;
-    }
-
-    public void setTaskExecutionTimestamp(ZonedDateTime taskExecutionTimestamp) {
-        this.taskExecutionTimestamp = taskExecutionTimestamp;
     }
 
     public ZonedDateTime getJobOrderTimestamp() {
@@ -93,6 +83,32 @@ public class TaskExecution implements Serializable {
 
     public void setTaskExecutionStatus(String taskExecutionStatus) {
         this.taskExecutionStatus = taskExecutionStatus;
+    }
+
+    public ZonedDateTime getTaskExecutionStartTimestamp() {
+        return taskExecutionStartTimestamp;
+    }
+
+    public TaskExecution taskExecutionStartTimestamp(ZonedDateTime taskExecutionStartTimestamp) {
+        this.taskExecutionStartTimestamp = taskExecutionStartTimestamp;
+        return this;
+    }
+
+    public void setTaskExecutionStartTimestamp(ZonedDateTime taskExecutionStartTimestamp) {
+        this.taskExecutionStartTimestamp = taskExecutionStartTimestamp;
+    }
+
+    public ZonedDateTime getTaskExecutionEndTimestamp() {
+        return taskExecutionEndTimestamp;
+    }
+
+    public TaskExecution taskExecutionEndTimestamp(ZonedDateTime taskExecutionEndTimestamp) {
+        this.taskExecutionEndTimestamp = taskExecutionEndTimestamp;
+        return this;
+    }
+
+    public void setTaskExecutionEndTimestamp(ZonedDateTime taskExecutionEndTimestamp) {
+        this.taskExecutionEndTimestamp = taskExecutionEndTimestamp;
     }
 
     public Set<TaskExecutionConfig> getTaskExecutionConfigs() {
@@ -168,9 +184,10 @@ public class TaskExecution implements Serializable {
     public String toString() {
         return "TaskExecution{" +
             "id=" + getId() +
-            ", taskExecutionTimestamp='" + getTaskExecutionTimestamp() + "'" +
             ", jobOrderTimestamp='" + getJobOrderTimestamp() + "'" +
             ", taskExecutionStatus='" + getTaskExecutionStatus() + "'" +
+            ", taskExecutionStartTimestamp='" + getTaskExecutionStartTimestamp() + "'" +
+            ", taskExecutionEndTimestamp='" + getTaskExecutionEndTimestamp() + "'" +
             "}";
     }
 }

@@ -27,11 +27,13 @@ public class TaskExecutionCriteria implements Serializable, Criteria {
 
     private LongFilter id;
 
-    private ZonedDateTimeFilter taskExecutionTimestamp;
-
     private ZonedDateTimeFilter jobOrderTimestamp;
 
     private StringFilter taskExecutionStatus;
+
+    private ZonedDateTimeFilter taskExecutionStartTimestamp;
+
+    private ZonedDateTimeFilter taskExecutionEndTimestamp;
 
     private LongFilter taskExecutionConfigId;
 
@@ -44,9 +46,10 @@ public class TaskExecutionCriteria implements Serializable, Criteria {
 
     public TaskExecutionCriteria(TaskExecutionCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
-        this.taskExecutionTimestamp = other.taskExecutionTimestamp == null ? null : other.taskExecutionTimestamp.copy();
         this.jobOrderTimestamp = other.jobOrderTimestamp == null ? null : other.jobOrderTimestamp.copy();
         this.taskExecutionStatus = other.taskExecutionStatus == null ? null : other.taskExecutionStatus.copy();
+        this.taskExecutionStartTimestamp = other.taskExecutionStartTimestamp == null ? null : other.taskExecutionStartTimestamp.copy();
+        this.taskExecutionEndTimestamp = other.taskExecutionEndTimestamp == null ? null : other.taskExecutionEndTimestamp.copy();
         this.taskExecutionConfigId = other.taskExecutionConfigId == null ? null : other.taskExecutionConfigId.copy();
         this.taskId = other.taskId == null ? null : other.taskId.copy();
         this.jobExecutionId = other.jobExecutionId == null ? null : other.jobExecutionId.copy();
@@ -65,14 +68,6 @@ public class TaskExecutionCriteria implements Serializable, Criteria {
         this.id = id;
     }
 
-    public ZonedDateTimeFilter getTaskExecutionTimestamp() {
-        return taskExecutionTimestamp;
-    }
-
-    public void setTaskExecutionTimestamp(ZonedDateTimeFilter taskExecutionTimestamp) {
-        this.taskExecutionTimestamp = taskExecutionTimestamp;
-    }
-
     public ZonedDateTimeFilter getJobOrderTimestamp() {
         return jobOrderTimestamp;
     }
@@ -87,6 +82,22 @@ public class TaskExecutionCriteria implements Serializable, Criteria {
 
     public void setTaskExecutionStatus(StringFilter taskExecutionStatus) {
         this.taskExecutionStatus = taskExecutionStatus;
+    }
+
+    public ZonedDateTimeFilter getTaskExecutionStartTimestamp() {
+        return taskExecutionStartTimestamp;
+    }
+
+    public void setTaskExecutionStartTimestamp(ZonedDateTimeFilter taskExecutionStartTimestamp) {
+        this.taskExecutionStartTimestamp = taskExecutionStartTimestamp;
+    }
+
+    public ZonedDateTimeFilter getTaskExecutionEndTimestamp() {
+        return taskExecutionEndTimestamp;
+    }
+
+    public void setTaskExecutionEndTimestamp(ZonedDateTimeFilter taskExecutionEndTimestamp) {
+        this.taskExecutionEndTimestamp = taskExecutionEndTimestamp;
     }
 
     public LongFilter getTaskExecutionConfigId() {
@@ -125,9 +136,10 @@ public class TaskExecutionCriteria implements Serializable, Criteria {
         final TaskExecutionCriteria that = (TaskExecutionCriteria) o;
         return
             Objects.equals(id, that.id) &&
-            Objects.equals(taskExecutionTimestamp, that.taskExecutionTimestamp) &&
             Objects.equals(jobOrderTimestamp, that.jobOrderTimestamp) &&
             Objects.equals(taskExecutionStatus, that.taskExecutionStatus) &&
+            Objects.equals(taskExecutionStartTimestamp, that.taskExecutionStartTimestamp) &&
+            Objects.equals(taskExecutionEndTimestamp, that.taskExecutionEndTimestamp) &&
             Objects.equals(taskExecutionConfigId, that.taskExecutionConfigId) &&
             Objects.equals(taskId, that.taskId) &&
             Objects.equals(jobExecutionId, that.jobExecutionId);
@@ -137,9 +149,10 @@ public class TaskExecutionCriteria implements Serializable, Criteria {
     public int hashCode() {
         return Objects.hash(
         id,
-        taskExecutionTimestamp,
         jobOrderTimestamp,
         taskExecutionStatus,
+        taskExecutionStartTimestamp,
+        taskExecutionEndTimestamp,
         taskExecutionConfigId,
         taskId,
         jobExecutionId
@@ -151,9 +164,10 @@ public class TaskExecutionCriteria implements Serializable, Criteria {
     public String toString() {
         return "TaskExecutionCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
-                (taskExecutionTimestamp != null ? "taskExecutionTimestamp=" + taskExecutionTimestamp + ", " : "") +
                 (jobOrderTimestamp != null ? "jobOrderTimestamp=" + jobOrderTimestamp + ", " : "") +
                 (taskExecutionStatus != null ? "taskExecutionStatus=" + taskExecutionStatus + ", " : "") +
+                (taskExecutionStartTimestamp != null ? "taskExecutionStartTimestamp=" + taskExecutionStartTimestamp + ", " : "") +
+                (taskExecutionEndTimestamp != null ? "taskExecutionEndTimestamp=" + taskExecutionEndTimestamp + ", " : "") +
                 (taskExecutionConfigId != null ? "taskExecutionConfigId=" + taskExecutionConfigId + ", " : "") +
                 (taskId != null ? "taskId=" + taskId + ", " : "") +
                 (jobExecutionId != null ? "jobExecutionId=" + jobExecutionId + ", " : "") +

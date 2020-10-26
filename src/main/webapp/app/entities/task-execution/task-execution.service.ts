@@ -50,20 +50,27 @@ export class TaskExecutionService {
 
   protected convertDateFromClient(taskExecution: ITaskExecution): ITaskExecution {
     const copy: ITaskExecution = Object.assign({}, taskExecution, {
-      taskExecutionTimestamp:
-        taskExecution.taskExecutionTimestamp && taskExecution.taskExecutionTimestamp.isValid()
-          ? taskExecution.taskExecutionTimestamp.toJSON()
-          : undefined,
       jobOrderTimestamp:
         taskExecution.jobOrderTimestamp && taskExecution.jobOrderTimestamp.isValid() ? taskExecution.jobOrderTimestamp.toJSON() : undefined,
+      taskExecutionStartTimestamp:
+        taskExecution.taskExecutionStartTimestamp && taskExecution.taskExecutionStartTimestamp.isValid()
+          ? taskExecution.taskExecutionStartTimestamp.toJSON()
+          : undefined,
+      taskExecutionEndTimestamp:
+        taskExecution.taskExecutionEndTimestamp && taskExecution.taskExecutionEndTimestamp.isValid()
+          ? taskExecution.taskExecutionEndTimestamp.toJSON()
+          : undefined,
     });
     return copy;
   }
 
   protected convertDateFromServer(res: EntityResponseType): EntityResponseType {
     if (res.body) {
-      res.body.taskExecutionTimestamp = res.body.taskExecutionTimestamp ? moment(res.body.taskExecutionTimestamp) : undefined;
       res.body.jobOrderTimestamp = res.body.jobOrderTimestamp ? moment(res.body.jobOrderTimestamp) : undefined;
+      res.body.taskExecutionStartTimestamp = res.body.taskExecutionStartTimestamp
+        ? moment(res.body.taskExecutionStartTimestamp)
+        : undefined;
+      res.body.taskExecutionEndTimestamp = res.body.taskExecutionEndTimestamp ? moment(res.body.taskExecutionEndTimestamp) : undefined;
     }
     return res;
   }
@@ -71,10 +78,13 @@ export class TaskExecutionService {
   protected convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
     if (res.body) {
       res.body.forEach((taskExecution: ITaskExecution) => {
-        taskExecution.taskExecutionTimestamp = taskExecution.taskExecutionTimestamp
-          ? moment(taskExecution.taskExecutionTimestamp)
-          : undefined;
         taskExecution.jobOrderTimestamp = taskExecution.jobOrderTimestamp ? moment(taskExecution.jobOrderTimestamp) : undefined;
+        taskExecution.taskExecutionStartTimestamp = taskExecution.taskExecutionStartTimestamp
+          ? moment(taskExecution.taskExecutionStartTimestamp)
+          : undefined;
+        taskExecution.taskExecutionEndTimestamp = taskExecution.taskExecutionEndTimestamp
+          ? moment(taskExecution.taskExecutionEndTimestamp)
+          : undefined;
       });
     }
     return res;

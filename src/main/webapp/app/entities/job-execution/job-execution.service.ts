@@ -50,20 +50,25 @@ export class JobExecutionService {
 
   protected convertDateFromClient(jobExecution: IJobExecution): IJobExecution {
     const copy: IJobExecution = Object.assign({}, jobExecution, {
-      jobExecutionTimestamp:
-        jobExecution.jobExecutionTimestamp && jobExecution.jobExecutionTimestamp.isValid()
-          ? jobExecution.jobExecutionTimestamp.toJSON()
-          : undefined,
       jobOrderTimestamp:
         jobExecution.jobOrderTimestamp && jobExecution.jobOrderTimestamp.isValid() ? jobExecution.jobOrderTimestamp.toJSON() : undefined,
+      jobExecutionEndTimestamp:
+        jobExecution.jobExecutionEndTimestamp && jobExecution.jobExecutionEndTimestamp.isValid()
+          ? jobExecution.jobExecutionEndTimestamp.toJSON()
+          : undefined,
+      jobExecutionStartTimestamp:
+        jobExecution.jobExecutionStartTimestamp && jobExecution.jobExecutionStartTimestamp.isValid()
+          ? jobExecution.jobExecutionStartTimestamp.toJSON()
+          : undefined,
     });
     return copy;
   }
 
   protected convertDateFromServer(res: EntityResponseType): EntityResponseType {
     if (res.body) {
-      res.body.jobExecutionTimestamp = res.body.jobExecutionTimestamp ? moment(res.body.jobExecutionTimestamp) : undefined;
       res.body.jobOrderTimestamp = res.body.jobOrderTimestamp ? moment(res.body.jobOrderTimestamp) : undefined;
+      res.body.jobExecutionEndTimestamp = res.body.jobExecutionEndTimestamp ? moment(res.body.jobExecutionEndTimestamp) : undefined;
+      res.body.jobExecutionStartTimestamp = res.body.jobExecutionStartTimestamp ? moment(res.body.jobExecutionStartTimestamp) : undefined;
     }
     return res;
   }
@@ -71,8 +76,13 @@ export class JobExecutionService {
   protected convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
     if (res.body) {
       res.body.forEach((jobExecution: IJobExecution) => {
-        jobExecution.jobExecutionTimestamp = jobExecution.jobExecutionTimestamp ? moment(jobExecution.jobExecutionTimestamp) : undefined;
         jobExecution.jobOrderTimestamp = jobExecution.jobOrderTimestamp ? moment(jobExecution.jobOrderTimestamp) : undefined;
+        jobExecution.jobExecutionEndTimestamp = jobExecution.jobExecutionEndTimestamp
+          ? moment(jobExecution.jobExecutionEndTimestamp)
+          : undefined;
+        jobExecution.jobExecutionStartTimestamp = jobExecution.jobExecutionStartTimestamp
+          ? moment(jobExecution.jobExecutionStartTimestamp)
+          : undefined;
       });
     }
     return res;

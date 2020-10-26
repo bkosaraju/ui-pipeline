@@ -2,16 +2,20 @@
   "name": "JobExecution",
   "fields": [
     {
-      "fieldName": "jobExecutionTimestamp",
-      "fieldType": "ZonedDateTime"
-    },
-    {
       "fieldName": "jobOrderTimestamp",
       "fieldType": "ZonedDateTime"
     },
     {
       "fieldName": "jobExecutionStatus",
       "fieldType": "String"
+    },
+    {
+      "fieldName": "jobExecutionEndTimestamp",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "jobExecutionStartTimestamp",
+      "fieldType": "ZonedDateTime"
     }
   ],
   "relationships": [
@@ -39,5 +43,7 @@
   "readOnly": false,
   "embedded": false,
   "clientRootFolder": "",
-  "applications": ["pipeline"]
+  "applications": ["pipeline"],
+  "searchEngine": false,
+  "databaseType": "sql"
 }

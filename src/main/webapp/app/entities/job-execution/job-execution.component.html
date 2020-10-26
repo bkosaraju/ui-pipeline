@@ -23,9 +23,10 @@
             <thead>
                 <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
                     <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="jobExecutionTimestamp"><span jhiTranslate="pipelineApp.jobExecution.jobExecutionTimestamp">Job Execution Timestamp</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="jobOrderTimestamp"><span jhiTranslate="pipelineApp.jobExecution.jobOrderTimestamp">Job Order Timestamp</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="jobExecutionStatus"><span jhiTranslate="pipelineApp.jobExecution.jobExecutionStatus">Job Execution Status</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="jobExecutionEndTimestamp"><span jhiTranslate="pipelineApp.jobExecution.jobExecutionEndTimestamp">Job Execution End Timestamp</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="jobExecutionStartTimestamp"><span jhiTranslate="pipelineApp.jobExecution.jobExecutionStartTimestamp">Job Execution Start Timestamp</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="job.id"><span jhiTranslate="pipelineApp.jobExecution.job">Job</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"></th>
                 </tr>
@@ -33,9 +34,10 @@
             <tbody>
                 <tr *ngFor="let jobExecution of jobExecutions ;trackBy: trackId">
                     <td><a [routerLink]="['/job-execution', jobExecution.id, 'view']">{{ jobExecution.id }}</a></td>
-                    <td>{{ jobExecution.jobExecutionTimestamp | date:'medium' }}</td>
                     <td>{{ jobExecution.jobOrderTimestamp | date:'medium' }}</td>
                     <td>{{ jobExecution.jobExecutionStatus }}</td>
+                    <td>{{ jobExecution.jobExecutionEndTimestamp | date:'medium' }}</td>
+                    <td>{{ jobExecution.jobExecutionStartTimestamp | date:'medium' }}</td>
                     <td>
                         <div *ngIf="jobExecution.job">
                             <a [routerLink]="['/job', jobExecution.job?.id, 'view']" >{{ jobExecution.job?.id }}</a>

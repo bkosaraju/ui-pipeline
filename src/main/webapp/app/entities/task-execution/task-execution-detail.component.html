@@ -8,10 +8,6 @@
             <jhi-alert-error></jhi-alert-error>
 
             <dl class="row-md jh-entity-details">
-                <dt><span jhiTranslate="pipelineApp.taskExecution.taskExecutionTimestamp">Task Execution Timestamp</span></dt>
-                <dd>
-                    <span>{{ taskExecution.taskExecutionTimestamp }}</span>
-                </dd>
                 <dt><span jhiTranslate="pipelineApp.taskExecution.jobOrderTimestamp">Job Order Timestamp</span></dt>
                 <dd>
                     <span>{{ taskExecution.jobOrderTimestamp }}</span>
@@ -19,6 +15,14 @@
                 <dt><span jhiTranslate="pipelineApp.taskExecution.taskExecutionStatus">Task Execution Status</span></dt>
                 <dd>
                     <span>{{ taskExecution.taskExecutionStatus }}</span>
+                </dd>
+                <dt><span jhiTranslate="pipelineApp.taskExecution.taskExecutionStartTimestamp">Task Execution Start Timestamp</span></dt>
+                <dd>
+                    <span>{{ taskExecution.taskExecutionStartTimestamp }}</span>
+                </dd>
+                <dt><span jhiTranslate="pipelineApp.taskExecution.taskExecutionEndTimestamp">Task Execution End Timestamp</span></dt>
+                <dd>
+                    <span>{{ taskExecution.taskExecutionEndTimestamp }}</span>
                 </dd>
                 <dt><span jhiTranslate="pipelineApp.taskExecution.task">Task</span></dt>
                 <dd>

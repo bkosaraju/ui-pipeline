@@ -85,14 +85,17 @@ public class JobExecutionQueryService extends QueryService<JobExecution> {
             if (criteria.getId() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getId(), JobExecution_.id));
             }
-            if (criteria.getJobExecutionTimestamp() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getJobExecutionTimestamp(), JobExecution_.jobExecutionTimestamp));
-            }
             if (criteria.getJobOrderTimestamp() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getJobOrderTimestamp(), JobExecution_.jobOrderTimestamp));
             }
             if (criteria.getJobExecutionStatus() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getJobExecutionStatus(), JobExecution_.jobExecutionStatus));
+            }
+            if (criteria.getJobExecutionEndTimestamp() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getJobExecutionEndTimestamp(), JobExecution_.jobExecutionEndTimestamp));
+            }
+            if (criteria.getJobExecutionStartTimestamp() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getJobExecutionStartTimestamp(), JobExecution_.jobExecutionStartTimestamp));
             }
             if (criteria.getTaskExecutionId() != null) {
                 specification = specification.and(buildSpecification(criteria.getTaskExecutionId(),

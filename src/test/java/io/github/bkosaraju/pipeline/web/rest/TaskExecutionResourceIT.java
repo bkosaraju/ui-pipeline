@@ -41,16 +41,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockUser
 public class TaskExecutionResourceIT {
 
-    private static final ZonedDateTime DEFAULT_TASK_EXECUTION_TIMESTAMP = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_TASK_EXECUTION_TIMESTAMP = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
-    private static final ZonedDateTime SMALLER_TASK_EXECUTION_TIMESTAMP = ZonedDateTime.ofInstant(Instant.ofEpochMilli(-1L), ZoneOffset.UTC);
-
     private static final ZonedDateTime DEFAULT_JOB_ORDER_TIMESTAMP = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_JOB_ORDER_TIMESTAMP = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
     private static final ZonedDateTime SMALLER_JOB_ORDER_TIMESTAMP = ZonedDateTime.ofInstant(Instant.ofEpochMilli(-1L), ZoneOffset.UTC);
 
     private static final String DEFAULT_TASK_EXECUTION_STATUS = "AAAAAAAAAA";
     private static final String UPDATED_TASK_EXECUTION_STATUS = "BBBBBBBBBB";
+
+    private static final ZonedDateTime DEFAULT_TASK_EXECUTION_START_TIMESTAMP = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime UPDATED_TASK_EXECUTION_START_TIMESTAMP = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final ZonedDateTime SMALLER_TASK_EXECUTION_START_TIMESTAMP = ZonedDateTime.ofInstant(Instant.ofEpochMilli(-1L), ZoneOffset.UTC);
+
+    private static final ZonedDateTime DEFAULT_TASK_EXECUTION_END_TIMESTAMP = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime UPDATED_TASK_EXECUTION_END_TIMESTAMP = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final ZonedDateTime SMALLER_TASK_EXECUTION_END_TIMESTAMP = ZonedDateTime.ofInstant(Instant.ofEpochMilli(-1L), ZoneOffset.UTC);
 
     @Autowired
     private TaskExecutionRepository taskExecutionRepository;
@@ -77,9 +81,10 @@ public class TaskExecutionResourceIT {
      */
     public static TaskExecution createEntity(EntityManager em) {
         TaskExecution taskExecution = new TaskExecution()
-            .taskExecutionTimestamp(DEFAULT_TASK_EXECUTION_TIMESTAMP)
             .jobOrderTimestamp(DEFAULT_JOB_ORDER_TIMESTAMP)
-            .taskExecutionStatus(DEFAULT_TASK_EXECUTION_STATUS);
+            .taskExecutionStatus(DEFAULT_TASK_EXECUTION_STATUS)
+            .taskExecutionStartTimestamp(DEFAULT_TASK_EXECUTION_START_TIMESTAMP)
+            .taskExecutionEndTimestamp(DEFAULT_TASK_EXECUTION_END_TIMESTAMP);
         return taskExecution;
     }
     /**
@@ -90,9 +95,10 @@ public class TaskExecutionResourceIT {
      */
     public static TaskExecution createUpdatedEntity(EntityManager em) {
         TaskExecution taskExecution = new TaskExecution()
-            .taskExecutionTimestamp(UPDATED_TASK_EXECUTION_TIMESTAMP)
             .jobOrderTimestamp(UPDATED_JOB_ORDER_TIMESTAMP)
-            .taskExecutionStatus(UPDATED_TASK_EXECUTION_STATUS);
+            .taskExecutionStatus(UPDATED_TASK_EXECUTION_STATUS)
+            .taskExecutionStartTimestamp(UPDATED_TASK_EXECUTION_START_TIMESTAMP)
+            .taskExecutionEndTimestamp(UPDATED_TASK_EXECUTION_END_TIMESTAMP);
         return taskExecution;
     }
 
@@ -115,9 +121,10 @@ public class TaskExecutionResourceIT {
         List<TaskExecution> taskExecutionList = taskExecutionRepository.findAll();
         assertThat(taskExecutionList).hasSize(databaseSizeBeforeCreate + 1);
         TaskExecution testTaskExecution = taskExecutionList.get(taskExecutionList.size() - 1);
-        assertThat(testTaskExecution.getTaskExecutionTimestamp()).isEqualTo(DEFAULT_TASK_EXECUTION_TIMESTAMP);
         assertThat(testTaskExecution.getJobOrderTimestamp()).isEqualTo(DEFAULT_JOB_ORDER_TIMESTAMP);
         assertThat(testTaskExecution.getTaskExecutionStatus()).isEqualTo(DEFAULT_TASK_EXECUTION_STATUS);
+        assertThat(testTaskExecution.getTaskExecutionStartTimestamp()).isEqualTo(DEFAULT_TASK_EXECUTION_START_TIMESTAMP);
+        assertThat(testTaskExecution.getTaskExecutionEndTimestamp()).isEqualTo(DEFAULT_TASK_EXECUTION_END_TIMESTAMP);
     }
 
     @Test
@@ -151,9 +158,10 @@ public class TaskExecutionResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(taskExecution.getId().intValue())))
-            .andExpect(jsonPath("$.[*].taskExecutionTimestamp").value(hasItem(sameInstant(DEFAULT_TASK_EXECUTION_TIMESTAMP))))
             .andExpect(jsonPath("$.[*].jobOrderTimestamp").value(hasItem(sameInstant(DEFAULT_JOB_ORDER_TIMESTAMP))))
-            .andExpect(jsonPath("$.[*].taskExecutionStatus").value(hasItem(DEFAULT_TASK_EXECUTION_STATUS)));
+            .andExpect(jsonPath("$.[*].taskExecutionStatus").value(hasItem(DEFAULT_TASK_EXECUTION_STATUS)))
+            .andExpect(jsonPath("$.[*].taskExecutionStartTimestamp").value(hasItem(sameInstant(DEFAULT_TASK_EXECUTION_START_TIMESTAMP))))
+            .andExpect(jsonPath("$.[*].taskExecutionEndTimestamp").value(hasItem(sameInstant(DEFAULT_TASK_EXECUTION_END_TIMESTAMP))));
     }
     
     @Test
@@ -167,9 +175,10 @@ public class TaskExecutionResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(taskExecution.getId().intValue()))
-            .andExpect(jsonPath("$.taskExecutionTimestamp").value(sameInstant(DEFAULT_TASK_EXECUTION_TIMESTAMP)))
             .andExpect(jsonPath("$.jobOrderTimestamp").value(sameInstant(DEFAULT_JOB_ORDER_TIMESTAMP)))
-            .andExpect(jsonPath("$.taskExecutionStatus").value(DEFAULT_TASK_EXECUTION_STATUS));
+            .andExpect(jsonPath("$.taskExecutionStatus").value(DEFAULT_TASK_EXECUTION_STATUS))
+            .andExpect(jsonPath("$.taskExecutionStartTimestamp").value(sameInstant(DEFAULT_TASK_EXECUTION_START_TIMESTAMP)))
+            .andExpect(jsonPath("$.taskExecutionEndTimestamp").value(sameInstant(DEFAULT_TASK_EXECUTION_END_TIMESTAMP)));
     }
 
 
@@ -189,111 +198,6 @@ public class TaskExecutionResourceIT {
 
         defaultTaskExecutionShouldBeFound("id.lessThanOrEqual=" + id);
         defaultTaskExecutionShouldNotBeFound("id.lessThan=" + id);
-    }
-
-
-    @Test
-    @Transactional
-    public void getAllTaskExecutionsByTaskExecutionTimestampIsEqualToSomething() throws Exception {
-        // Initialize the database
-        taskExecutionRepository.saveAndFlush(taskExecution);
-
-        // Get all the taskExecutionList where taskExecutionTimestamp equals to DEFAULT_TASK_EXECUTION_TIMESTAMP
-        defaultTaskExecutionShouldBeFound("taskExecutionTimestamp.equals=" + DEFAULT_TASK_EXECUTION_TIMESTAMP);
-
-        // Get all the taskExecutionList where taskExecutionTimestamp equals to UPDATED_TASK_EXECUTION_TIMESTAMP
-        defaultTaskExecutionShouldNotBeFound("taskExecutionTimestamp.equals=" + UPDATED_TASK_EXECUTION_TIMESTAMP);
-    }
-
-    @Test
-    @Transactional
-    public void getAllTaskExecutionsByTaskExecutionTimestampIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        taskExecutionRepository.saveAndFlush(taskExecution);
-
-        // Get all the taskExecutionList where taskExecutionTimestamp not equals to DEFAULT_TASK_EXECUTION_TIMESTAMP
-        defaultTaskExecutionShouldNotBeFound("taskExecutionTimestamp.notEquals=" + DEFAULT_TASK_EXECUTION_TIMESTAMP);
-
-        // Get all the taskExecutionList where taskExecutionTimestamp not equals to UPDATED_TASK_EXECUTION_TIMESTAMP
-        defaultTaskExecutionShouldBeFound("taskExecutionTimestamp.notEquals=" + UPDATED_TASK_EXECUTION_TIMESTAMP);
-    }
-
-    @Test
-    @Transactional
-    public void getAllTaskExecutionsByTaskExecutionTimestampIsInShouldWork() throws Exception {
-        // Initialize the database
-        taskExecutionRepository.saveAndFlush(taskExecution);
-
-        // Get all the taskExecutionList where taskExecutionTimestamp in DEFAULT_TASK_EXECUTION_TIMESTAMP or UPDATED_TASK_EXECUTION_TIMESTAMP
-        defaultTaskExecutionShouldBeFound("taskExecutionTimestamp.in=" + DEFAULT_TASK_EXECUTION_TIMESTAMP + "," + UPDATED_TASK_EXECUTION_TIMESTAMP);
-
-        // Get all the taskExecutionList where taskExecutionTimestamp equals to UPDATED_TASK_EXECUTION_TIMESTAMP
-        defaultTaskExecutionShouldNotBeFound("taskExecutionTimestamp.in=" + UPDATED_TASK_EXECUTION_TIMESTAMP);
-    }
-
-    @Test
-    @Transactional
-    public void getAllTaskExecutionsByTaskExecutionTimestampIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        taskExecutionRepository.saveAndFlush(taskExecution);
-
-        // Get all the taskExecutionList where taskExecutionTimestamp is not null
-        defaultTaskExecutionShouldBeFound("taskExecutionTimestamp.specified=true");
-
-        // Get all the taskExecutionList where taskExecutionTimestamp is null
-        defaultTaskExecutionShouldNotBeFound("taskExecutionTimestamp.specified=false");
-    }
-
-    @Test
-    @Transactional
-    public void getAllTaskExecutionsByTaskExecutionTimestampIsGreaterThanOrEqualToSomething() throws Exception {
-        // Initialize the database
-        taskExecutionRepository.saveAndFlush(taskExecution);
-
-        // Get all the taskExecutionList where taskExecutionTimestamp is greater than or equal to DEFAULT_TASK_EXECUTION_TIMESTAMP
-        defaultTaskExecutionShouldBeFound("taskExecutionTimestamp.greaterThanOrEqual=" + DEFAULT_TASK_EXECUTION_TIMESTAMP);
-
-        // Get all the taskExecutionList where taskExecutionTimestamp is greater than or equal to UPDATED_TASK_EXECUTION_TIMESTAMP
-        defaultTaskExecutionShouldNotBeFound("taskExecutionTimestamp.greaterThanOrEqual=" + UPDATED_TASK_EXECUTION_TIMESTAMP);
-    }
-
-    @Test
-    @Transactional
-    public void getAllTaskExecutionsByTaskExecutionTimestampIsLessThanOrEqualToSomething() throws Exception {
-        // Initialize the database
-        taskExecutionRepository.saveAndFlush(taskExecution);
-
-        // Get all the taskExecutionList where taskExecutionTimestamp is less than or equal to DEFAULT_TASK_EXECUTION_TIMESTAMP
-        defaultTaskExecutionShouldBeFound("taskExecutionTimestamp.lessThanOrEqual=" + DEFAULT_TASK_EXECUTION_TIMESTAMP);
-
-        // Get all the taskExecutionList where taskExecutionTimestamp is less than or equal to SMALLER_TASK_EXECUTION_TIMESTAMP
-        defaultTaskExecutionShouldNotBeFound("taskExecutionTimestamp.lessThanOrEqual=" + SMALLER_TASK_EXECUTION_TIMESTAMP);
-    }
-
-    @Test
-    @Transactional
-    public void getAllTaskExecutionsByTaskExecutionTimestampIsLessThanSomething() throws Exception {
-        // Initialize the database
-        taskExecutionRepository.saveAndFlush(taskExecution);
-
-        // Get all the taskExecutionList where taskExecutionTimestamp is less than DEFAULT_TASK_EXECUTION_TIMESTAMP
-        defaultTaskExecutionShouldNotBeFound("taskExecutionTimestamp.lessThan=" + DEFAULT_TASK_EXECUTION_TIMESTAMP);
-
-        // Get all the taskExecutionList where taskExecutionTimestamp is less than UPDATED_TASK_EXECUTION_TIMESTAMP
-        defaultTaskExecutionShouldBeFound("taskExecutionTimestamp.lessThan=" + UPDATED_TASK_EXECUTION_TIMESTAMP);
-    }
-
-    @Test
-    @Transactional
-    public void getAllTaskExecutionsByTaskExecutionTimestampIsGreaterThanSomething() throws Exception {
-        // Initialize the database
-        taskExecutionRepository.saveAndFlush(taskExecution);
-
-        // Get all the taskExecutionList where taskExecutionTimestamp is greater than DEFAULT_TASK_EXECUTION_TIMESTAMP
-        defaultTaskExecutionShouldNotBeFound("taskExecutionTimestamp.greaterThan=" + DEFAULT_TASK_EXECUTION_TIMESTAMP);
-
-        // Get all the taskExecutionList where taskExecutionTimestamp is greater than SMALLER_TASK_EXECUTION_TIMESTAMP
-        defaultTaskExecutionShouldBeFound("taskExecutionTimestamp.greaterThan=" + SMALLER_TASK_EXECUTION_TIMESTAMP);
     }
 
 
@@ -482,6 +386,216 @@ public class TaskExecutionResourceIT {
 
     @Test
     @Transactional
+    public void getAllTaskExecutionsByTaskExecutionStartTimestampIsEqualToSomething() throws Exception {
+        // Initialize the database
+        taskExecutionRepository.saveAndFlush(taskExecution);
+
+        // Get all the taskExecutionList where taskExecutionStartTimestamp equals to DEFAULT_TASK_EXECUTION_START_TIMESTAMP
+        defaultTaskExecutionShouldBeFound("taskExecutionStartTimestamp.equals=" + DEFAULT_TASK_EXECUTION_START_TIMESTAMP);
+
+        // Get all the taskExecutionList where taskExecutionStartTimestamp equals to UPDATED_TASK_EXECUTION_START_TIMESTAMP
+        defaultTaskExecutionShouldNotBeFound("taskExecutionStartTimestamp.equals=" + UPDATED_TASK_EXECUTION_START_TIMESTAMP);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTaskExecutionsByTaskExecutionStartTimestampIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        taskExecutionRepository.saveAndFlush(taskExecution);
+
+        // Get all the taskExecutionList where taskExecutionStartTimestamp not equals to DEFAULT_TASK_EXECUTION_START_TIMESTAMP
+        defaultTaskExecutionShouldNotBeFound("taskExecutionStartTimestamp.notEquals=" + DEFAULT_TASK_EXECUTION_START_TIMESTAMP);
+
+        // Get all the taskExecutionList where taskExecutionStartTimestamp not equals to UPDATED_TASK_EXECUTION_START_TIMESTAMP
+        defaultTaskExecutionShouldBeFound("taskExecutionStartTimestamp.notEquals=" + UPDATED_TASK_EXECUTION_START_TIMESTAMP);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTaskExecutionsByTaskExecutionStartTimestampIsInShouldWork() throws Exception {
+        // Initialize the database
+        taskExecutionRepository.saveAndFlush(taskExecution);
+
+        // Get all the taskExecutionList where taskExecutionStartTimestamp in DEFAULT_TASK_EXECUTION_START_TIMESTAMP or UPDATED_TASK_EXECUTION_START_TIMESTAMP
+        defaultTaskExecutionShouldBeFound("taskExecutionStartTimestamp.in=" + DEFAULT_TASK_EXECUTION_START_TIMESTAMP + "," + UPDATED_TASK_EXECUTION_START_TIMESTAMP);
+
+        // Get all the taskExecutionList where taskExecutionStartTimestamp equals to UPDATED_TASK_EXECUTION_START_TIMESTAMP
+        defaultTaskExecutionShouldNotBeFound("taskExecutionStartTimestamp.in=" + UPDATED_TASK_EXECUTION_START_TIMESTAMP);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTaskExecutionsByTaskExecutionStartTimestampIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        taskExecutionRepository.saveAndFlush(taskExecution);
+
+        // Get all the taskExecutionList where taskExecutionStartTimestamp is not null
+        defaultTaskExecutionShouldBeFound("taskExecutionStartTimestamp.specified=true");
+
+        // Get all the taskExecutionList where taskExecutionStartTimestamp is null
+        defaultTaskExecutionShouldNotBeFound("taskExecutionStartTimestamp.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllTaskExecutionsByTaskExecutionStartTimestampIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        taskExecutionRepository.saveAndFlush(taskExecution);
+
+        // Get all the taskExecutionList where taskExecutionStartTimestamp is greater than or equal to DEFAULT_TASK_EXECUTION_START_TIMESTAMP
+        defaultTaskExecutionShouldBeFound("taskExecutionStartTimestamp.greaterThanOrEqual=" + DEFAULT_TASK_EXECUTION_START_TIMESTAMP);
+
+        // Get all the taskExecutionList where taskExecutionStartTimestamp is greater than or equal to UPDATED_TASK_EXECUTION_START_TIMESTAMP
+        defaultTaskExecutionShouldNotBeFound("taskExecutionStartTimestamp.greaterThanOrEqual=" + UPDATED_TASK_EXECUTION_START_TIMESTAMP);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTaskExecutionsByTaskExecutionStartTimestampIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        taskExecutionRepository.saveAndFlush(taskExecution);
+
+        // Get all the taskExecutionList where taskExecutionStartTimestamp is less than or equal to DEFAULT_TASK_EXECUTION_START_TIMESTAMP
+        defaultTaskExecutionShouldBeFound("taskExecutionStartTimestamp.lessThanOrEqual=" + DEFAULT_TASK_EXECUTION_START_TIMESTAMP);
+
+        // Get all the taskExecutionList where taskExecutionStartTimestamp is less than or equal to SMALLER_TASK_EXECUTION_START_TIMESTAMP
+        defaultTaskExecutionShouldNotBeFound("taskExecutionStartTimestamp.lessThanOrEqual=" + SMALLER_TASK_EXECUTION_START_TIMESTAMP);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTaskExecutionsByTaskExecutionStartTimestampIsLessThanSomething() throws Exception {
+        // Initialize the database
+        taskExecutionRepository.saveAndFlush(taskExecution);
+
+        // Get all the taskExecutionList where taskExecutionStartTimestamp is less than DEFAULT_TASK_EXECUTION_START_TIMESTAMP
+        defaultTaskExecutionShouldNotBeFound("taskExecutionStartTimestamp.lessThan=" + DEFAULT_TASK_EXECUTION_START_TIMESTAMP);
+
+        // Get all the taskExecutionList where taskExecutionStartTimestamp is less than UPDATED_TASK_EXECUTION_START_TIMESTAMP
+        defaultTaskExecutionShouldBeFound("taskExecutionStartTimestamp.lessThan=" + UPDATED_TASK_EXECUTION_START_TIMESTAMP);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTaskExecutionsByTaskExecutionStartTimestampIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        taskExecutionRepository.saveAndFlush(taskExecution);
+
+        // Get all the taskExecutionList where taskExecutionStartTimestamp is greater than DEFAULT_TASK_EXECUTION_START_TIMESTAMP
+        defaultTaskExecutionShouldNotBeFound("taskExecutionStartTimestamp.greaterThan=" + DEFAULT_TASK_EXECUTION_START_TIMESTAMP);
+
+        // Get all the taskExecutionList where taskExecutionStartTimestamp is greater than SMALLER_TASK_EXECUTION_START_TIMESTAMP
+        defaultTaskExecutionShouldBeFound("taskExecutionStartTimestamp.greaterThan=" + SMALLER_TASK_EXECUTION_START_TIMESTAMP);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllTaskExecutionsByTaskExecutionEndTimestampIsEqualToSomething() throws Exception {
+        // Initialize the database
+        taskExecutionRepository.saveAndFlush(taskExecution);
+
+        // Get all the taskExecutionList where taskExecutionEndTimestamp equals to DEFAULT_TASK_EXECUTION_END_TIMESTAMP
+        defaultTaskExecutionShouldBeFound("taskExecutionEndTimestamp.equals=" + DEFAULT_TASK_EXECUTION_END_TIMESTAMP);
+
+        // Get all the taskExecutionList where taskExecutionEndTimestamp equals to UPDATED_TASK_EXECUTION_END_TIMESTAMP
+        defaultTaskExecutionShouldNotBeFound("taskExecutionEndTimestamp.equals=" + UPDATED_TASK_EXECUTION_END_TIMESTAMP);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTaskExecutionsByTaskExecutionEndTimestampIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        taskExecutionRepository.saveAndFlush(taskExecution);
+
+        // Get all the taskExecutionList where taskExecutionEndTimestamp not equals to DEFAULT_TASK_EXECUTION_END_TIMESTAMP
+        defaultTaskExecutionShouldNotBeFound("taskExecutionEndTimestamp.notEquals=" + DEFAULT_TASK_EXECUTION_END_TIMESTAMP);
+
+        // Get all the taskExecutionList where taskExecutionEndTimestamp not equals to UPDATED_TASK_EXECUTION_END_TIMESTAMP
+        defaultTaskExecutionShouldBeFound("taskExecutionEndTimestamp.notEquals=" + UPDATED_TASK_EXECUTION_END_TIMESTAMP);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTaskExecutionsByTaskExecutionEndTimestampIsInShouldWork() throws Exception {
+        // Initialize the database
+        taskExecutionRepository.saveAndFlush(taskExecution);
+
+        // Get all the taskExecutionList where taskExecutionEndTimestamp in DEFAULT_TASK_EXECUTION_END_TIMESTAMP or UPDATED_TASK_EXECUTION_END_TIMESTAMP
+        defaultTaskExecutionShouldBeFound("taskExecutionEndTimestamp.in=" + DEFAULT_TASK_EXECUTION_END_TIMESTAMP + "," + UPDATED_TASK_EXECUTION_END_TIMESTAMP);
+
+        // Get all the taskExecutionList where taskExecutionEndTimestamp equals to UPDATED_TASK_EXECUTION_END_TIMESTAMP
+        defaultTaskExecutionShouldNotBeFound("taskExecutionEndTimestamp.in=" + UPDATED_TASK_EXECUTION_END_TIMESTAMP);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTaskExecutionsByTaskExecutionEndTimestampIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        taskExecutionRepository.saveAndFlush(taskExecution);
+
+        // Get all the taskExecutionList where taskExecutionEndTimestamp is not null
+        defaultTaskExecutionShouldBeFound("taskExecutionEndTimestamp.specified=true");
+
+        // Get all the taskExecutionList where taskExecutionEndTimestamp is null
+        defaultTaskExecutionShouldNotBeFound("taskExecutionEndTimestamp.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllTaskExecutionsByTaskExecutionEndTimestampIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        taskExecutionRepository.saveAndFlush(taskExecution);
+
+        // Get all the taskExecutionList where taskExecutionEndTimestamp is greater than or equal to DEFAULT_TASK_EXECUTION_END_TIMESTAMP
+        defaultTaskExecutionShouldBeFound("taskExecutionEndTimestamp.greaterThanOrEqual=" + DEFAULT_TASK_EXECUTION_END_TIMESTAMP);
+
+        // Get all the taskExecutionList where taskExecutionEndTimestamp is greater than or equal to UPDATED_TASK_EXECUTION_END_TIMESTAMP
+        defaultTaskExecutionShouldNotBeFound("taskExecutionEndTimestamp.greaterThanOrEqual=" + UPDATED_TASK_EXECUTION_END_TIMESTAMP);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTaskExecutionsByTaskExecutionEndTimestampIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        taskExecutionRepository.saveAndFlush(taskExecution);
+
+        // Get all the taskExecutionList where taskExecutionEndTimestamp is less than or equal to DEFAULT_TASK_EXECUTION_END_TIMESTAMP
+        defaultTaskExecutionShouldBeFound("taskExecutionEndTimestamp.lessThanOrEqual=" + DEFAULT_TASK_EXECUTION_END_TIMESTAMP);
+
+        // Get all the taskExecutionList where taskExecutionEndTimestamp is less than or equal to SMALLER_TASK_EXECUTION_END_TIMESTAMP
+        defaultTaskExecutionShouldNotBeFound("taskExecutionEndTimestamp.lessThanOrEqual=" + SMALLER_TASK_EXECUTION_END_TIMESTAMP);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTaskExecutionsByTaskExecutionEndTimestampIsLessThanSomething() throws Exception {
+        // Initialize the database
+        taskExecutionRepository.saveAndFlush(taskExecution);
+
+        // Get all the taskExecutionList where taskExecutionEndTimestamp is less than DEFAULT_TASK_EXECUTION_END_TIMESTAMP
+        defaultTaskExecutionShouldNotBeFound("taskExecutionEndTimestamp.lessThan=" + DEFAULT_TASK_EXECUTION_END_TIMESTAMP);
+
+        // Get all the taskExecutionList where taskExecutionEndTimestamp is less than UPDATED_TASK_EXECUTION_END_TIMESTAMP
+        defaultTaskExecutionShouldBeFound("taskExecutionEndTimestamp.lessThan=" + UPDATED_TASK_EXECUTION_END_TIMESTAMP);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTaskExecutionsByTaskExecutionEndTimestampIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        taskExecutionRepository.saveAndFlush(taskExecution);
+
+        // Get all the taskExecutionList where taskExecutionEndTimestamp is greater than DEFAULT_TASK_EXECUTION_END_TIMESTAMP
+        defaultTaskExecutionShouldNotBeFound("taskExecutionEndTimestamp.greaterThan=" + DEFAULT_TASK_EXECUTION_END_TIMESTAMP);
+
+        // Get all the taskExecutionList where taskExecutionEndTimestamp is greater than SMALLER_TASK_EXECUTION_END_TIMESTAMP
+        defaultTaskExecutionShouldBeFound("taskExecutionEndTimestamp.greaterThan=" + SMALLER_TASK_EXECUTION_END_TIMESTAMP);
+    }
+
+
+    @Test
+    @Transactional
     public void getAllTaskExecutionsByTaskExecutionConfigIsEqualToSomething() throws Exception {
         // Initialize the database
         taskExecutionRepository.saveAndFlush(taskExecution);
@@ -547,9 +661,10 @@ public class TaskExecutionResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(taskExecution.getId().intValue())))
-            .andExpect(jsonPath("$.[*].taskExecutionTimestamp").value(hasItem(sameInstant(DEFAULT_TASK_EXECUTION_TIMESTAMP))))
             .andExpect(jsonPath("$.[*].jobOrderTimestamp").value(hasItem(sameInstant(DEFAULT_JOB_ORDER_TIMESTAMP))))
-            .andExpect(jsonPath("$.[*].taskExecutionStatus").value(hasItem(DEFAULT_TASK_EXECUTION_STATUS)));
+            .andExpect(jsonPath("$.[*].taskExecutionStatus").value(hasItem(DEFAULT_TASK_EXECUTION_STATUS)))
+            .andExpect(jsonPath("$.[*].taskExecutionStartTimestamp").value(hasItem(sameInstant(DEFAULT_TASK_EXECUTION_START_TIMESTAMP))))
+            .andExpect(jsonPath("$.[*].taskExecutionEndTimestamp").value(hasItem(sameInstant(DEFAULT_TASK_EXECUTION_END_TIMESTAMP))));
 
         // Check, that the count call also returns 1
         restTaskExecutionMockMvc.perform(get("/api/task-executions/count?sort=id,desc&" + filter))
@@ -596,9 +711,10 @@ public class TaskExecutionResourceIT {
         // Disconnect from session so that the updates on updatedTaskExecution are not directly saved in db
         em.detach(updatedTaskExecution);
         updatedTaskExecution
-            .taskExecutionTimestamp(UPDATED_TASK_EXECUTION_TIMESTAMP)
             .jobOrderTimestamp(UPDATED_JOB_ORDER_TIMESTAMP)
-            .taskExecutionStatus(UPDATED_TASK_EXECUTION_STATUS);
+            .taskExecutionStatus(UPDATED_TASK_EXECUTION_STATUS)
+            .taskExecutionStartTimestamp(UPDATED_TASK_EXECUTION_START_TIMESTAMP)
+            .taskExecutionEndTimestamp(UPDATED_TASK_EXECUTION_END_TIMESTAMP);
 
         restTaskExecutionMockMvc.perform(put("/api/task-executions").with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
@@ -609,9 +725,10 @@ public class TaskExecutionResourceIT {
         List<TaskExecution> taskExecutionList = taskExecutionRepository.findAll();
         assertThat(taskExecutionList).hasSize(databaseSizeBeforeUpdate);
         TaskExecution testTaskExecution = taskExecutionList.get(taskExecutionList.size() - 1);
-        assertThat(testTaskExecution.getTaskExecutionTimestamp()).isEqualTo(UPDATED_TASK_EXECUTION_TIMESTAMP);
         assertThat(testTaskExecution.getJobOrderTimestamp()).isEqualTo(UPDATED_JOB_ORDER_TIMESTAMP);
         assertThat(testTaskExecution.getTaskExecutionStatus()).isEqualTo(UPDATED_TASK_EXECUTION_STATUS);
+        assertThat(testTaskExecution.getTaskExecutionStartTimestamp()).isEqualTo(UPDATED_TASK_EXECUTION_START_TIMESTAMP);
+        assertThat(testTaskExecution.getTaskExecutionEndTimestamp()).isEqualTo(UPDATED_TASK_EXECUTION_END_TIMESTAMP);
     }
 
     @Test

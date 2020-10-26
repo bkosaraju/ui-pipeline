@@ -27,9 +27,10 @@ export class TaskExecutionUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
-    taskExecutionTimestamp: [],
     jobOrderTimestamp: [],
     taskExecutionStatus: [],
+    taskExecutionStartTimestamp: [],
+    taskExecutionEndTimestamp: [],
     task: [],
     jobExecution: [],
   });
@@ -46,8 +47,9 @@ export class TaskExecutionUpdateComponent implements OnInit {
     this.activatedRoute.data.subscribe(({ taskExecution }) => {
       if (!taskExecution.id) {
         const today = moment().startOf('day');
-        taskExecution.taskExecutionTimestamp = today;
         taskExecution.jobOrderTimestamp = today;
+        taskExecution.taskExecutionStartTimestamp = today;
+        taskExecution.taskExecutionEndTimestamp = today;
       }
 
       this.updateForm(taskExecution);
@@ -61,9 +63,14 @@ export class TaskExecutionUpdateComponent implements OnInit {
   updateForm(taskExecution: ITaskExecution): void {
     this.editForm.patchValue({
       id: taskExecution.id,
-      taskExecutionTimestamp: taskExecution.taskExecutionTimestamp ? taskExecution.taskExecutionTimestamp.format(DATE_TIME_FORMAT) : null,
       jobOrderTimestamp: taskExecution.jobOrderTimestamp ? taskExecution.jobOrderTimestamp.format(DATE_TIME_FORMAT) : null,
       taskExecutionStatus: taskExecution.taskExecutionStatus,
+      taskExecutionStartTimestamp: taskExecution.taskExecutionStartTimestamp
+        ? taskExecution.taskExecutionStartTimestamp.format(DATE_TIME_FORMAT)
+        : null,
+      taskExecutionEndTimestamp: taskExecution.taskExecutionEndTimestamp
+        ? taskExecution.taskExecutionEndTimestamp.format(DATE_TIME_FORMAT)
+        : null,
       task: taskExecution.task,
       jobExecution: taskExecution.jobExecution,
     });
@@ -87,13 +94,16 @@ export class TaskExecutionUpdateComponent implements OnInit {
     return {
       ...new TaskExecution(),
       id: this.editForm.get(['id'])!.value,
-      taskExecutionTimestamp: this.editForm.get(['taskExecutionTimestamp'])!.value
-        ? moment(this.editForm.get(['taskExecutionTimestamp'])!.value, DATE_TIME_FORMAT)
-        : undefined,
       jobOrderTimestamp: this.editForm.get(['jobOrderTimestamp'])!.value
         ? moment(this.editForm.get(['jobOrderTimestamp'])!.value, DATE_TIME_FORMAT)
         : undefined,
       taskExecutionStatus: this.editForm.get(['taskExecutionStatus'])!.value,
+      taskExecutionStartTimestamp: this.editForm.get(['taskExecutionStartTimestamp'])!.value
+        ? moment(this.editForm.get(['taskExecutionStartTimestamp'])!.value, DATE_TIME_FORMAT)
+        : undefined,
+      taskExecutionEndTimestamp: this.editForm.get(['taskExecutionEndTimestamp'])!.value
+        ? moment(this.editForm.get(['taskExecutionEndTimestamp'])!.value, DATE_TIME_FORMAT)
+        : undefined,
       task: this.editForm.get(['task'])!.value,
       jobExecution: this.editForm.get(['jobExecution'])!.value,
     };

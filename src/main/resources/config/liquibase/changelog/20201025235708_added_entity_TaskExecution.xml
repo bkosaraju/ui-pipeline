@@ -15,13 +15,16 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="task_execution_timestamp" type="datetime">
-                <constraints nullable="true" />
-            </column>
             <column name="job_order_timestamp" type="datetime">
                 <constraints nullable="true" />
             </column>
             <column name="task_execution_status" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="task_execution_start_timestamp" type="datetime">
+                <constraints nullable="true" />
+            </column>
+            <column name="task_execution_end_timestamp" type="datetime">
                 <constraints nullable="true" />
             </column>
             <column name="task_id" type="bigint">
@@ -32,8 +35,9 @@
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
-        <dropDefaultValue tableName="task_execution" columnName="task_execution_timestamp" columnDataType="datetime"/>
         <dropDefaultValue tableName="task_execution" columnName="job_order_timestamp" columnDataType="datetime"/>
+        <dropDefaultValue tableName="task_execution" columnName="task_execution_start_timestamp" columnDataType="datetime"/>
+        <dropDefaultValue tableName="task_execution" columnName="task_execution_end_timestamp" columnDataType="datetime"/>
     </changeSet>
 
     <changeSet id="20201025235708-1-relations" author="jhipster">
@@ -55,9 +59,10 @@
                   separator=";"
                   tableName="task_execution">
             <column name="id" type="numeric"/>
-            <column name="task_execution_timestamp" type="datetime"/>
             <column name="job_order_timestamp" type="datetime"/>
             <column name="task_execution_status" type="string"/>
+            <column name="task_execution_start_timestamp" type="datetime"/>
+            <column name="task_execution_end_timestamp" type="datetime"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

@@ -40,16 +40,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockUser
 public class JobExecutionResourceIT {
 
-    private static final ZonedDateTime DEFAULT_JOB_EXECUTION_TIMESTAMP = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_JOB_EXECUTION_TIMESTAMP = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
-    private static final ZonedDateTime SMALLER_JOB_EXECUTION_TIMESTAMP = ZonedDateTime.ofInstant(Instant.ofEpochMilli(-1L), ZoneOffset.UTC);
-
     private static final ZonedDateTime DEFAULT_JOB_ORDER_TIMESTAMP = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_JOB_ORDER_TIMESTAMP = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
     private static final ZonedDateTime SMALLER_JOB_ORDER_TIMESTAMP = ZonedDateTime.ofInstant(Instant.ofEpochMilli(-1L), ZoneOffset.UTC);
 
     private static final String DEFAULT_JOB_EXECUTION_STATUS = "AAAAAAAAAA";
     private static final String UPDATED_JOB_EXECUTION_STATUS = "BBBBBBBBBB";
+
+    private static final ZonedDateTime DEFAULT_JOB_EXECUTION_END_TIMESTAMP = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime UPDATED_JOB_EXECUTION_END_TIMESTAMP = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final ZonedDateTime SMALLER_JOB_EXECUTION_END_TIMESTAMP = ZonedDateTime.ofInstant(Instant.ofEpochMilli(-1L), ZoneOffset.UTC);
+
+    private static final ZonedDateTime DEFAULT_JOB_EXECUTION_START_TIMESTAMP = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime UPDATED_JOB_EXECUTION_START_TIMESTAMP = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final ZonedDateTime SMALLER_JOB_EXECUTION_START_TIMESTAMP = ZonedDateTime.ofInstant(Instant.ofEpochMilli(-1L), ZoneOffset.UTC);
 
     @Autowired
     private JobExecutionRepository jobExecutionRepository;
@@ -76,9 +80,10 @@ public class JobExecutionResourceIT {
      */
     public static JobExecution createEntity(EntityManager em) {
         JobExecution jobExecution = new JobExecution()
-            .jobExecutionTimestamp(DEFAULT_JOB_EXECUTION_TIMESTAMP)
             .jobOrderTimestamp(DEFAULT_JOB_ORDER_TIMESTAMP)
-            .jobExecutionStatus(DEFAULT_JOB_EXECUTION_STATUS);
+            .jobExecutionStatus(DEFAULT_JOB_EXECUTION_STATUS)
+            .jobExecutionEndTimestamp(DEFAULT_JOB_EXECUTION_END_TIMESTAMP)
+            .jobExecutionStartTimestamp(DEFAULT_JOB_EXECUTION_START_TIMESTAMP);
         return jobExecution;
     }
     /**
@@ -89,9 +94,10 @@ public class JobExecutionResourceIT {
      */
     public static JobExecution createUpdatedEntity(EntityManager em) {
         JobExecution jobExecution = new JobExecution()
-            .jobExecutionTimestamp(UPDATED_JOB_EXECUTION_TIMESTAMP)
             .jobOrderTimestamp(UPDATED_JOB_ORDER_TIMESTAMP)
-            .jobExecutionStatus(UPDATED_JOB_EXECUTION_STATUS);
+            .jobExecutionStatus(UPDATED_JOB_EXECUTION_STATUS)
+            .jobExecutionEndTimestamp(UPDATED_JOB_EXECUTION_END_TIMESTAMP)
+            .jobExecutionStartTimestamp(UPDATED_JOB_EXECUTION_START_TIMESTAMP);
         return jobExecution;
     }
 
@@ -114,9 +120,10 @@ public class JobExecutionResourceIT {
         List<JobExecution> jobExecutionList = jobExecutionRepository.findAll();
         assertThat(jobExecutionList).hasSize(databaseSizeBeforeCreate + 1);
         JobExecution testJobExecution = jobExecutionList.get(jobExecutionList.size() - 1);
-        assertThat(testJobExecution.getJobExecutionTimestamp()).isEqualTo(DEFAULT_JOB_EXECUTION_TIMESTAMP);
         assertThat(testJobExecution.getJobOrderTimestamp()).isEqualTo(DEFAULT_JOB_ORDER_TIMESTAMP);
         assertThat(testJobExecution.getJobExecutionStatus()).isEqualTo(DEFAULT_JOB_EXECUTION_STATUS);
+        assertThat(testJobExecution.getJobExecutionEndTimestamp()).isEqualTo(DEFAULT_JOB_EXECUTION_END_TIMESTAMP);
+        assertThat(testJobExecution.getJobExecutionStartTimestamp()).isEqualTo(DEFAULT_JOB_EXECUTION_START_TIMESTAMP);
     }
 
     @Test
@@ -150,9 +157,10 @@ public class JobExecutionResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(jobExecution.getId().intValue())))
-            .andExpect(jsonPath("$.[*].jobExecutionTimestamp").value(hasItem(sameInstant(DEFAULT_JOB_EXECUTION_TIMESTAMP))))
             .andExpect(jsonPath("$.[*].jobOrderTimestamp").value(hasItem(sameInstant(DEFAULT_JOB_ORDER_TIMESTAMP))))
-            .andExpect(jsonPath("$.[*].jobExecutionStatus").value(hasItem(DEFAULT_JOB_EXECUTION_STATUS)));
+            .andExpect(jsonPath("$.[*].jobExecutionStatus").value(hasItem(DEFAULT_JOB_EXECUTION_STATUS)))
+            .andExpect(jsonPath("$.[*].jobExecutionEndTimestamp").value(hasItem(sameInstant(DEFAULT_JOB_EXECUTION_END_TIMESTAMP))))
+            .andExpect(jsonPath("$.[*].jobExecutionStartTimestamp").value(hasItem(sameInstant(DEFAULT_JOB_EXECUTION_START_TIMESTAMP))));
     }
     
     @Test
@@ -166,9 +174,10 @@ public class JobExecutionResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(jobExecution.getId().intValue()))
-            .andExpect(jsonPath("$.jobExecutionTimestamp").value(sameInstant(DEFAULT_JOB_EXECUTION_TIMESTAMP)))
             .andExpect(jsonPath("$.jobOrderTimestamp").value(sameInstant(DEFAULT_JOB_ORDER_TIMESTAMP)))
-            .andExpect(jsonPath("$.jobExecutionStatus").value(DEFAULT_JOB_EXECUTION_STATUS));
+            .andExpect(jsonPath("$.jobExecutionStatus").value(DEFAULT_JOB_EXECUTION_STATUS))
+            .andExpect(jsonPath("$.jobExecutionEndTimestamp").value(sameInstant(DEFAULT_JOB_EXECUTION_END_TIMESTAMP)))
+            .andExpect(jsonPath("$.jobExecutionStartTimestamp").value(sameInstant(DEFAULT_JOB_EXECUTION_START_TIMESTAMP)));
     }
 
 
@@ -188,111 +197,6 @@ public class JobExecutionResourceIT {
 
         defaultJobExecutionShouldBeFound("id.lessThanOrEqual=" + id);
         defaultJobExecutionShouldNotBeFound("id.lessThan=" + id);
-    }
-
-
-    @Test
-    @Transactional
-    public void getAllJobExecutionsByJobExecutionTimestampIsEqualToSomething() throws Exception {
-        // Initialize the database
-        jobExecutionRepository.saveAndFlush(jobExecution);
-
-        // Get all the jobExecutionList where jobExecutionTimestamp equals to DEFAULT_JOB_EXECUTION_TIMESTAMP
-        defaultJobExecutionShouldBeFound("jobExecutionTimestamp.equals=" + DEFAULT_JOB_EXECUTION_TIMESTAMP);
-
-        // Get all the jobExecutionList where jobExecutionTimestamp equals to UPDATED_JOB_EXECUTION_TIMESTAMP
-        defaultJobExecutionShouldNotBeFound("jobExecutionTimestamp.equals=" + UPDATED_JOB_EXECUTION_TIMESTAMP);
-    }
-
-    @Test
-    @Transactional
-    public void getAllJobExecutionsByJobExecutionTimestampIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        jobExecutionRepository.saveAndFlush(jobExecution);
-
-        // Get all the jobExecutionList where jobExecutionTimestamp not equals to DEFAULT_JOB_EXECUTION_TIMESTAMP
-        defaultJobExecutionShouldNotBeFound("jobExecutionTimestamp.notEquals=" + DEFAULT_JOB_EXECUTION_TIMESTAMP);
-
-        // Get all the jobExecutionList where jobExecutionTimestamp not equals to UPDATED_JOB_EXECUTION_TIMESTAMP
-        defaultJobExecutionShouldBeFound("jobExecutionTimestamp.notEquals=" + UPDATED_JOB_EXECUTION_TIMESTAMP);
-    }
-
-    @Test
-    @Transactional
-    public void getAllJobExecutionsByJobExecutionTimestampIsInShouldWork() throws Exception {
-        // Initialize the database
-        jobExecutionRepository.saveAndFlush(jobExecution);
-
-        // Get all the jobExecutionList where jobExecutionTimestamp in DEFAULT_JOB_EXECUTION_TIMESTAMP or UPDATED_JOB_EXECUTION_TIMESTAMP
-        defaultJobExecutionShouldBeFound("jobExecutionTimestamp.in=" + DEFAULT_JOB_EXECUTION_TIMESTAMP + "," + UPDATED_JOB_EXECUTION_TIMESTAMP);
-
-        // Get all the jobExecutionList where jobExecutionTimestamp equals to UPDATED_JOB_EXECUTION_TIMESTAMP
-        defaultJobExecutionShouldNotBeFound("jobExecutionTimestamp.in=" + UPDATED_JOB_EXECUTION_TIMESTAMP);
-    }
-
-    @Test
-    @Transactional
-    public void getAllJobExecutionsByJobExecutionTimestampIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        jobExecutionRepository.saveAndFlush(jobExecution);
-
-        // Get all the jobExecutionList where jobExecutionTimestamp is not null
-        defaultJobExecutionShouldBeFound("jobExecutionTimestamp.specified=true");
-
-        // Get all the jobExecutionList where jobExecutionTimestamp is null
-        defaultJobExecutionShouldNotBeFound("jobExecutionTimestamp.specified=false");
-    }
-
-    @Test
-    @Transactional
-    public void getAllJobExecutionsByJobExecutionTimestampIsGreaterThanOrEqualToSomething() throws Exception {
-        // Initialize the database
-        jobExecutionRepository.saveAndFlush(jobExecution);
-
-        // Get all the jobExecutionList where jobExecutionTimestamp is greater than or equal to DEFAULT_JOB_EXECUTION_TIMESTAMP
-        defaultJobExecutionShouldBeFound("jobExecutionTimestamp.greaterThanOrEqual=" + DEFAULT_JOB_EXECUTION_TIMESTAMP);
-
-        // Get all the jobExecutionList where jobExecutionTimestamp is greater than or equal to UPDATED_JOB_EXECUTION_TIMESTAMP
-        defaultJobExecutionShouldNotBeFound("jobExecutionTimestamp.greaterThanOrEqual=" + UPDATED_JOB_EXECUTION_TIMESTAMP);
-    }
-
-    @Test
-    @Transactional
-    public void getAllJobExecutionsByJobExecutionTimestampIsLessThanOrEqualToSomething() throws Exception {
-        // Initialize the database
-        jobExecutionRepository.saveAndFlush(jobExecution);
-
-        // Get all the jobExecutionList where jobExecutionTimestamp is less than or equal to DEFAULT_JOB_EXECUTION_TIMESTAMP
-        defaultJobExecutionShouldBeFound("jobExecutionTimestamp.lessThanOrEqual=" + DEFAULT_JOB_EXECUTION_TIMESTAMP);
-
-        // Get all the jobExecutionList where jobExecutionTimestamp is less than or equal to SMALLER_JOB_EXECUTION_TIMESTAMP
-        defaultJobExecutionShouldNotBeFound("jobExecutionTimestamp.lessThanOrEqual=" + SMALLER_JOB_EXECUTION_TIMESTAMP);
-    }
-
-    @Test
-    @Transactional
-    public void getAllJobExecutionsByJobExecutionTimestampIsLessThanSomething() throws Exception {
-        // Initialize the database
-        jobExecutionRepository.saveAndFlush(jobExecution);
-
-        // Get all the jobExecutionList where jobExecutionTimestamp is less than DEFAULT_JOB_EXECUTION_TIMESTAMP
-        defaultJobExecutionShouldNotBeFound("jobExecutionTimestamp.lessThan=" + DEFAULT_JOB_EXECUTION_TIMESTAMP);
-
-        // Get all the jobExecutionList where jobExecutionTimestamp is less than UPDATED_JOB_EXECUTION_TIMESTAMP
-        defaultJobExecutionShouldBeFound("jobExecutionTimestamp.lessThan=" + UPDATED_JOB_EXECUTION_TIMESTAMP);
-    }
-
-    @Test
-    @Transactional
-    public void getAllJobExecutionsByJobExecutionTimestampIsGreaterThanSomething() throws Exception {
-        // Initialize the database
-        jobExecutionRepository.saveAndFlush(jobExecution);
-
-        // Get all the jobExecutionList where jobExecutionTimestamp is greater than DEFAULT_JOB_EXECUTION_TIMESTAMP
-        defaultJobExecutionShouldNotBeFound("jobExecutionTimestamp.greaterThan=" + DEFAULT_JOB_EXECUTION_TIMESTAMP);
-
-        // Get all the jobExecutionList where jobExecutionTimestamp is greater than SMALLER_JOB_EXECUTION_TIMESTAMP
-        defaultJobExecutionShouldBeFound("jobExecutionTimestamp.greaterThan=" + SMALLER_JOB_EXECUTION_TIMESTAMP);
     }
 
 
@@ -481,6 +385,216 @@ public class JobExecutionResourceIT {
 
     @Test
     @Transactional
+    public void getAllJobExecutionsByJobExecutionEndTimestampIsEqualToSomething() throws Exception {
+        // Initialize the database
+        jobExecutionRepository.saveAndFlush(jobExecution);
+
+        // Get all the jobExecutionList where jobExecutionEndTimestamp equals to DEFAULT_JOB_EXECUTION_END_TIMESTAMP
+        defaultJobExecutionShouldBeFound("jobExecutionEndTimestamp.equals=" + DEFAULT_JOB_EXECUTION_END_TIMESTAMP);
+
+        // Get all the jobExecutionList where jobExecutionEndTimestamp equals to UPDATED_JOB_EXECUTION_END_TIMESTAMP
+        defaultJobExecutionShouldNotBeFound("jobExecutionEndTimestamp.equals=" + UPDATED_JOB_EXECUTION_END_TIMESTAMP);
+    }
+
+    @Test
+    @Transactional
+    public void getAllJobExecutionsByJobExecutionEndTimestampIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        jobExecutionRepository.saveAndFlush(jobExecution);
+
+        // Get all the jobExecutionList where jobExecutionEndTimestamp not equals to DEFAULT_JOB_EXECUTION_END_TIMESTAMP
+        defaultJobExecutionShouldNotBeFound("jobExecutionEndTimestamp.notEquals=" + DEFAULT_JOB_EXECUTION_END_TIMESTAMP);
+
+        // Get all the jobExecutionList where jobExecutionEndTimestamp not equals to UPDATED_JOB_EXECUTION_END_TIMESTAMP
+        defaultJobExecutionShouldBeFound("jobExecutionEndTimestamp.notEquals=" + UPDATED_JOB_EXECUTION_END_TIMESTAMP);
+    }
+
+    @Test
+    @Transactional
+    public void getAllJobExecutionsByJobExecutionEndTimestampIsInShouldWork() throws Exception {
+        // Initialize the database
+        jobExecutionRepository.saveAndFlush(jobExecution);
+
+        // Get all the jobExecutionList where jobExecutionEndTimestamp in DEFAULT_JOB_EXECUTION_END_TIMESTAMP or UPDATED_JOB_EXECUTION_END_TIMESTAMP
+        defaultJobExecutionShouldBeFound("jobExecutionEndTimestamp.in=" + DEFAULT_JOB_EXECUTION_END_TIMESTAMP + "," + UPDATED_JOB_EXECUTION_END_TIMESTAMP);
+
+        // Get all the jobExecutionList where jobExecutionEndTimestamp equals to UPDATED_JOB_EXECUTION_END_TIMESTAMP
+        defaultJobExecutionShouldNotBeFound("jobExecutionEndTimestamp.in=" + UPDATED_JOB_EXECUTION_END_TIMESTAMP);
+    }
+
+    @Test
+    @Transactional
+    public void getAllJobExecutionsByJobExecutionEndTimestampIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        jobExecutionRepository.saveAndFlush(jobExecution);
+
+        // Get all the jobExecutionList where jobExecutionEndTimestamp is not null
+        defaultJobExecutionShouldBeFound("jobExecutionEndTimestamp.specified=true");
+
+        // Get all the jobExecutionList where jobExecutionEndTimestamp is null
+        defaultJobExecutionShouldNotBeFound("jobExecutionEndTimestamp.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllJobExecutionsByJobExecutionEndTimestampIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        jobExecutionRepository.saveAndFlush(jobExecution);
+
+        // Get all the jobExecutionList where jobExecutionEndTimestamp is greater than or equal to DEFAULT_JOB_EXECUTION_END_TIMESTAMP
+        defaultJobExecutionShouldBeFound("jobExecutionEndTimestamp.greaterThanOrEqual=" + DEFAULT_JOB_EXECUTION_END_TIMESTAMP);
+
+        // Get all the jobExecutionList where jobExecutionEndTimestamp is greater than or equal to UPDATED_JOB_EXECUTION_END_TIMESTAMP
+        defaultJobExecutionShouldNotBeFound("jobExecutionEndTimestamp.greaterThanOrEqual=" + UPDATED_JOB_EXECUTION_END_TIMESTAMP);
+    }
+
+    @Test
+    @Transactional
+    public void getAllJobExecutionsByJobExecutionEndTimestampIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        jobExecutionRepository.saveAndFlush(jobExecution);
+
+        // Get all the jobExecutionList where jobExecutionEndTimestamp is less than or equal to DEFAULT_JOB_EXECUTION_END_TIMESTAMP
+        defaultJobExecutionShouldBeFound("jobExecutionEndTimestamp.lessThanOrEqual=" + DEFAULT_JOB_EXECUTION_END_TIMESTAMP);
+
+        // Get all the jobExecutionList where jobExecutionEndTimestamp is less than or equal to SMALLER_JOB_EXECUTION_END_TIMESTAMP
+        defaultJobExecutionShouldNotBeFound("jobExecutionEndTimestamp.lessThanOrEqual=" + SMALLER_JOB_EXECUTION_END_TIMESTAMP);
+    }
+
+    @Test
+    @Transactional
+    public void getAllJobExecutionsByJobExecutionEndTimestampIsLessThanSomething() throws Exception {
+        // Initialize the database
+        jobExecutionRepository.saveAndFlush(jobExecution);
+
+        // Get all the jobExecutionList where jobExecutionEndTimestamp is less than DEFAULT_JOB_EXECUTION_END_TIMESTAMP
+        defaultJobExecutionShouldNotBeFound("jobExecutionEndTimestamp.lessThan=" + DEFAULT_JOB_EXECUTION_END_TIMESTAMP);
+
+        // Get all the jobExecutionList where jobExecutionEndTimestamp is less than UPDATED_JOB_EXECUTION_END_TIMESTAMP
+        defaultJobExecutionShouldBeFound("jobExecutionEndTimestamp.lessThan=" + UPDATED_JOB_EXECUTION_END_TIMESTAMP);
+    }
+
+    @Test
+    @Transactional
+    public void getAllJobExecutionsByJobExecutionEndTimestampIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        jobExecutionRepository.saveAndFlush(jobExecution);
+
+        // Get all the jobExecutionList where jobExecutionEndTimestamp is greater than DEFAULT_JOB_EXECUTION_END_TIMESTAMP
+        defaultJobExecutionShouldNotBeFound("jobExecutionEndTimestamp.greaterThan=" + DEFAULT_JOB_EXECUTION_END_TIMESTAMP);
+
+        // Get all the jobExecutionList where jobExecutionEndTimestamp is greater than SMALLER_JOB_EXECUTION_END_TIMESTAMP
+        defaultJobExecutionShouldBeFound("jobExecutionEndTimestamp.greaterThan=" + SMALLER_JOB_EXECUTION_END_TIMESTAMP);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllJobExecutionsByJobExecutionStartTimestampIsEqualToSomething() throws Exception {
+        // Initialize the database
+        jobExecutionRepository.saveAndFlush(jobExecution);
+
+        // Get all the jobExecutionList where jobExecutionStartTimestamp equals to DEFAULT_JOB_EXECUTION_START_TIMESTAMP
+        defaultJobExecutionShouldBeFound("jobExecutionStartTimestamp.equals=" + DEFAULT_JOB_EXECUTION_START_TIMESTAMP);
+
+        // Get all the jobExecutionList where jobExecutionStartTimestamp equals to UPDATED_JOB_EXECUTION_START_TIMESTAMP
+        defaultJobExecutionShouldNotBeFound("jobExecutionStartTimestamp.equals=" + UPDATED_JOB_EXECUTION_START_TIMESTAMP);
+    }
+
+    @Test
+    @Transactional
+    public void getAllJobExecutionsByJobExecutionStartTimestampIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        jobExecutionRepository.saveAndFlush(jobExecution);
+
+        // Get all the jobExecutionList where jobExecutionStartTimestamp not equals to DEFAULT_JOB_EXECUTION_START_TIMESTAMP
+        defaultJobExecutionShouldNotBeFound("jobExecutionStartTimestamp.notEquals=" + DEFAULT_JOB_EXECUTION_START_TIMESTAMP);
+
+        // Get all the jobExecutionList where jobExecutionStartTimestamp not equals to UPDATED_JOB_EXECUTION_START_TIMESTAMP
+        defaultJobExecutionShouldBeFound("jobExecutionStartTimestamp.notEquals=" + UPDATED_JOB_EXECUTION_START_TIMESTAMP);
+    }
+
+    @Test
+    @Transactional
+    public void getAllJobExecutionsByJobExecutionStartTimestampIsInShouldWork() throws Exception {
+        // Initialize the database
+        jobExecutionRepository.saveAndFlush(jobExecution);
+
+        // Get all the jobExecutionList where jobExecutionStartTimestamp in DEFAULT_JOB_EXECUTION_START_TIMESTAMP or UPDATED_JOB_EXECUTION_START_TIMESTAMP
+        defaultJobExecutionShouldBeFound("jobExecutionStartTimestamp.in=" + DEFAULT_JOB_EXECUTION_START_TIMESTAMP + "," + UPDATED_JOB_EXECUTION_START_TIMESTAMP);
+
+        // Get all the jobExecutionList where jobExecutionStartTimestamp equals to UPDATED_JOB_EXECUTION_START_TIMESTAMP
+        defaultJobExecutionShouldNotBeFound("jobExecutionStartTimestamp.in=" + UPDATED_JOB_EXECUTION_START_TIMESTAMP);
+    }
+
+    @Test
+    @Transactional
+    public void getAllJobExecutionsByJobExecutionStartTimestampIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        jobExecutionRepository.saveAndFlush(jobExecution);
+
+        // Get all the jobExecutionList where jobExecutionStartTimestamp is not null
+        defaultJobExecutionShouldBeFound("jobExecutionStartTimestamp.specified=true");
+
+        // Get all the jobExecutionList where jobExecutionStartTimestamp is null
+        defaultJobExecutionShouldNotBeFound("jobExecutionStartTimestamp.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllJobExecutionsByJobExecutionStartTimestampIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        jobExecutionRepository.saveAndFlush(jobExecution);
+
+        // Get all the jobExecutionList where jobExecutionStartTimestamp is greater than or equal to DEFAULT_JOB_EXECUTION_START_TIMESTAMP
+        defaultJobExecutionShouldBeFound("jobExecutionStartTimestamp.greaterThanOrEqual=" + DEFAULT_JOB_EXECUTION_START_TIMESTAMP);
+
+        // Get all the jobExecutionList where jobExecutionStartTimestamp is greater than or equal to UPDATED_JOB_EXECUTION_START_TIMESTAMP
+        defaultJobExecutionShouldNotBeFound("jobExecutionStartTimestamp.greaterThanOrEqual=" + UPDATED_JOB_EXECUTION_START_TIMESTAMP);
+    }
+
+    @Test
+    @Transactional
+    public void getAllJobExecutionsByJobExecutionStartTimestampIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        jobExecutionRepository.saveAndFlush(jobExecution);
+
+        // Get all the jobExecutionList where jobExecutionStartTimestamp is less than or equal to DEFAULT_JOB_EXECUTION_START_TIMESTAMP
+        defaultJobExecutionShouldBeFound("jobExecutionStartTimestamp.lessThanOrEqual=" + DEFAULT_JOB_EXECUTION_START_TIMESTAMP);
+
+        // Get all the jobExecutionList where jobExecutionStartTimestamp is less than or equal to SMALLER_JOB_EXECUTION_START_TIMESTAMP
+        defaultJobExecutionShouldNotBeFound("jobExecutionStartTimestamp.lessThanOrEqual=" + SMALLER_JOB_EXECUTION_START_TIMESTAMP);
+    }
+
+    @Test
+    @Transactional
+    public void getAllJobExecutionsByJobExecutionStartTimestampIsLessThanSomething() throws Exception {
+        // Initialize the database
+        jobExecutionRepository.saveAndFlush(jobExecution);
+
+        // Get all the jobExecutionList where jobExecutionStartTimestamp is less than DEFAULT_JOB_EXECUTION_START_TIMESTAMP
+        defaultJobExecutionShouldNotBeFound("jobExecutionStartTimestamp.lessThan=" + DEFAULT_JOB_EXECUTION_START_TIMESTAMP);
+
+        // Get all the jobExecutionList where jobExecutionStartTimestamp is less than UPDATED_JOB_EXECUTION_START_TIMESTAMP
+        defaultJobExecutionShouldBeFound("jobExecutionStartTimestamp.lessThan=" + UPDATED_JOB_EXECUTION_START_TIMESTAMP);
+    }
+
+    @Test
+    @Transactional
+    public void getAllJobExecutionsByJobExecutionStartTimestampIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        jobExecutionRepository.saveAndFlush(jobExecution);
+
+        // Get all the jobExecutionList where jobExecutionStartTimestamp is greater than DEFAULT_JOB_EXECUTION_START_TIMESTAMP
+        defaultJobExecutionShouldNotBeFound("jobExecutionStartTimestamp.greaterThan=" + DEFAULT_JOB_EXECUTION_START_TIMESTAMP);
+
+        // Get all the jobExecutionList where jobExecutionStartTimestamp is greater than SMALLER_JOB_EXECUTION_START_TIMESTAMP
+        defaultJobExecutionShouldBeFound("jobExecutionStartTimestamp.greaterThan=" + SMALLER_JOB_EXECUTION_START_TIMESTAMP);
+    }
+
+
+    @Test
+    @Transactional
     public void getAllJobExecutionsByTaskExecutionIsEqualToSomething() throws Exception {
         // Initialize the database
         jobExecutionRepository.saveAndFlush(jobExecution);
@@ -526,9 +640,10 @@ public class JobExecutionResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(jobExecution.getId().intValue())))
-            .andExpect(jsonPath("$.[*].jobExecutionTimestamp").value(hasItem(sameInstant(DEFAULT_JOB_EXECUTION_TIMESTAMP))))
             .andExpect(jsonPath("$.[*].jobOrderTimestamp").value(hasItem(sameInstant(DEFAULT_JOB_ORDER_TIMESTAMP))))
-            .andExpect(jsonPath("$.[*].jobExecutionStatus").value(hasItem(DEFAULT_JOB_EXECUTION_STATUS)));
+            .andExpect(jsonPath("$.[*].jobExecutionStatus").value(hasItem(DEFAULT_JOB_EXECUTION_STATUS)))
+            .andExpect(jsonPath("$.[*].jobExecutionEndTimestamp").value(hasItem(sameInstant(DEFAULT_JOB_EXECUTION_END_TIMESTAMP))))
+            .andExpect(jsonPath("$.[*].jobExecutionStartTimestamp").value(hasItem(sameInstant(DEFAULT_JOB_EXECUTION_START_TIMESTAMP))));
 
         // Check, that the count call also returns 1
         restJobExecutionMockMvc.perform(get("/api/job-executions/count?sort=id,desc&" + filter))
@@ -575,9 +690,10 @@ public class JobExecutionResourceIT {
         // Disconnect from session so that the updates on updatedJobExecution are not directly saved in db
         em.detach(updatedJobExecution);
         updatedJobExecution
-            .jobExecutionTimestamp(UPDATED_JOB_EXECUTION_TIMESTAMP)
             .jobOrderTimestamp(UPDATED_JOB_ORDER_TIMESTAMP)
-            .jobExecutionStatus(UPDATED_JOB_EXECUTION_STATUS);
+            .jobExecutionStatus(UPDATED_JOB_EXECUTION_STATUS)
+            .jobExecutionEndTimestamp(UPDATED_JOB_EXECUTION_END_TIMESTAMP)
+            .jobExecutionStartTimestamp(UPDATED_JOB_EXECUTION_START_TIMESTAMP);
 
         restJobExecutionMockMvc.perform(put("/api/job-executions").with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
@@ -588,9 +704,10 @@ public class JobExecutionResourceIT {
         List<JobExecution> jobExecutionList = jobExecutionRepository.findAll();
         assertThat(jobExecutionList).hasSize(databaseSizeBeforeUpdate);
         JobExecution testJobExecution = jobExecutionList.get(jobExecutionList.size() - 1);
-        assertThat(testJobExecution.getJobExecutionTimestamp()).isEqualTo(UPDATED_JOB_EXECUTION_TIMESTAMP);
         assertThat(testJobExecution.getJobOrderTimestamp()).isEqualTo(UPDATED_JOB_ORDER_TIMESTAMP);
         assertThat(testJobExecution.getJobExecutionStatus()).isEqualTo(UPDATED_JOB_EXECUTION_STATUS);
+        assertThat(testJobExecution.getJobExecutionEndTimestamp()).isEqualTo(UPDATED_JOB_EXECUTION_END_TIMESTAMP);
+        assertThat(testJobExecution.getJobExecutionStartTimestamp()).isEqualTo(UPDATED_JOB_EXECUTION_START_TIMESTAMP);
     }
 
     @Test

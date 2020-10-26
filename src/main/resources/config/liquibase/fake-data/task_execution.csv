@@ -1,11 +1,11 @@
-id;task_execution_timestamp;job_order_timestamp;task_execution_status
-1;2020-10-25T00:39:22;2020-10-25T14:42:21;SCSI
-2;2020-10-25T11:11:16;2020-10-25T03:57:07;Vision-oriented plum payment
-3;2020-10-25T00:57:07;2020-10-25T03:36:58;orchestrate
-4;2020-10-25T12:31:07;2020-10-25T13:37:49;Pennsylvania Berkshire
-5;2020-10-25T09:38:49;2020-10-25T15:15:58;Multi-tiered Borders withdrawal
-6;2020-10-25T10:47:38;2020-10-25T17:59:53;brand panel
-7;2020-10-25T15:41:29;2020-10-25T09:42:39;Delaware Mill encompassing
-8;2020-10-25T02:32:51;2020-10-25T02:52:36;port
-9;2020-10-25T17:06:50;2020-10-25T05:45:24;United States of America Saint Lucia
-10;2020-10-25T00:21:00;2020-10-25T19:06:42;West Virginia Wall
+id;job_order_timestamp;task_execution_status;task_execution_start_timestamp;task_execution_end_timestamp
+1;2020-10-25T00:39:22;Pizza EXE;2020-10-25T03:57:07;2020-10-25T07:47:03
+2;2020-10-25T18:37:03;plum payment Configuration;2020-10-25T23:09:18;2020-10-25T14:49:12
+3;2020-10-25T20:13:43;architectures Pennsylvania;2020-10-25T11:52:11;2020-10-25T12:15:31
+4;2020-10-25T09:38:49;overriding Meadows;2020-10-25T10:11:09;2020-10-25T08:16:56
+5;2020-10-25T12:20:33;Managed brand;2020-10-25T07:00:07;2020-10-25T20:27:45
+6;2020-10-25T15:41:29;Kwacha Granite;2020-10-25T12:00:14;2020-10-25T17:16:53
+7;2020-10-25T15:47:01;SDD port radical;2020-10-25T10:23:20;2020-10-25T11:16:55
+8;2020-10-25T01:17:17;parse salmon;2020-10-25T10:29:43;2020-10-25T01:11:22
+9;2020-10-25T12:26:02;Planner Plains technologies;2020-10-25T13:33:19;2020-10-25T15:50:03
+10;2020-10-25T10:40:10;deliver Multi-tiered deposit;2020-10-25T19:41:09;2020-10-25T00:27:19

@@ -27,11 +27,13 @@ public class JobExecutionCriteria implements Serializable, Criteria {
 
     private LongFilter id;
 
-    private ZonedDateTimeFilter jobExecutionTimestamp;
-
     private ZonedDateTimeFilter jobOrderTimestamp;
 
     private StringFilter jobExecutionStatus;
+
+    private ZonedDateTimeFilter jobExecutionEndTimestamp;
+
+    private ZonedDateTimeFilter jobExecutionStartTimestamp;
 
     private LongFilter taskExecutionId;
 
@@ -42,9 +44,10 @@ public class JobExecutionCriteria implements Serializable, Criteria {
 
     public JobExecutionCriteria(JobExecutionCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
-        this.jobExecutionTimestamp = other.jobExecutionTimestamp == null ? null : other.jobExecutionTimestamp.copy();
         this.jobOrderTimestamp = other.jobOrderTimestamp == null ? null : other.jobOrderTimestamp.copy();
         this.jobExecutionStatus = other.jobExecutionStatus == null ? null : other.jobExecutionStatus.copy();
+        this.jobExecutionEndTimestamp = other.jobExecutionEndTimestamp == null ? null : other.jobExecutionEndTimestamp.copy();
+        this.jobExecutionStartTimestamp = other.jobExecutionStartTimestamp == null ? null : other.jobExecutionStartTimestamp.copy();
         this.taskExecutionId = other.taskExecutionId == null ? null : other.taskExecutionId.copy();
         this.jobId = other.jobId == null ? null : other.jobId.copy();
     }
@@ -62,14 +65,6 @@ public class JobExecutionCriteria implements Serializable, Criteria {
         this.id = id;
     }
 
-    public ZonedDateTimeFilter getJobExecutionTimestamp() {
-        return jobExecutionTimestamp;
-    }
-
-    public void setJobExecutionTimestamp(ZonedDateTimeFilter jobExecutionTimestamp) {
-        this.jobExecutionTimestamp = jobExecutionTimestamp;
-    }
-
     public ZonedDateTimeFilter getJobOrderTimestamp() {
         return jobOrderTimestamp;
     }
@@ -84,6 +79,22 @@ public class JobExecutionCriteria implements Serializable, Criteria {
 
     public void setJobExecutionStatus(StringFilter jobExecutionStatus) {
         this.jobExecutionStatus = jobExecutionStatus;
+    }
+
+    public ZonedDateTimeFilter getJobExecutionEndTimestamp() {
+        return jobExecutionEndTimestamp;
+    }
+
+    public void setJobExecutionEndTimestamp(ZonedDateTimeFilter jobExecutionEndTimestamp) {
+        this.jobExecutionEndTimestamp = jobExecutionEndTimestamp;
+    }
+
+    public ZonedDateTimeFilter getJobExecutionStartTimestamp() {
+        return jobExecutionStartTimestamp;
+    }
+
+    public void setJobExecutionStartTimestamp(ZonedDateTimeFilter jobExecutionStartTimestamp) {
+        this.jobExecutionStartTimestamp = jobExecutionStartTimestamp;
     }
 
     public LongFilter getTaskExecutionId() {
@@ -114,9 +125,10 @@ public class JobExecutionCriteria implements Serializable, Criteria {
         final JobExecutionCriteria that = (JobExecutionCriteria) o;
         return
             Objects.equals(id, that.id) &&
-            Objects.equals(jobExecutionTimestamp, that.jobExecutionTimestamp) &&
             Objects.equals(jobOrderTimestamp, that.jobOrderTimestamp) &&
             Objects.equals(jobExecutionStatus, that.jobExecutionStatus) &&
+            Objects.equals(jobExecutionEndTimestamp, that.jobExecutionEndTimestamp) &&
+            Objects.equals(jobExecutionStartTimestamp, that.jobExecutionStartTimestamp) &&
             Objects.equals(taskExecutionId, that.taskExecutionId) &&
             Objects.equals(jobId, that.jobId);
     }
@@ -125,9 +137,10 @@ public class JobExecutionCriteria implements Serializable, Criteria {
     public int hashCode() {
         return Objects.hash(
         id,
-        jobExecutionTimestamp,
         jobOrderTimestamp,
         jobExecutionStatus,
+        jobExecutionEndTimestamp,
+        jobExecutionStartTimestamp,
         taskExecutionId,
         jobId
         );
@@ -138,9 +151,10 @@ public class JobExecutionCriteria implements Serializable, Criteria {
     public String toString() {
         return "JobExecutionCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
-                (jobExecutionTimestamp != null ? "jobExecutionTimestamp=" + jobExecutionTimestamp + ", " : "") +
                 (jobOrderTimestamp != null ? "jobOrderTimestamp=" + jobOrderTimestamp + ", " : "") +
                 (jobExecutionStatus != null ? "jobExecutionStatus=" + jobExecutionStatus + ", " : "") +
+                (jobExecutionEndTimestamp != null ? "jobExecutionEndTimestamp=" + jobExecutionEndTimestamp + ", " : "") +
+                (jobExecutionStartTimestamp != null ? "jobExecutionStartTimestamp=" + jobExecutionStartTimestamp + ", " : "") +
                 (taskExecutionId != null ? "taskExecutionId=" + taskExecutionId + ", " : "") +
                 (jobId != null ? "jobId=" + jobId + ", " : "") +
             "}";

@@ -1,0 +1,114 @@
+application {
+  config {
+    applicationType monolith
+    authenticationType session
+    baseName pipeline
+    blueprints []
+    buildTool gradle
+    cacheProvider ehcache
+    clientFramework angularX
+    clientPackageManager npm
+    clientTheme sandstone
+    clientThemeVariant primary
+    creationTimestamp 1603669740451
+    databaseType sql
+    devDatabaseType h2Memory
+    dtoSuffix DTO
+    embeddableLaunchScript true
+    enableHibernateCache true
+    enableSwaggerCodegen true
+    enableTranslation true
+    jhiPrefix jhi
+    jhipsterVersion "6.10.4"
+    languages [en]
+    messageBroker false
+    nativeLanguage en
+    otherModules []
+    packageName io.github.bkosaraju.pipeline
+    prodDatabaseType postgresql
+    rememberMeKey "9cdd77a1729d306b232b24b8a2f399b0b3a40c91aca11fbd483be32ba0b6887e9ef239c026823afc4778b754c7bacf8cadc3"
+    searchEngine false
+    serverPort 8081
+    serviceDiscoveryType false
+    skipClient false
+    skipServer false
+    skipUserManagement false
+    testFrameworks []
+    useSass true
+    websocket false
+  }
+
+  entities GlobalConfig, Job, JobConfig, JobExecution, JobTaskOrder, Task, TaskConfig, TaskExecution, TaskExecutionConfig
+}
+
+entity GlobalConfig {
+  configKey String,
+  configValue String,
+  configType String
+}
+entity Job {
+  jobName String,
+  jobStatusFlag Integer,
+  createTimeStamp ZonedDateTime
+}
+entity JobConfig {
+  configKey String,
+  configValue String,
+  configType String
+}
+entity JobExecution {
+  jobOrderTimestamp ZonedDateTime,
+  jobExecutionStatus String,
+  jobExecutionEndTimestamp ZonedDateTime,
+  jobExecutionStartTimestamp ZonedDateTime
+}
+entity JobTaskOrder {
+  taskSeqId Integer,
+  jobTaskStatusFlag Boolean,
+  configVersion Float
+}
+entity Task {
+  taskName String,
+  taskType TaskType,
+  createTimeStamp ZonedDateTime
+}
+entity TaskConfig {
+  configKey String,
+  configValue String,
+  configType String,
+  configVersion Float
+}
+entity TaskExecution {
+  jobOrderTimestamp ZonedDateTime,
+  taskExecutionStatus String,
+  taskExecutionStartTimestamp ZonedDateTime,
+  taskExecutionEndTimestamp ZonedDateTime
+}
+entity TaskExecutionConfig {
+  configKey String,
+  configValue String,
+  configVersion Float
+}
+enum TaskType {
+  SFTP,
+  SHELL,
+  SPARK,
+  SPRAK_ON_DATABRICS,
+  SPRAK_ON_KUBERNETES,
+  SPRAK_ON_EMR
+}
+
+relationship OneToMany {
+  Job{jobConfig} to JobConfig{job},
+  Job{jobExecution} to JobExecution{job},
+  Job{jobTaskOrder} to JobTaskOrder{job},
+  Task{jobTaskOrder} to JobTaskOrder{task},
+  Task{taskConfig} to TaskConfig{task},
+  Task{taskExecution} to TaskExecution{task},
+  JobExecution{taskExecution} to TaskExecution{jobExecution},
+  TaskExecution{taskExecutionConfig} to TaskExecutionConfig{taskExecution}
+}
+
+paginate GlobalConfig, Job, JobConfig, JobExecution, JobTaskOrder, Task, TaskConfig, TaskExecution, TaskExecutionConfig with pagination
+service GlobalConfig, Job, JobConfig, JobExecution, JobTaskOrder, Task, TaskConfig, TaskExecution, TaskExecutionConfig with serviceImpl
+filter GlobalConfig, Job, JobConfig, JobExecution, JobTaskOrder, Task, TaskConfig, TaskExecution, TaskExecutionConfig

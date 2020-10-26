@@ -5,9 +5,10 @@ import { IJobExecution } from 'app/shared/model/job-execution.model';
 
 export interface ITaskExecution {
   id?: number;
-  taskExecutionTimestamp?: Moment;
   jobOrderTimestamp?: Moment;
   taskExecutionStatus?: string;
+  taskExecutionStartTimestamp?: Moment;
+  taskExecutionEndTimestamp?: Moment;
   taskExecutionConfigs?: ITaskExecutionConfig[];
   task?: ITask;
   jobExecution?: IJobExecution;
@@ -16,9 +17,10 @@ export interface ITaskExecution {
 export class TaskExecution implements ITaskExecution {
   constructor(
     public id?: number,
-    public taskExecutionTimestamp?: Moment,
     public jobOrderTimestamp?: Moment,
     public taskExecutionStatus?: string,
+    public taskExecutionStartTimestamp?: Moment,
+    public taskExecutionEndTimestamp?: Moment,
     public taskExecutionConfigs?: ITaskExecutionConfig[],
     public task?: ITask,
     public jobExecution?: IJobExecution

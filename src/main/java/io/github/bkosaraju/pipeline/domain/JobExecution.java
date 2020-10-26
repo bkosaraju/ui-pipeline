@@ -26,14 +26,17 @@ public class JobExecution implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "job_execution_timestamp")
-    private ZonedDateTime jobExecutionTimestamp;
-
     @Column(name = "job_order_timestamp")
     private ZonedDateTime jobOrderTimestamp;
 
     @Column(name = "job_execution_status")
     private String jobExecutionStatus;
+
+    @Column(name = "job_execution_end_timestamp")
+    private ZonedDateTime jobExecutionEndTimestamp;
+
+    @Column(name = "job_execution_start_timestamp")
+    private ZonedDateTime jobExecutionStartTimestamp;
 
     @OneToMany(mappedBy = "jobExecution")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -50,19 +53,6 @@ public class JobExecution implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public ZonedDateTime getJobExecutionTimestamp() {
-        return jobExecutionTimestamp;
-    }
-
-    public JobExecution jobExecutionTimestamp(ZonedDateTime jobExecutionTimestamp) {
-        this.jobExecutionTimestamp = jobExecutionTimestamp;
-        return this;
-    }
-
-    public void setJobExecutionTimestamp(ZonedDateTime jobExecutionTimestamp) {
-        this.jobExecutionTimestamp = jobExecutionTimestamp;
     }
 
     public ZonedDateTime getJobOrderTimestamp() {
@@ -89,6 +79,32 @@ public class JobExecution implements Serializable {
 
     public void setJobExecutionStatus(String jobExecutionStatus) {
         this.jobExecutionStatus = jobExecutionStatus;
+    }
+
+    public ZonedDateTime getJobExecutionEndTimestamp() {
+        return jobExecutionEndTimestamp;
+    }
+
+    public JobExecution jobExecutionEndTimestamp(ZonedDateTime jobExecutionEndTimestamp) {
+        this.jobExecutionEndTimestamp = jobExecutionEndTimestamp;
+        return this;
+    }
+
+    public void setJobExecutionEndTimestamp(ZonedDateTime jobExecutionEndTimestamp) {
+        this.jobExecutionEndTimestamp = jobExecutionEndTimestamp;
+    }
+
+    public ZonedDateTime getJobExecutionStartTimestamp() {
+        return jobExecutionStartTimestamp;
+    }
+
+    public JobExecution jobExecutionStartTimestamp(ZonedDateTime jobExecutionStartTimestamp) {
+        this.jobExecutionStartTimestamp = jobExecutionStartTimestamp;
+        return this;
+    }
+
+    public void setJobExecutionStartTimestamp(ZonedDateTime jobExecutionStartTimestamp) {
+        this.jobExecutionStartTimestamp = jobExecutionStartTimestamp;
     }
 
     public Set<TaskExecution> getTaskExecutions() {
@@ -151,9 +167,10 @@ public class JobExecution implements Serializable {
     public String toString() {
         return "JobExecution{" +
             "id=" + getId() +
-            ", jobExecutionTimestamp='" + getJobExecutionTimestamp() + "'" +
             ", jobOrderTimestamp='" + getJobOrderTimestamp() + "'" +
             ", jobExecutionStatus='" + getJobExecutionStatus() + "'" +
+            ", jobExecutionEndTimestamp='" + getJobExecutionEndTimestamp() + "'" +
+            ", jobExecutionStartTimestamp='" + getJobExecutionStartTimestamp() + "'" +
             "}";
     }
 }
