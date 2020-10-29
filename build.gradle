@@ -265,6 +265,12 @@ dependencies {
     testImplementation ("org.springframework.boot:spring-boot-starter-test") {
         exclude group: "org.junit.vintage", module: "junit-vintage-engine"
     }
+    //Application Code components
+    implementation "io.github.bkosaraju:pipeline_2.12:1.01"
+    implementation "org.scala-lang:scala-library:2.12.12"
+    compileOnly 'org.projectlombok:lombok:1.18.12'
+    annotationProcessor 'org.projectlombok:lombok:1.18.12'
+
     testImplementation "org.springframework.security:spring-security-test"
     testImplementation "org.springframework.boot:spring-boot-test"
     testImplementation "com.tngtech.archunit:archunit-junit5-api:${archunit_junit5_version}"
