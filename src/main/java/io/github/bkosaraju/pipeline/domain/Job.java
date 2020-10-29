@@ -31,8 +31,8 @@ public class Job implements Serializable {
     @Column(name = "job_status_flag")
     private Integer jobStatusFlag;
 
-    @Column(name = "create_time_stamp")
-    private ZonedDateTime createTimeStamp;
+    @Column(name = "create_timestamp")
+    private ZonedDateTime createTimestamp;
 
     @OneToMany(mappedBy = "job")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -81,17 +81,17 @@ public class Job implements Serializable {
         this.jobStatusFlag = jobStatusFlag;
     }
 
-    public ZonedDateTime getCreateTimeStamp() {
-        return createTimeStamp;
+    public ZonedDateTime getCreateTimestamp() {
+        return createTimestamp;
     }
 
-    public Job createTimeStamp(ZonedDateTime createTimeStamp) {
-        this.createTimeStamp = createTimeStamp;
+    public Job createTimestamp(ZonedDateTime createTimestamp) {
+        this.createTimestamp = createTimestamp;
         return this;
     }
 
-    public void setCreateTimeStamp(ZonedDateTime createTimeStamp) {
-        this.createTimeStamp = createTimeStamp;
+    public void setCreateTimestamp(ZonedDateTime createTimestamp) {
+        this.createTimestamp = createTimestamp;
     }
 
     public Set<JobConfig> getJobConfigs() {
@@ -193,7 +193,7 @@ public class Job implements Serializable {
             "id=" + getId() +
             ", jobName='" + getJobName() + "'" +
             ", jobStatusFlag=" + getJobStatusFlag() +
-            ", createTimeStamp='" + getCreateTimeStamp() + "'" +
+            ", createTimestamp='" + getCreateTimestamp() + "'" +
             "}";
     }
 }

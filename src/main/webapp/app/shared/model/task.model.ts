@@ -8,7 +8,7 @@ export interface ITask {
   id?: number;
   taskName?: string;
   taskType?: TaskType;
-  createTimeStamp?: Moment;
+  createTimestamp?: Moment;
   taskConfigs?: ITaskConfig[];
   jobTaskOrders?: IJobTaskOrder[];
   taskExecutions?: ITaskExecution[];
@@ -19,7 +19,7 @@ export class Task implements ITask {
     public id?: number,
     public taskName?: string,
     public taskType?: TaskType,
-    public createTimeStamp?: Moment,
+    public createTimestamp?: Moment,
     public taskConfigs?: ITaskConfig[],
     public jobTaskOrders?: IJobTaskOrder[],
     public taskExecutions?: ITaskExecution[]

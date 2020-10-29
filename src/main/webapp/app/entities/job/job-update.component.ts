@@ -21,7 +21,7 @@ export class JobUpdateComponent implements OnInit {
     id: [],
     jobName: [],
     jobStatusFlag: [],
-    createTimeStamp: [],
+    createTimestamp: [],
   });
 
   constructor(protected jobService: JobService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
@@ -30,7 +30,7 @@ export class JobUpdateComponent implements OnInit {
     this.activatedRoute.data.subscribe(({ job }) => {
       if (!job.id) {
         const today = moment().startOf('day');
-        job.createTimeStamp = today;
+        job.createTimestamp = today;
       }
 
       this.updateForm(job);
@@ -42,7 +42,7 @@ export class JobUpdateComponent implements OnInit {
       id: job.id,
       jobName: job.jobName,
       jobStatusFlag: job.jobStatusFlag,
-      createTimeStamp: job.createTimeStamp ? job.createTimeStamp.format(DATE_TIME_FORMAT) : null,
+      createTimestamp: job.createTimestamp ? job.createTimestamp.format(DATE_TIME_FORMAT) : null,
     });
   }
 
@@ -66,8 +66,8 @@ export class JobUpdateComponent implements OnInit {
       id: this.editForm.get(['id'])!.value,
       jobName: this.editForm.get(['jobName'])!.value,
       jobStatusFlag: this.editForm.get(['jobStatusFlag'])!.value,
-      createTimeStamp: this.editForm.get(['createTimeStamp'])!.value
-        ? moment(this.editForm.get(['createTimeStamp'])!.value, DATE_TIME_FORMAT)
+      createTimestamp: this.editForm.get(['createTimestamp'])!.value
+        ? moment(this.editForm.get(['createTimestamp'])!.value, DATE_TIME_FORMAT)
         : undefined,
     };
   }

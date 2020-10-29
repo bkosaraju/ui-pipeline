@@ -11,7 +11,7 @@
       "fieldValues": "SFTP,SHELL,SPARK,SPRAK_ON_DATABRICS,SPRAK_ON_KUBERNETES,SPRAK_ON_EMR"
     },
     {
-      "fieldName": "createTimeStamp",
+      "fieldName": "createTimestamp",
       "fieldType": "ZonedDateTime"
     }
   ],
@@ -45,5 +45,7 @@
   "readOnly": false,
   "embedded": false,
   "clientRootFolder": "",
-  "applications": ["pipeline"]
+  "applications": ["pipeline"],
+  "searchEngine": false,
+  "databaseType": "sql"
 }

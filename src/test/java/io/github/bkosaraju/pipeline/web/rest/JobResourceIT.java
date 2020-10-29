@@ -48,9 +48,9 @@ public class JobResourceIT {
     private static final Integer UPDATED_JOB_STATUS_FLAG = 2;
     private static final Integer SMALLER_JOB_STATUS_FLAG = 1 - 1;
 
-    private static final ZonedDateTime DEFAULT_CREATE_TIME_STAMP = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_CREATE_TIME_STAMP = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
-    private static final ZonedDateTime SMALLER_CREATE_TIME_STAMP = ZonedDateTime.ofInstant(Instant.ofEpochMilli(-1L), ZoneOffset.UTC);
+    private static final ZonedDateTime DEFAULT_CREATE_TIMESTAMP = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime UPDATED_CREATE_TIMESTAMP = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final ZonedDateTime SMALLER_CREATE_TIMESTAMP = ZonedDateTime.ofInstant(Instant.ofEpochMilli(-1L), ZoneOffset.UTC);
 
     @Autowired
     private JobRepository jobRepository;
@@ -79,7 +79,7 @@ public class JobResourceIT {
         Job job = new Job()
             .jobName(DEFAULT_JOB_NAME)
             .jobStatusFlag(DEFAULT_JOB_STATUS_FLAG)
-            .createTimeStamp(DEFAULT_CREATE_TIME_STAMP);
+            .createTimestamp(DEFAULT_CREATE_TIMESTAMP);
         return job;
     }
     /**
@@ -92,7 +92,7 @@ public class JobResourceIT {
         Job job = new Job()
             .jobName(UPDATED_JOB_NAME)
             .jobStatusFlag(UPDATED_JOB_STATUS_FLAG)
-            .createTimeStamp(UPDATED_CREATE_TIME_STAMP);
+            .createTimestamp(UPDATED_CREATE_TIMESTAMP);
         return job;
     }
 
@@ -117,7 +117,7 @@ public class JobResourceIT {
         Job testJob = jobList.get(jobList.size() - 1);
         assertThat(testJob.getJobName()).isEqualTo(DEFAULT_JOB_NAME);
         assertThat(testJob.getJobStatusFlag()).isEqualTo(DEFAULT_JOB_STATUS_FLAG);
-        assertThat(testJob.getCreateTimeStamp()).isEqualTo(DEFAULT_CREATE_TIME_STAMP);
+        assertThat(testJob.getCreateTimestamp()).isEqualTo(DEFAULT_CREATE_TIMESTAMP);
     }
 
     @Test
@@ -153,7 +153,7 @@ public class JobResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(job.getId().intValue())))
             .andExpect(jsonPath("$.[*].jobName").value(hasItem(DEFAULT_JOB_NAME)))
             .andExpect(jsonPath("$.[*].jobStatusFlag").value(hasItem(DEFAULT_JOB_STATUS_FLAG)))
-            .andExpect(jsonPath("$.[*].createTimeStamp").value(hasItem(sameInstant(DEFAULT_CREATE_TIME_STAMP))));
+            .andExpect(jsonPath("$.[*].createTimestamp").value(hasItem(sameInstant(DEFAULT_CREATE_TIMESTAMP))));
     }
     
     @Test
@@ -169,7 +169,7 @@ public class JobResourceIT {
             .andExpect(jsonPath("$.id").value(job.getId().intValue()))
             .andExpect(jsonPath("$.jobName").value(DEFAULT_JOB_NAME))
             .andExpect(jsonPath("$.jobStatusFlag").value(DEFAULT_JOB_STATUS_FLAG))
-            .andExpect(jsonPath("$.createTimeStamp").value(sameInstant(DEFAULT_CREATE_TIME_STAMP)));
+            .andExpect(jsonPath("$.createTimestamp").value(sameInstant(DEFAULT_CREATE_TIMESTAMP)));
     }
 
 
@@ -377,106 +377,106 @@ public class JobResourceIT {
 
     @Test
     @Transactional
-    public void getAllJobsByCreateTimeStampIsEqualToSomething() throws Exception {
+    public void getAllJobsByCreateTimestampIsEqualToSomething() throws Exception {
         // Initialize the database
         jobRepository.saveAndFlush(job);
 
-        // Get all the jobList where createTimeStamp equals to DEFAULT_CREATE_TIME_STAMP
-        defaultJobShouldBeFound("createTimeStamp.equals=" + DEFAULT_CREATE_TIME_STAMP);
+        // Get all the jobList where createTimestamp equals to DEFAULT_CREATE_TIMESTAMP
+        defaultJobShouldBeFound("createTimestamp.equals=" + DEFAULT_CREATE_TIMESTAMP);
 
-        // Get all the jobList where createTimeStamp equals to UPDATED_CREATE_TIME_STAMP
-        defaultJobShouldNotBeFound("createTimeStamp.equals=" + UPDATED_CREATE_TIME_STAMP);
+        // Get all the jobList where createTimestamp equals to UPDATED_CREATE_TIMESTAMP
+        defaultJobShouldNotBeFound("createTimestamp.equals=" + UPDATED_CREATE_TIMESTAMP);
     }
 
     @Test
     @Transactional
-    public void getAllJobsByCreateTimeStampIsNotEqualToSomething() throws Exception {
+    public void getAllJobsByCreateTimestampIsNotEqualToSomething() throws Exception {
         // Initialize the database
         jobRepository.saveAndFlush(job);
 
-        // Get all the jobList where createTimeStamp not equals to DEFAULT_CREATE_TIME_STAMP
-        defaultJobShouldNotBeFound("createTimeStamp.notEquals=" + DEFAULT_CREATE_TIME_STAMP);
+        // Get all the jobList where createTimestamp not equals to DEFAULT_CREATE_TIMESTAMP
+        defaultJobShouldNotBeFound("createTimestamp.notEquals=" + DEFAULT_CREATE_TIMESTAMP);
 
-        // Get all the jobList where createTimeStamp not equals to UPDATED_CREATE_TIME_STAMP
-        defaultJobShouldBeFound("createTimeStamp.notEquals=" + UPDATED_CREATE_TIME_STAMP);
+        // Get all the jobList where createTimestamp not equals to UPDATED_CREATE_TIMESTAMP
+        defaultJobShouldBeFound("createTimestamp.notEquals=" + UPDATED_CREATE_TIMESTAMP);
     }
 
     @Test
     @Transactional
-    public void getAllJobsByCreateTimeStampIsInShouldWork() throws Exception {
+    public void getAllJobsByCreateTimestampIsInShouldWork() throws Exception {
         // Initialize the database
         jobRepository.saveAndFlush(job);
 
-        // Get all the jobList where createTimeStamp in DEFAULT_CREATE_TIME_STAMP or UPDATED_CREATE_TIME_STAMP
-        defaultJobShouldBeFound("createTimeStamp.in=" + DEFAULT_CREATE_TIME_STAMP + "," + UPDATED_CREATE_TIME_STAMP);
+        // Get all the jobList where createTimestamp in DEFAULT_CREATE_TIMESTAMP or UPDATED_CREATE_TIMESTAMP
+        defaultJobShouldBeFound("createTimestamp.in=" + DEFAULT_CREATE_TIMESTAMP + "," + UPDATED_CREATE_TIMESTAMP);
 
-        // Get all the jobList where createTimeStamp equals to UPDATED_CREATE_TIME_STAMP
-        defaultJobShouldNotBeFound("createTimeStamp.in=" + UPDATED_CREATE_TIME_STAMP);
+        // Get all the jobList where createTimestamp equals to UPDATED_CREATE_TIMESTAMP
+        defaultJobShouldNotBeFound("createTimestamp.in=" + UPDATED_CREATE_TIMESTAMP);
     }
 
     @Test
     @Transactional
-    public void getAllJobsByCreateTimeStampIsNullOrNotNull() throws Exception {
+    public void getAllJobsByCreateTimestampIsNullOrNotNull() throws Exception {
         // Initialize the database
         jobRepository.saveAndFlush(job);
 
-        // Get all the jobList where createTimeStamp is not null
-        defaultJobShouldBeFound("createTimeStamp.specified=true");
+        // Get all the jobList where createTimestamp is not null
+        defaultJobShouldBeFound("createTimestamp.specified=true");
 
-        // Get all the jobList where createTimeStamp is null
-        defaultJobShouldNotBeFound("createTimeStamp.specified=false");
+        // Get all the jobList where createTimestamp is null
+        defaultJobShouldNotBeFound("createTimestamp.specified=false");
     }
 
     @Test
     @Transactional
-    public void getAllJobsByCreateTimeStampIsGreaterThanOrEqualToSomething() throws Exception {
+    public void getAllJobsByCreateTimestampIsGreaterThanOrEqualToSomething() throws Exception {
         // Initialize the database
         jobRepository.saveAndFlush(job);
 
-        // Get all the jobList where createTimeStamp is greater than or equal to DEFAULT_CREATE_TIME_STAMP
-        defaultJobShouldBeFound("createTimeStamp.greaterThanOrEqual=" + DEFAULT_CREATE_TIME_STAMP);
+        // Get all the jobList where createTimestamp is greater than or equal to DEFAULT_CREATE_TIMESTAMP
+        defaultJobShouldBeFound("createTimestamp.greaterThanOrEqual=" + DEFAULT_CREATE_TIMESTAMP);
 
-        // Get all the jobList where createTimeStamp is greater than or equal to UPDATED_CREATE_TIME_STAMP
-        defaultJobShouldNotBeFound("createTimeStamp.greaterThanOrEqual=" + UPDATED_CREATE_TIME_STAMP);
+        // Get all the jobList where createTimestamp is greater than or equal to UPDATED_CREATE_TIMESTAMP
+        defaultJobShouldNotBeFound("createTimestamp.greaterThanOrEqual=" + UPDATED_CREATE_TIMESTAMP);
     }
 
     @Test
     @Transactional
-    public void getAllJobsByCreateTimeStampIsLessThanOrEqualToSomething() throws Exception {
+    public void getAllJobsByCreateTimestampIsLessThanOrEqualToSomething() throws Exception {
         // Initialize the database
         jobRepository.saveAndFlush(job);
 
-        // Get all the jobList where createTimeStamp is less than or equal to DEFAULT_CREATE_TIME_STAMP
-        defaultJobShouldBeFound("createTimeStamp.lessThanOrEqual=" + DEFAULT_CREATE_TIME_STAMP);
+        // Get all the jobList where createTimestamp is less than or equal to DEFAULT_CREATE_TIMESTAMP
+        defaultJobShouldBeFound("createTimestamp.lessThanOrEqual=" + DEFAULT_CREATE_TIMESTAMP);
 
-        // Get all the jobList where createTimeStamp is less than or equal to SMALLER_CREATE_TIME_STAMP
-        defaultJobShouldNotBeFound("createTimeStamp.lessThanOrEqual=" + SMALLER_CREATE_TIME_STAMP);
+        // Get all the jobList where createTimestamp is less than or equal to SMALLER_CREATE_TIMESTAMP
+        defaultJobShouldNotBeFound("createTimestamp.lessThanOrEqual=" + SMALLER_CREATE_TIMESTAMP);
     }
 
     @Test
     @Transactional
-    public void getAllJobsByCreateTimeStampIsLessThanSomething() throws Exception {
+    public void getAllJobsByCreateTimestampIsLessThanSomething() throws Exception {
         // Initialize the database
         jobRepository.saveAndFlush(job);
 
-        // Get all the jobList where createTimeStamp is less than DEFAULT_CREATE_TIME_STAMP
-        defaultJobShouldNotBeFound("createTimeStamp.lessThan=" + DEFAULT_CREATE_TIME_STAMP);
+        // Get all the jobList where createTimestamp is less than DEFAULT_CREATE_TIMESTAMP
+        defaultJobShouldNotBeFound("createTimestamp.lessThan=" + DEFAULT_CREATE_TIMESTAMP);
 
-        // Get all the jobList where createTimeStamp is less than UPDATED_CREATE_TIME_STAMP
-        defaultJobShouldBeFound("createTimeStamp.lessThan=" + UPDATED_CREATE_TIME_STAMP);
+        // Get all the jobList where createTimestamp is less than UPDATED_CREATE_TIMESTAMP
+        defaultJobShouldBeFound("createTimestamp.lessThan=" + UPDATED_CREATE_TIMESTAMP);
     }
 
     @Test
     @Transactional
-    public void getAllJobsByCreateTimeStampIsGreaterThanSomething() throws Exception {
+    public void getAllJobsByCreateTimestampIsGreaterThanSomething() throws Exception {
         // Initialize the database
         jobRepository.saveAndFlush(job);
 
-        // Get all the jobList where createTimeStamp is greater than DEFAULT_CREATE_TIME_STAMP
-        defaultJobShouldNotBeFound("createTimeStamp.greaterThan=" + DEFAULT_CREATE_TIME_STAMP);
+        // Get all the jobList where createTimestamp is greater than DEFAULT_CREATE_TIMESTAMP
+        defaultJobShouldNotBeFound("createTimestamp.greaterThan=" + DEFAULT_CREATE_TIMESTAMP);
 
-        // Get all the jobList where createTimeStamp is greater than SMALLER_CREATE_TIME_STAMP
-        defaultJobShouldBeFound("createTimeStamp.greaterThan=" + SMALLER_CREATE_TIME_STAMP);
+        // Get all the jobList where createTimestamp is greater than SMALLER_CREATE_TIMESTAMP
+        defaultJobShouldBeFound("createTimestamp.greaterThan=" + SMALLER_CREATE_TIMESTAMP);
     }
 
 
@@ -549,7 +549,7 @@ public class JobResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(job.getId().intValue())))
             .andExpect(jsonPath("$.[*].jobName").value(hasItem(DEFAULT_JOB_NAME)))
             .andExpect(jsonPath("$.[*].jobStatusFlag").value(hasItem(DEFAULT_JOB_STATUS_FLAG)))
-            .andExpect(jsonPath("$.[*].createTimeStamp").value(hasItem(sameInstant(DEFAULT_CREATE_TIME_STAMP))));
+            .andExpect(jsonPath("$.[*].createTimestamp").value(hasItem(sameInstant(DEFAULT_CREATE_TIMESTAMP))));
 
         // Check, that the count call also returns 1
         restJobMockMvc.perform(get("/api/jobs/count?sort=id,desc&" + filter))
@@ -598,7 +598,7 @@ public class JobResourceIT {
         updatedJob
             .jobName(UPDATED_JOB_NAME)
             .jobStatusFlag(UPDATED_JOB_STATUS_FLAG)
-            .createTimeStamp(UPDATED_CREATE_TIME_STAMP);
+            .createTimestamp(UPDATED_CREATE_TIMESTAMP);
 
         restJobMockMvc.perform(put("/api/jobs").with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
@@ -611,7 +611,7 @@ public class JobResourceIT {
         Job testJob = jobList.get(jobList.size() - 1);
         assertThat(testJob.getJobName()).isEqualTo(UPDATED_JOB_NAME);
         assertThat(testJob.getJobStatusFlag()).isEqualTo(UPDATED_JOB_STATUS_FLAG);
-        assertThat(testJob.getCreateTimeStamp()).isEqualTo(UPDATED_CREATE_TIME_STAMP);
+        assertThat(testJob.getCreateTimestamp()).isEqualTo(UPDATED_CREATE_TIMESTAMP);
     }
 
     @Test

@@ -50,14 +50,14 @@ export class TaskService {
 
   protected convertDateFromClient(task: ITask): ITask {
     const copy: ITask = Object.assign({}, task, {
-      createTimeStamp: task.createTimeStamp && task.createTimeStamp.isValid() ? task.createTimeStamp.toJSON() : undefined,
+      createTimestamp: task.createTimestamp && task.createTimestamp.isValid() ? task.createTimestamp.toJSON() : undefined,
     });
     return copy;
   }
 
   protected convertDateFromServer(res: EntityResponseType): EntityResponseType {
     if (res.body) {
-      res.body.createTimeStamp = res.body.createTimeStamp ? moment(res.body.createTimeStamp) : undefined;
+      res.body.createTimestamp = res.body.createTimestamp ? moment(res.body.createTimestamp) : undefined;
     }
     return res;
   }
@@ -65,7 +65,7 @@ export class TaskService {
   protected convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
     if (res.body) {
       res.body.forEach((task: ITask) => {
-        task.createTimeStamp = task.createTimeStamp ? moment(task.createTimeStamp) : undefined;
+        task.createTimestamp = task.createTimestamp ? moment(task.createTimestamp) : undefined;
       });
     }
     return res;

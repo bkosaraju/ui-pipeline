@@ -7,7 +7,7 @@ export interface IJob {
   id?: number;
   jobName?: string;
   jobStatusFlag?: number;
-  createTimeStamp?: Moment;
+  createTimestamp?: Moment;
   jobConfigs?: IJobConfig[];
   jobTaskOrders?: IJobTaskOrder[];
   jobExecutions?: IJobExecution[];
@@ -18,7 +18,7 @@ export class Job implements IJob {
     public id?: number,
     public jobName?: string,
     public jobStatusFlag?: number,
-    public createTimeStamp?: Moment,
+    public createTimestamp?: Moment,
     public jobConfigs?: IJobConfig[],
     public jobTaskOrders?: IJobTaskOrder[],
     public jobExecutions?: IJobExecution[]

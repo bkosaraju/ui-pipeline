@@ -50,14 +50,14 @@ export class JobService {
 
   protected convertDateFromClient(job: IJob): IJob {
     const copy: IJob = Object.assign({}, job, {
-      createTimeStamp: job.createTimeStamp && job.createTimeStamp.isValid() ? job.createTimeStamp.toJSON() : undefined,
+      createTimestamp: job.createTimestamp && job.createTimestamp.isValid() ? job.createTimestamp.toJSON() : undefined,
     });
     return copy;
   }
 
   protected convertDateFromServer(res: EntityResponseType): EntityResponseType {
     if (res.body) {
-      res.body.createTimeStamp = res.body.createTimeStamp ? moment(res.body.createTimeStamp) : undefined;
+      res.body.createTimestamp = res.body.createTimestamp ? moment(res.body.createTimestamp) : undefined;
     }
     return res;
   }
@@ -65,7 +65,7 @@ export class JobService {
   protected convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
     if (res.body) {
       res.body.forEach((job: IJob) => {
-        job.createTimeStamp = job.createTimeStamp ? moment(job.createTimeStamp) : undefined;
+        job.createTimestamp = job.createTimestamp ? moment(job.createTimestamp) : undefined;
       });
     }
     return res;

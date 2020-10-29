@@ -34,8 +34,8 @@ public class Task implements Serializable {
     @Column(name = "task_type")
     private TaskType taskType;
 
-    @Column(name = "create_time_stamp")
-    private ZonedDateTime createTimeStamp;
+    @Column(name = "create_timestamp")
+    private ZonedDateTime createTimestamp;
 
     @OneToMany(mappedBy = "task")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -84,17 +84,17 @@ public class Task implements Serializable {
         this.taskType = taskType;
     }
 
-    public ZonedDateTime getCreateTimeStamp() {
-        return createTimeStamp;
+    public ZonedDateTime getCreateTimestamp() {
+        return createTimestamp;
     }
 
-    public Task createTimeStamp(ZonedDateTime createTimeStamp) {
-        this.createTimeStamp = createTimeStamp;
+    public Task createTimestamp(ZonedDateTime createTimestamp) {
+        this.createTimestamp = createTimestamp;
         return this;
     }
 
-    public void setCreateTimeStamp(ZonedDateTime createTimeStamp) {
-        this.createTimeStamp = createTimeStamp;
+    public void setCreateTimestamp(ZonedDateTime createTimestamp) {
+        this.createTimestamp = createTimestamp;
     }
 
     public Set<TaskConfig> getTaskConfigs() {
@@ -196,7 +196,7 @@ public class Task implements Serializable {
             "id=" + getId() +
             ", taskName='" + getTaskName() + "'" +
             ", taskType='" + getTaskType() + "'" +
-            ", createTimeStamp='" + getCreateTimeStamp() + "'" +
+            ", createTimestamp='" + getCreateTimestamp() + "'" +
             "}";
     }
 }

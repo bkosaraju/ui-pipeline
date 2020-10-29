@@ -21,7 +21,7 @@ export class TaskUpdateComponent implements OnInit {
     id: [],
     taskName: [],
     taskType: [],
-    createTimeStamp: [],
+    createTimestamp: [],
   });
 
   constructor(protected taskService: TaskService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
@@ -30,7 +30,7 @@ export class TaskUpdateComponent implements OnInit {
     this.activatedRoute.data.subscribe(({ task }) => {
       if (!task.id) {
         const today = moment().startOf('day');
-        task.createTimeStamp = today;
+        task.createTimestamp = today;
       }
 
       this.updateForm(task);
@@ -42,7 +42,7 @@ export class TaskUpdateComponent implements OnInit {
       id: task.id,
       taskName: task.taskName,
       taskType: task.taskType,
-      createTimeStamp: task.createTimeStamp ? task.createTimeStamp.format(DATE_TIME_FORMAT) : null,
+      createTimestamp: task.createTimestamp ? task.createTimestamp.format(DATE_TIME_FORMAT) : null,
     });
   }
 
@@ -66,8 +66,8 @@ export class TaskUpdateComponent implements OnInit {
       id: this.editForm.get(['id'])!.value,
       taskName: this.editForm.get(['taskName'])!.value,
       taskType: this.editForm.get(['taskType'])!.value,
-      createTimeStamp: this.editForm.get(['createTimeStamp'])!.value
-        ? moment(this.editForm.get(['createTimeStamp'])!.value, DATE_TIME_FORMAT)
+      createTimestamp: this.editForm.get(['createTimestamp'])!.value
+        ? moment(this.editForm.get(['createTimestamp'])!.value, DATE_TIME_FORMAT)
         : undefined,
     };
   }

@@ -25,7 +25,7 @@
                     <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="jobName"><span jhiTranslate="pipelineApp.job.jobName">Job Name</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="jobStatusFlag"><span jhiTranslate="pipelineApp.job.jobStatusFlag">Job Status Flag</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="createTimeStamp"><span jhiTranslate="pipelineApp.job.createTimeStamp">Create Time Stamp</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="createTimestamp"><span jhiTranslate="pipelineApp.job.createTimestamp">Create Timestamp</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -34,7 +34,7 @@
                     <td><a [routerLink]="['/job', job.id, 'view']">{{ job.id }}</a></td>
                     <td>{{ job.jobName }}</td>
                     <td>{{ job.jobStatusFlag }}</td>
-                    <td>{{ job.createTimeStamp | date:'medium' }}</td>
+                    <td>{{ job.createTimestamp | date:'medium' }}</td>
                     <td class="text-right">
                         <div class="btn-group">
                             <button type="submit"

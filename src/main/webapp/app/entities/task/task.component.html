@@ -25,7 +25,7 @@
                     <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="taskName"><span jhiTranslate="pipelineApp.task.taskName">Task Name</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="taskType"><span jhiTranslate="pipelineApp.task.taskType">Task Type</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="createTimeStamp"><span jhiTranslate="pipelineApp.task.createTimeStamp">Create Time Stamp</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="createTimestamp"><span jhiTranslate="pipelineApp.task.createTimestamp">Create Timestamp</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -34,7 +34,7 @@
                     <td><a [routerLink]="['/task', task.id, 'view']">{{ task.id }}</a></td>
                     <td>{{ task.taskName }}</td>
                     <td jhiTranslate="{{ 'pipelineApp.TaskType.' + task.taskType }}">{{ task.taskType }}</td>
-                    <td>{{ task.createTimeStamp | date:'medium' }}</td>
+                    <td>{{ task.createTimestamp | date:'medium' }}</td>
                     <td class="text-right">
                         <div class="btn-group">
                             <button type="submit"

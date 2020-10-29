@@ -10,7 +10,7 @@
       "fieldType": "Integer"
     },
     {
-      "fieldName": "createTimeStamp",
+      "fieldName": "createTimestamp",
       "fieldType": "ZonedDateTime"
     }
   ],
@@ -44,5 +44,7 @@
   "readOnly": false,
   "embedded": false,
   "clientRootFolder": "",
-  "applications": ["pipeline"]
+  "applications": ["pipeline"],
+  "searchEngine": false,
+  "databaseType": "sql"
 }

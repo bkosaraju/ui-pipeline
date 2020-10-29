@@ -32,7 +32,7 @@ describe('Service Tests', () => {
       it('should find an element', () => {
         const returnedFromService = Object.assign(
           {
-            createTimeStamp: currentDate.format(DATE_TIME_FORMAT),
+            createTimestamp: currentDate.format(DATE_TIME_FORMAT),
           },
           elemDefault
         );
@@ -48,14 +48,14 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             id: 0,
-            createTimeStamp: currentDate.format(DATE_TIME_FORMAT),
+            createTimestamp: currentDate.format(DATE_TIME_FORMAT),
           },
           elemDefault
         );
 
         const expected = Object.assign(
           {
-            createTimeStamp: currentDate,
+            createTimestamp: currentDate,
           },
           returnedFromService
         );
@@ -72,14 +72,14 @@ describe('Service Tests', () => {
           {
             taskName: 'BBBBBB',
             taskType: 'BBBBBB',
-            createTimeStamp: currentDate.format(DATE_TIME_FORMAT),
+            createTimestamp: currentDate.format(DATE_TIME_FORMAT),
           },
           elemDefault
         );
 
         const expected = Object.assign(
           {
-            createTimeStamp: currentDate,
+            createTimestamp: currentDate,
           },
           returnedFromService
         );
@@ -96,14 +96,14 @@ describe('Service Tests', () => {
           {
             taskName: 'BBBBBB',
             taskType: 'BBBBBB',
-            createTimeStamp: currentDate.format(DATE_TIME_FORMAT),
+            createTimestamp: currentDate.format(DATE_TIME_FORMAT),
           },
           elemDefault
         );
 
         const expected = Object.assign(
           {
-            createTimeStamp: currentDate,
+            createTimestamp: currentDate,
           },
           returnedFromService
         );

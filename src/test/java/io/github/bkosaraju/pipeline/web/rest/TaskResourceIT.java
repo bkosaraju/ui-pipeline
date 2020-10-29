@@ -48,9 +48,9 @@ public class TaskResourceIT {
     private static final TaskType DEFAULT_TASK_TYPE = TaskType.SFTP;
     private static final TaskType UPDATED_TASK_TYPE = TaskType.SHELL;
 
-    private static final ZonedDateTime DEFAULT_CREATE_TIME_STAMP = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_CREATE_TIME_STAMP = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
-    private static final ZonedDateTime SMALLER_CREATE_TIME_STAMP = ZonedDateTime.ofInstant(Instant.ofEpochMilli(-1L), ZoneOffset.UTC);
+    private static final ZonedDateTime DEFAULT_CREATE_TIMESTAMP = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime UPDATED_CREATE_TIMESTAMP = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final ZonedDateTime SMALLER_CREATE_TIMESTAMP = ZonedDateTime.ofInstant(Instant.ofEpochMilli(-1L), ZoneOffset.UTC);
 
     @Autowired
     private TaskRepository taskRepository;
@@ -79,7 +79,7 @@ public class TaskResourceIT {
         Task task = new Task()
             .taskName(DEFAULT_TASK_NAME)
             .taskType(DEFAULT_TASK_TYPE)
-            .createTimeStamp(DEFAULT_CREATE_TIME_STAMP);
+            .createTimestamp(DEFAULT_CREATE_TIMESTAMP);
         return task;
     }
     /**
@@ -92,7 +92,7 @@ public class TaskResourceIT {
         Task task = new Task()
             .taskName(UPDATED_TASK_NAME)
             .taskType(UPDATED_TASK_TYPE)
-            .createTimeStamp(UPDATED_CREATE_TIME_STAMP);
+            .createTimestamp(UPDATED_CREATE_TIMESTAMP);
         return task;
     }
 
@@ -117,7 +117,7 @@ public class TaskResourceIT {
         Task testTask = taskList.get(taskList.size() - 1);
         assertThat(testTask.getTaskName()).isEqualTo(DEFAULT_TASK_NAME);
         assertThat(testTask.getTaskType()).isEqualTo(DEFAULT_TASK_TYPE);
-        assertThat(testTask.getCreateTimeStamp()).isEqualTo(DEFAULT_CREATE_TIME_STAMP);
+        assertThat(testTask.getCreateTimestamp()).isEqualTo(DEFAULT_CREATE_TIMESTAMP);
     }
 
     @Test
@@ -153,7 +153,7 @@ public class TaskResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(task.getId().intValue())))
             .andExpect(jsonPath("$.[*].taskName").value(hasItem(DEFAULT_TASK_NAME)))
             .andExpect(jsonPath("$.[*].taskType").value(hasItem(DEFAULT_TASK_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].createTimeStamp").value(hasItem(sameInstant(DEFAULT_CREATE_TIME_STAMP))));
+            .andExpect(jsonPath("$.[*].createTimestamp").value(hasItem(sameInstant(DEFAULT_CREATE_TIMESTAMP))));
     }
     
     @Test
@@ -169,7 +169,7 @@ public class TaskResourceIT {
             .andExpect(jsonPath("$.id").value(task.getId().intValue()))
             .andExpect(jsonPath("$.taskName").value(DEFAULT_TASK_NAME))
             .andExpect(jsonPath("$.taskType").value(DEFAULT_TASK_TYPE.toString()))
-            .andExpect(jsonPath("$.createTimeStamp").value(sameInstant(DEFAULT_CREATE_TIME_STAMP)));
+            .andExpect(jsonPath("$.createTimestamp").value(sameInstant(DEFAULT_CREATE_TIMESTAMP)));
     }
 
 
@@ -324,106 +324,106 @@ public class TaskResourceIT {
 
     @Test
     @Transactional
-    public void getAllTasksByCreateTimeStampIsEqualToSomething() throws Exception {
+    public void getAllTasksByCreateTimestampIsEqualToSomething() throws Exception {
         // Initialize the database
         taskRepository.saveAndFlush(task);
 
-        // Get all the taskList where createTimeStamp equals to DEFAULT_CREATE_TIME_STAMP
-        defaultTaskShouldBeFound("createTimeStamp.equals=" + DEFAULT_CREATE_TIME_STAMP);
+        // Get all the taskList where createTimestamp equals to DEFAULT_CREATE_TIMESTAMP
+        defaultTaskShouldBeFound("createTimestamp.equals=" + DEFAULT_CREATE_TIMESTAMP);
 
-        // Get all the taskList where createTimeStamp equals to UPDATED_CREATE_TIME_STAMP
-        defaultTaskShouldNotBeFound("createTimeStamp.equals=" + UPDATED_CREATE_TIME_STAMP);
+        // Get all the taskList where createTimestamp equals to UPDATED_CREATE_TIMESTAMP
+        defaultTaskShouldNotBeFound("createTimestamp.equals=" + UPDATED_CREATE_TIMESTAMP);
     }
 
     @Test
     @Transactional
-    public void getAllTasksByCreateTimeStampIsNotEqualToSomething() throws Exception {
+    public void getAllTasksByCreateTimestampIsNotEqualToSomething() throws Exception {
         // Initialize the database
         taskRepository.saveAndFlush(task);
 
-        // Get all the taskList where createTimeStamp not equals to DEFAULT_CREATE_TIME_STAMP
-        defaultTaskShouldNotBeFound("createTimeStamp.notEquals=" + DEFAULT_CREATE_TIME_STAMP);
+        // Get all the taskList where createTimestamp not equals to DEFAULT_CREATE_TIMESTAMP
+        defaultTaskShouldNotBeFound("createTimestamp.notEquals=" + DEFAULT_CREATE_TIMESTAMP);
 
-        // Get all the taskList where createTimeStamp not equals to UPDATED_CREATE_TIME_STAMP
-        defaultTaskShouldBeFound("createTimeStamp.notEquals=" + UPDATED_CREATE_TIME_STAMP);
+        // Get all the taskList where createTimestamp not equals to UPDATED_CREATE_TIMESTAMP
+        defaultTaskShouldBeFound("createTimestamp.notEquals=" + UPDATED_CREATE_TIMESTAMP);
     }
 
     @Test
     @Transactional
-    public void getAllTasksByCreateTimeStampIsInShouldWork() throws Exception {
+    public void getAllTasksByCreateTimestampIsInShouldWork() throws Exception {
         // Initialize the database
         taskRepository.saveAndFlush(task);
 
-        // Get all the taskList where createTimeStamp in DEFAULT_CREATE_TIME_STAMP or UPDATED_CREATE_TIME_STAMP
-        defaultTaskShouldBeFound("createTimeStamp.in=" + DEFAULT_CREATE_TIME_STAMP + "," + UPDATED_CREATE_TIME_STAMP);
+        // Get all the taskList where createTimestamp in DEFAULT_CREATE_TIMESTAMP or UPDATED_CREATE_TIMESTAMP
+        defaultTaskShouldBeFound("createTimestamp.in=" + DEFAULT_CREATE_TIMESTAMP + "," + UPDATED_CREATE_TIMESTAMP);
 
-        // Get all the taskList where createTimeStamp equals to UPDATED_CREATE_TIME_STAMP
-        defaultTaskShouldNotBeFound("createTimeStamp.in=" + UPDATED_CREATE_TIME_STAMP);
+        // Get all the taskList where createTimestamp equals to UPDATED_CREATE_TIMESTAMP
+        defaultTaskShouldNotBeFound("createTimestamp.in=" + UPDATED_CREATE_TIMESTAMP);
     }
 
     @Test
     @Transactional
-    public void getAllTasksByCreateTimeStampIsNullOrNotNull() throws Exception {
+    public void getAllTasksByCreateTimestampIsNullOrNotNull() throws Exception {
         // Initialize the database
         taskRepository.saveAndFlush(task);
 
-        // Get all the taskList where createTimeStamp is not null
-        defaultTaskShouldBeFound("createTimeStamp.specified=true");
+        // Get all the taskList where createTimestamp is not null
+        defaultTaskShouldBeFound("createTimestamp.specified=true");
 
-        // Get all the taskList where createTimeStamp is null
-        defaultTaskShouldNotBeFound("createTimeStamp.specified=false");
+        // Get all the taskList where createTimestamp is null
+        defaultTaskShouldNotBeFound("createTimestamp.specified=false");
     }
 
     @Test
     @Transactional
-    public void getAllTasksByCreateTimeStampIsGreaterThanOrEqualToSomething() throws Exception {
+    public void getAllTasksByCreateTimestampIsGreaterThanOrEqualToSomething() throws Exception {
         // Initialize the database
         taskRepository.saveAndFlush(task);
 
-        // Get all the taskList where createTimeStamp is greater than or equal to DEFAULT_CREATE_TIME_STAMP
-        defaultTaskShouldBeFound("createTimeStamp.greaterThanOrEqual=" + DEFAULT_CREATE_TIME_STAMP);
+        // Get all the taskList where createTimestamp is greater than or equal to DEFAULT_CREATE_TIMESTAMP
+        defaultTaskShouldBeFound("createTimestamp.greaterThanOrEqual=" + DEFAULT_CREATE_TIMESTAMP);
 
-        // Get all the taskList where createTimeStamp is greater than or equal to UPDATED_CREATE_TIME_STAMP
-        defaultTaskShouldNotBeFound("createTimeStamp.greaterThanOrEqual=" + UPDATED_CREATE_TIME_STAMP);
+        // Get all the taskList where createTimestamp is greater than or equal to UPDATED_CREATE_TIMESTAMP
+        defaultTaskShouldNotBeFound("createTimestamp.greaterThanOrEqual=" + UPDATED_CREATE_TIMESTAMP);
     }
 
     @Test
     @Transactional
-    public void getAllTasksByCreateTimeStampIsLessThanOrEqualToSomething() throws Exception {
+    public void getAllTasksByCreateTimestampIsLessThanOrEqualToSomething() throws Exception {
         // Initialize the database
         taskRepository.saveAndFlush(task);
 
-        // Get all the taskList where createTimeStamp is less than or equal to DEFAULT_CREATE_TIME_STAMP
-        defaultTaskShouldBeFound("createTimeStamp.lessThanOrEqual=" + DEFAULT_CREATE_TIME_STAMP);
+        // Get all the taskList where createTimestamp is less than or equal to DEFAULT_CREATE_TIMESTAMP
+        defaultTaskShouldBeFound("createTimestamp.lessThanOrEqual=" + DEFAULT_CREATE_TIMESTAMP);
 
-        // Get all the taskList where createTimeStamp is less than or equal to SMALLER_CREATE_TIME_STAMP
-        defaultTaskShouldNotBeFound("createTimeStamp.lessThanOrEqual=" + SMALLER_CREATE_TIME_STAMP);
+        // Get all the taskList where createTimestamp is less than or equal to SMALLER_CREATE_TIMESTAMP
+        defaultTaskShouldNotBeFound("createTimestamp.lessThanOrEqual=" + SMALLER_CREATE_TIMESTAMP);
     }
 
     @Test
     @Transactional
-    public void getAllTasksByCreateTimeStampIsLessThanSomething() throws Exception {
+    public void getAllTasksByCreateTimestampIsLessThanSomething() throws Exception {
         // Initialize the database
         taskRepository.saveAndFlush(task);
 
-        // Get all the taskList where createTimeStamp is less than DEFAULT_CREATE_TIME_STAMP
-        defaultTaskShouldNotBeFound("createTimeStamp.lessThan=" + DEFAULT_CREATE_TIME_STAMP);
+        // Get all the taskList where createTimestamp is less than DEFAULT_CREATE_TIMESTAMP
+        defaultTaskShouldNotBeFound("createTimestamp.lessThan=" + DEFAULT_CREATE_TIMESTAMP);
 
-        // Get all the taskList where createTimeStamp is less than UPDATED_CREATE_TIME_STAMP
-        defaultTaskShouldBeFound("createTimeStamp.lessThan=" + UPDATED_CREATE_TIME_STAMP);
+        // Get all the taskList where createTimestamp is less than UPDATED_CREATE_TIMESTAMP
+        defaultTaskShouldBeFound("createTimestamp.lessThan=" + UPDATED_CREATE_TIMESTAMP);
     }
 
     @Test
     @Transactional
-    public void getAllTasksByCreateTimeStampIsGreaterThanSomething() throws Exception {
+    public void getAllTasksByCreateTimestampIsGreaterThanSomething() throws Exception {
         // Initialize the database
         taskRepository.saveAndFlush(task);
 
-        // Get all the taskList where createTimeStamp is greater than DEFAULT_CREATE_TIME_STAMP
-        defaultTaskShouldNotBeFound("createTimeStamp.greaterThan=" + DEFAULT_CREATE_TIME_STAMP);
+        // Get all the taskList where createTimestamp is greater than DEFAULT_CREATE_TIMESTAMP
+        defaultTaskShouldNotBeFound("createTimestamp.greaterThan=" + DEFAULT_CREATE_TIMESTAMP);
 
-        // Get all the taskList where createTimeStamp is greater than SMALLER_CREATE_TIME_STAMP
-        defaultTaskShouldBeFound("createTimeStamp.greaterThan=" + SMALLER_CREATE_TIME_STAMP);
+        // Get all the taskList where createTimestamp is greater than SMALLER_CREATE_TIMESTAMP
+        defaultTaskShouldBeFound("createTimestamp.greaterThan=" + SMALLER_CREATE_TIMESTAMP);
     }
 
 
@@ -496,7 +496,7 @@ public class TaskResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(task.getId().intValue())))
             .andExpect(jsonPath("$.[*].taskName").value(hasItem(DEFAULT_TASK_NAME)))
             .andExpect(jsonPath("$.[*].taskType").value(hasItem(DEFAULT_TASK_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].createTimeStamp").value(hasItem(sameInstant(DEFAULT_CREATE_TIME_STAMP))));
+            .andExpect(jsonPath("$.[*].createTimestamp").value(hasItem(sameInstant(DEFAULT_CREATE_TIMESTAMP))));
 
         // Check, that the count call also returns 1
         restTaskMockMvc.perform(get("/api/tasks/count?sort=id,desc&" + filter))
@@ -545,7 +545,7 @@ public class TaskResourceIT {
         updatedTask
             .taskName(UPDATED_TASK_NAME)
             .taskType(UPDATED_TASK_TYPE)
-            .createTimeStamp(UPDATED_CREATE_TIME_STAMP);
+            .createTimestamp(UPDATED_CREATE_TIMESTAMP);
 
         restTaskMockMvc.perform(put("/api/tasks").with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
@@ -558,7 +558,7 @@ public class TaskResourceIT {
         Task testTask = taskList.get(taskList.size() - 1);
         assertThat(testTask.getTaskName()).isEqualTo(UPDATED_TASK_NAME);
         assertThat(testTask.getTaskType()).isEqualTo(UPDATED_TASK_TYPE);
-        assertThat(testTask.getCreateTimeStamp()).isEqualTo(UPDATED_CREATE_TIME_STAMP);
+        assertThat(testTask.getCreateTimestamp()).isEqualTo(UPDATED_CREATE_TIMESTAMP);
     }
 
     @Test
