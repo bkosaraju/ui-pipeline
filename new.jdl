@@ -1,0 +1,54 @@
+enum TaskType {
+  SFTP,
+  SHELL,
+  SPARK,
+  SPRAK_ON_DATABRICS,
+  SPRAK_ON_KUBERNETES,
+  SPRAK_ON_EMR
+}
+
+
+enum ConfigType {
+	  STATIC,
+    AWS_SSM,
+    HASHICORP_VAULT
+}
+
+entity GlobalConfig {
+  configKey String,
+  configValue String,
+  configType ConfigType
+}
+
+
+entity JobConfig {
+  configKey String,
+  configValue String,
+  configType ConfigType
+}
+
+
+entity TaskConfig {
+  configKey String,
+  configValue String,
+  configType ConfigType,
+  configVersion Float 
+}
+
+entity Job {
+  jobName String,
+  jobStatusFlag Integer,
+  createTimestamp ZonedDateTime
+}
+
+entity Task {
+  taskName String,
+  taskType TaskType,
+  createTimestamp ZonedDateTime
+}
+
+
+
+paginate GlobalConfig,JobConfig,TaskConfig,Job,Task with pagination
+service GlobalConfig,JobConfig,TaskConfig,Job,Task with serviceImpl
+filter GlobalConfig,JobConfig,TaskConfig,Job,Task    

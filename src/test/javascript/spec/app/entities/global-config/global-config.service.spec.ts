@@ -2,6 +2,7 @@ import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { GlobalConfigService } from 'app/entities/global-config/global-config.service';
 import { IGlobalConfig, GlobalConfig } from 'app/shared/model/global-config.model';
+import { ConfigType } from 'app/shared/model/enumerations/config-type.model';
 
 describe('Service Tests', () => {
   describe('GlobalConfig Service', () => {
@@ -20,7 +21,7 @@ describe('Service Tests', () => {
       service = injector.get(GlobalConfigService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new GlobalConfig(0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA');
+      elemDefault = new GlobalConfig(0, 'AAAAAAA', 'AAAAAAA', ConfigType.STATIC);
     });
 
     describe('Service methods', () => {

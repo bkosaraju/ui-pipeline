@@ -34,7 +34,7 @@
                     <td><a [routerLink]="['/global-config', globalConfig.id, 'view']">{{ globalConfig.id }}</a></td>
                     <td>{{ globalConfig.configKey }}</td>
                     <td>{{ globalConfig.configValue }}</td>
-                    <td>{{ globalConfig.configType }}</td>
+                    <td jhiTranslate="{{ 'pipelineApp.ConfigType.' + globalConfig.configType }}">{{ globalConfig.configType }}</td>
                     <td class="text-right">
                         <div class="btn-group">
                             <button type="submit"

@@ -14,26 +14,7 @@
       "fieldType": "ZonedDateTime"
     }
   ],
-  "relationships": [
-    {
-      "relationshipType": "one-to-many",
-      "otherEntityName": "jobConfig",
-      "otherEntityRelationshipName": "job",
-      "relationshipName": "jobConfig"
-    },
-    {
-      "relationshipType": "one-to-many",
-      "otherEntityName": "jobTaskOrder",
-      "otherEntityRelationshipName": "job",
-      "relationshipName": "jobTaskOrder"
-    },
-    {
-      "relationshipType": "one-to-many",
-      "otherEntityName": "jobExecution",
-      "otherEntityRelationshipName": "job",
-      "relationshipName": "jobExecution"
-    }
-  ],
+  "relationships": [],
   "changelogDate": "20201025235008",
   "entityTableName": "job",
   "dto": "no",
@@ -44,7 +25,7 @@
   "readOnly": false,
   "embedded": false,
   "clientRootFolder": "",
-  "applications": ["pipeline"],
+  "applications": "*",
   "searchEngine": false,
   "databaseType": "sql"
 }

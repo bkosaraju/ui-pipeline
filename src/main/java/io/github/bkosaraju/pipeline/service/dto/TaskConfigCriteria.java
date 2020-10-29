@@ -3,6 +3,7 @@ package io.github.bkosaraju.pipeline.service.dto;
 import java.io.Serializable;
 import java.util.Objects;
 import io.github.jhipster.service.Criteria;
+import io.github.bkosaraju.pipeline.domain.enumeration.ConfigType;
 import io.github.jhipster.service.filter.BooleanFilter;
 import io.github.jhipster.service.filter.DoubleFilter;
 import io.github.jhipster.service.filter.Filter;
@@ -21,6 +22,24 @@ import io.github.jhipster.service.filter.StringFilter;
  * fix type specific filters.
  */
 public class TaskConfigCriteria implements Serializable, Criteria {
+    /**
+     * Class for filtering ConfigType
+     */
+    public static class ConfigTypeFilter extends Filter<ConfigType> {
+
+        public ConfigTypeFilter() {
+        }
+
+        public ConfigTypeFilter(ConfigTypeFilter filter) {
+            super(filter);
+        }
+
+        @Override
+        public ConfigTypeFilter copy() {
+            return new ConfigTypeFilter(this);
+        }
+
+    }
 
     private static final long serialVersionUID = 1L;
 
@@ -30,11 +49,9 @@ public class TaskConfigCriteria implements Serializable, Criteria {
 
     private StringFilter configValue;
 
-    private StringFilter configType;
+    private ConfigTypeFilter configType;
 
     private FloatFilter configVersion;
-
-    private LongFilter taskId;
 
     public TaskConfigCriteria() {
     }
@@ -45,7 +62,6 @@ public class TaskConfigCriteria implements Serializable, Criteria {
         this.configValue = other.configValue == null ? null : other.configValue.copy();
         this.configType = other.configType == null ? null : other.configType.copy();
         this.configVersion = other.configVersion == null ? null : other.configVersion.copy();
-        this.taskId = other.taskId == null ? null : other.taskId.copy();
     }
 
     @Override
@@ -77,11 +93,11 @@ public class TaskConfigCriteria implements Serializable, Criteria {
         this.configValue = configValue;
     }
 
-    public StringFilter getConfigType() {
+    public ConfigTypeFilter getConfigType() {
         return configType;
     }
 
-    public void setConfigType(StringFilter configType) {
+    public void setConfigType(ConfigTypeFilter configType) {
         this.configType = configType;
     }
 
@@ -91,14 +107,6 @@ public class TaskConfigCriteria implements Serializable, Criteria {
 
     public void setConfigVersion(FloatFilter configVersion) {
         this.configVersion = configVersion;
-    }
-
-    public LongFilter getTaskId() {
-        return taskId;
-    }
-
-    public void setTaskId(LongFilter taskId) {
-        this.taskId = taskId;
     }
 
 
@@ -116,8 +124,7 @@ public class TaskConfigCriteria implements Serializable, Criteria {
             Objects.equals(configKey, that.configKey) &&
             Objects.equals(configValue, that.configValue) &&
             Objects.equals(configType, that.configType) &&
-            Objects.equals(configVersion, that.configVersion) &&
-            Objects.equals(taskId, that.taskId);
+            Objects.equals(configVersion, that.configVersion);
     }
 
     @Override
@@ -127,8 +134,7 @@ public class TaskConfigCriteria implements Serializable, Criteria {
         configKey,
         configValue,
         configType,
-        configVersion,
-        taskId
+        configVersion
         );
     }
 
@@ -141,7 +147,6 @@ public class TaskConfigCriteria implements Serializable, Criteria {
                 (configValue != null ? "configValue=" + configValue + ", " : "") +
                 (configType != null ? "configType=" + configType + ", " : "") +
                 (configVersion != null ? "configVersion=" + configVersion + ", " : "") +
-                (taskId != null ? "taskId=" + taskId + ", " : "") +
             "}";
     }
 

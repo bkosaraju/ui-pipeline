@@ -18,17 +18,11 @@
                 </dd>
                 <dt><span jhiTranslate="pipelineApp.taskConfig.configType">Config Type</span></dt>
                 <dd>
-                    <span>{{ taskConfig.configType }}</span>
+                    <span jhiTranslate="{{ 'pipelineApp.ConfigType.' + taskConfig.configType }}">{{ taskConfig.configType }}</span>
                 </dd>
                 <dt><span jhiTranslate="pipelineApp.taskConfig.configVersion">Config Version</span></dt>
                 <dd>
                     <span>{{ taskConfig.configVersion }}</span>
-                </dd>
-                <dt><span jhiTranslate="pipelineApp.taskConfig.task">Task</span></dt>
-                <dd>
-                    <div *ngIf="taskConfig.task">
-                        <a [routerLink]="['/task', taskConfig.task?.id, 'view']">{{ taskConfig.task?.id }}</a>
-                    </div>
                 </dd>
             </dl>
 

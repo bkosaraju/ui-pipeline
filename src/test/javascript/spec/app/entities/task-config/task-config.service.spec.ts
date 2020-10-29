@@ -2,6 +2,7 @@ import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TaskConfigService } from 'app/entities/task-config/task-config.service';
 import { ITaskConfig, TaskConfig } from 'app/shared/model/task-config.model';
+import { ConfigType } from 'app/shared/model/enumerations/config-type.model';
 
 describe('Service Tests', () => {
   describe('TaskConfig Service', () => {
@@ -20,7 +21,7 @@ describe('Service Tests', () => {
       service = injector.get(TaskConfigService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new TaskConfig(0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 0);
+      elemDefault = new TaskConfig(0, 'AAAAAAA', 'AAAAAAA', ConfigType.STATIC, 0);
     });
 
     describe('Service methods', () => {

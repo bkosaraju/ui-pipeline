@@ -1,12 +1,13 @@
 package io.github.bkosaraju.pipeline.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
 import java.io.Serializable;
+
+import io.github.bkosaraju.pipeline.domain.enumeration.ConfigType;
 
 /**
  * A JobConfig.
@@ -29,12 +30,9 @@ public class JobConfig implements Serializable {
     @Column(name = "config_value")
     private String configValue;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "config_type")
-    private String configType;
-
-    @ManyToOne
-    @JsonIgnoreProperties(value = "jobConfigs", allowSetters = true)
-    private Job job;
+    private ConfigType configType;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -71,30 +69,17 @@ public class JobConfig implements Serializable {
         this.configValue = configValue;
     }
 
-    public String getConfigType() {
+    public ConfigType getConfigType() {
         return configType;
     }
 
-    public JobConfig configType(String configType) {
+    public JobConfig configType(ConfigType configType) {
         this.configType = configType;
         return this;
     }
 
-    public void setConfigType(String configType) {
+    public void setConfigType(ConfigType configType) {
         this.configType = configType;
-    }
-
-    public Job getJob() {
-        return job;
-    }
-
-    public JobConfig job(Job job) {
-        this.job = job;
-        return this;
-    }
-
-    public void setJob(Job job) {
-        this.job = job;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 

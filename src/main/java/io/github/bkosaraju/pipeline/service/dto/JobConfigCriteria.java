@@ -3,6 +3,7 @@ package io.github.bkosaraju.pipeline.service.dto;
 import java.io.Serializable;
 import java.util.Objects;
 import io.github.jhipster.service.Criteria;
+import io.github.bkosaraju.pipeline.domain.enumeration.ConfigType;
 import io.github.jhipster.service.filter.BooleanFilter;
 import io.github.jhipster.service.filter.DoubleFilter;
 import io.github.jhipster.service.filter.Filter;
@@ -21,6 +22,24 @@ import io.github.jhipster.service.filter.StringFilter;
  * fix type specific filters.
  */
 public class JobConfigCriteria implements Serializable, Criteria {
+    /**
+     * Class for filtering ConfigType
+     */
+    public static class ConfigTypeFilter extends Filter<ConfigType> {
+
+        public ConfigTypeFilter() {
+        }
+
+        public ConfigTypeFilter(ConfigTypeFilter filter) {
+            super(filter);
+        }
+
+        @Override
+        public ConfigTypeFilter copy() {
+            return new ConfigTypeFilter(this);
+        }
+
+    }
 
     private static final long serialVersionUID = 1L;
 
@@ -30,9 +49,7 @@ public class JobConfigCriteria implements Serializable, Criteria {
 
     private StringFilter configValue;
 
-    private StringFilter configType;
-
-    private LongFilter jobId;
+    private ConfigTypeFilter configType;
 
     public JobConfigCriteria() {
     }
@@ -42,7 +59,6 @@ public class JobConfigCriteria implements Serializable, Criteria {
         this.configKey = other.configKey == null ? null : other.configKey.copy();
         this.configValue = other.configValue == null ? null : other.configValue.copy();
         this.configType = other.configType == null ? null : other.configType.copy();
-        this.jobId = other.jobId == null ? null : other.jobId.copy();
     }
 
     @Override
@@ -74,20 +90,12 @@ public class JobConfigCriteria implements Serializable, Criteria {
         this.configValue = configValue;
     }
 
-    public StringFilter getConfigType() {
+    public ConfigTypeFilter getConfigType() {
         return configType;
     }
 
-    public void setConfigType(StringFilter configType) {
+    public void setConfigType(ConfigTypeFilter configType) {
         this.configType = configType;
-    }
-
-    public LongFilter getJobId() {
-        return jobId;
-    }
-
-    public void setJobId(LongFilter jobId) {
-        this.jobId = jobId;
     }
 
 
@@ -104,8 +112,7 @@ public class JobConfigCriteria implements Serializable, Criteria {
             Objects.equals(id, that.id) &&
             Objects.equals(configKey, that.configKey) &&
             Objects.equals(configValue, that.configValue) &&
-            Objects.equals(configType, that.configType) &&
-            Objects.equals(jobId, that.jobId);
+            Objects.equals(configType, that.configType);
     }
 
     @Override
@@ -114,8 +121,7 @@ public class JobConfigCriteria implements Serializable, Criteria {
         id,
         configKey,
         configValue,
-        configType,
-        jobId
+        configType
         );
     }
 
@@ -127,7 +133,6 @@ public class JobConfigCriteria implements Serializable, Criteria {
                 (configKey != null ? "configKey=" + configKey + ", " : "") +
                 (configValue != null ? "configValue=" + configValue + ", " : "") +
                 (configType != null ? "configType=" + configType + ", " : "") +
-                (jobId != null ? "jobId=" + jobId + ", " : "") +
             "}";
     }
 

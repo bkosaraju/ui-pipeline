@@ -11,7 +11,8 @@
     },
     {
       "fieldName": "configType",
-      "fieldType": "String"
+      "fieldType": "ConfigType",
+      "fieldValues": "STATIC,AWS_SSM,HASHICORP_VAULT"
     }
   ],
   "relationships": [],
@@ -25,5 +26,5 @@
   "readOnly": false,
   "embedded": false,
   "clientRootFolder": "",
-  "applications": ["pipeline"]
+  "applications": "*"
 }

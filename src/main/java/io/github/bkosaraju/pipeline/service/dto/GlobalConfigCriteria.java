@@ -3,6 +3,7 @@ package io.github.bkosaraju.pipeline.service.dto;
 import java.io.Serializable;
 import java.util.Objects;
 import io.github.jhipster.service.Criteria;
+import io.github.bkosaraju.pipeline.domain.enumeration.ConfigType;
 import io.github.jhipster.service.filter.BooleanFilter;
 import io.github.jhipster.service.filter.DoubleFilter;
 import io.github.jhipster.service.filter.Filter;
@@ -21,6 +22,24 @@ import io.github.jhipster.service.filter.StringFilter;
  * fix type specific filters.
  */
 public class GlobalConfigCriteria implements Serializable, Criteria {
+    /**
+     * Class for filtering ConfigType
+     */
+    public static class ConfigTypeFilter extends Filter<ConfigType> {
+
+        public ConfigTypeFilter() {
+        }
+
+        public ConfigTypeFilter(ConfigTypeFilter filter) {
+            super(filter);
+        }
+
+        @Override
+        public ConfigTypeFilter copy() {
+            return new ConfigTypeFilter(this);
+        }
+
+    }
 
     private static final long serialVersionUID = 1L;
 
@@ -30,7 +49,7 @@ public class GlobalConfigCriteria implements Serializable, Criteria {
 
     private StringFilter configValue;
 
-    private StringFilter configType;
+    private ConfigTypeFilter configType;
 
     public GlobalConfigCriteria() {
     }
@@ -71,11 +90,11 @@ public class GlobalConfigCriteria implements Serializable, Criteria {
         this.configValue = configValue;
     }
 
-    public StringFilter getConfigType() {
+    public ConfigTypeFilter getConfigType() {
         return configType;
     }
 
-    public void setConfigType(StringFilter configType) {
+    public void setConfigType(ConfigTypeFilter configType) {
         this.configType = configType;
     }
 

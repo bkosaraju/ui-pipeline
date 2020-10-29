@@ -11,22 +11,15 @@
     },
     {
       "fieldName": "configType",
-      "fieldType": "String"
+      "fieldType": "ConfigType",
+      "fieldValues": "STATIC,AWS_SSM,HASHICORP_VAULT"
     },
     {
       "fieldName": "configVersion",
       "fieldType": "Float"
     }
   ],
-  "relationships": [
-    {
-      "relationshipType": "many-to-one",
-      "otherEntityName": "task",
-      "otherEntityRelationshipName": "taskConfig",
-      "relationshipName": "task",
-      "otherEntityField": "id"
-    }
-  ],
+  "relationships": [],
   "changelogDate": "20201025235508",
   "entityTableName": "task_config",
   "dto": "no",
@@ -37,5 +30,5 @@
   "readOnly": false,
   "embedded": false,
   "clientRootFolder": "",
-  "applications": ["pipeline"]
+  "applications": "*"
 }

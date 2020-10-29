@@ -25,8 +25,11 @@
 
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="pipelineApp.globalConfig.configType" for="field_configType">Config Type</label>
-                    <input type="text" class="form-control" name="configType" id="field_configType"
-                           formControlName="configType"/>
+                    <select class="form-control" name="configType" formControlName="configType" id="field_configType">
+                        <option value="STATIC">{{ 'pipelineApp.ConfigType.STATIC' | translate }}</option>
+                        <option value="AWS_SSM">{{ 'pipelineApp.ConfigType.AWS_SSM' | translate }}</option>
+                        <option value="HASHICORP_VAULT">{{ 'pipelineApp.ConfigType.HASHICORP_VAULT' | translate }}</option>
+                    </select>
                 </div>
             </div>
 

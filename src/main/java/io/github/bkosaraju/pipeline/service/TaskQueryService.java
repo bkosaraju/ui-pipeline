@@ -94,18 +94,6 @@ public class TaskQueryService extends QueryService<Task> {
             if (criteria.getCreateTimestamp() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getCreateTimestamp(), Task_.createTimestamp));
             }
-            if (criteria.getTaskConfigId() != null) {
-                specification = specification.and(buildSpecification(criteria.getTaskConfigId(),
-                    root -> root.join(Task_.taskConfigs, JoinType.LEFT).get(TaskConfig_.id)));
-            }
-            if (criteria.getJobTaskOrderId() != null) {
-                specification = specification.and(buildSpecification(criteria.getJobTaskOrderId(),
-                    root -> root.join(Task_.jobTaskOrders, JoinType.LEFT).get(JobTaskOrder_.id)));
-            }
-            if (criteria.getTaskExecutionId() != null) {
-                specification = specification.and(buildSpecification(criteria.getTaskExecutionId(),
-                    root -> root.join(Task_.taskExecutions, JoinType.LEFT).get(TaskExecution_.id)));
-            }
         }
         return specification;
     }

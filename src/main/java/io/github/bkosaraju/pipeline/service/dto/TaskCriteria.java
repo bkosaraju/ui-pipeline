@@ -52,12 +52,6 @@ public class TaskCriteria implements Serializable, Criteria {
 
     private ZonedDateTimeFilter createTimestamp;
 
-    private LongFilter taskConfigId;
-
-    private LongFilter jobTaskOrderId;
-
-    private LongFilter taskExecutionId;
-
     public TaskCriteria() {
     }
 
@@ -66,9 +60,6 @@ public class TaskCriteria implements Serializable, Criteria {
         this.taskName = other.taskName == null ? null : other.taskName.copy();
         this.taskType = other.taskType == null ? null : other.taskType.copy();
         this.createTimestamp = other.createTimestamp == null ? null : other.createTimestamp.copy();
-        this.taskConfigId = other.taskConfigId == null ? null : other.taskConfigId.copy();
-        this.jobTaskOrderId = other.jobTaskOrderId == null ? null : other.jobTaskOrderId.copy();
-        this.taskExecutionId = other.taskExecutionId == null ? null : other.taskExecutionId.copy();
     }
 
     @Override
@@ -108,30 +99,6 @@ public class TaskCriteria implements Serializable, Criteria {
         this.createTimestamp = createTimestamp;
     }
 
-    public LongFilter getTaskConfigId() {
-        return taskConfigId;
-    }
-
-    public void setTaskConfigId(LongFilter taskConfigId) {
-        this.taskConfigId = taskConfigId;
-    }
-
-    public LongFilter getJobTaskOrderId() {
-        return jobTaskOrderId;
-    }
-
-    public void setJobTaskOrderId(LongFilter jobTaskOrderId) {
-        this.jobTaskOrderId = jobTaskOrderId;
-    }
-
-    public LongFilter getTaskExecutionId() {
-        return taskExecutionId;
-    }
-
-    public void setTaskExecutionId(LongFilter taskExecutionId) {
-        this.taskExecutionId = taskExecutionId;
-    }
-
 
     @Override
     public boolean equals(Object o) {
@@ -146,10 +113,7 @@ public class TaskCriteria implements Serializable, Criteria {
             Objects.equals(id, that.id) &&
             Objects.equals(taskName, that.taskName) &&
             Objects.equals(taskType, that.taskType) &&
-            Objects.equals(createTimestamp, that.createTimestamp) &&
-            Objects.equals(taskConfigId, that.taskConfigId) &&
-            Objects.equals(jobTaskOrderId, that.jobTaskOrderId) &&
-            Objects.equals(taskExecutionId, that.taskExecutionId);
+            Objects.equals(createTimestamp, that.createTimestamp);
     }
 
     @Override
@@ -158,10 +122,7 @@ public class TaskCriteria implements Serializable, Criteria {
         id,
         taskName,
         taskType,
-        createTimestamp,
-        taskConfigId,
-        jobTaskOrderId,
-        taskExecutionId
+        createTimestamp
         );
     }
 
@@ -173,9 +134,6 @@ public class TaskCriteria implements Serializable, Criteria {
                 (taskName != null ? "taskName=" + taskName + ", " : "") +
                 (taskType != null ? "taskType=" + taskType + ", " : "") +
                 (createTimestamp != null ? "createTimestamp=" + createTimestamp + ", " : "") +
-                (taskConfigId != null ? "taskConfigId=" + taskConfigId + ", " : "") +
-                (jobTaskOrderId != null ? "jobTaskOrderId=" + jobTaskOrderId + ", " : "") +
-                (taskExecutionId != null ? "taskExecutionId=" + taskExecutionId + ", " : "") +
             "}";
     }
 

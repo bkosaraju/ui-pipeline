@@ -2,6 +2,7 @@ import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { JobConfigService } from 'app/entities/job-config/job-config.service';
 import { IJobConfig, JobConfig } from 'app/shared/model/job-config.model';
+import { ConfigType } from 'app/shared/model/enumerations/config-type.model';
 
 describe('Service Tests', () => {
   describe('JobConfig Service', () => {
@@ -20,7 +21,7 @@ describe('Service Tests', () => {
       service = injector.get(JobConfigService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new JobConfig(0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA');
+      elemDefault = new JobConfig(0, 'AAAAAAA', 'AAAAAAA', ConfigType.STATIC);
     });
 
     describe('Service methods', () => {

@@ -18,10 +18,7 @@
       },
       "jobName": "Job Name",
       "jobStatusFlag": "Job Status Flag",
-      "createTimestamp": "Create Timestamp",
-      "jobConfig": "Job Config",
-      "jobTaskOrder": "Job Task Order",
-      "jobExecution": "Job Execution"
+      "createTimestamp": "Create Timestamp"
     }
   }
 }

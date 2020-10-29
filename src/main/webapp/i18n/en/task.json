@@ -18,10 +18,7 @@
       },
       "taskName": "Task Name",
       "taskType": "Task Type",
-      "createTimestamp": "Create Timestamp",
-      "taskConfig": "Task Config",
-      "jobTaskOrder": "Job Task Order",
-      "taskExecution": "Task Execution"
+      "createTimestamp": "Create Timestamp"
     }
   }
 }

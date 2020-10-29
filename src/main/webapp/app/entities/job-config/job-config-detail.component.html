@@ -18,13 +18,7 @@
                 </dd>
                 <dt><span jhiTranslate="pipelineApp.jobConfig.configType">Config Type</span></dt>
                 <dd>
-                    <span>{{ jobConfig.configType }}</span>
-                </dd>
-                <dt><span jhiTranslate="pipelineApp.jobConfig.job">Job</span></dt>
-                <dd>
-                    <div *ngIf="jobConfig.job">
-                        <a [routerLink]="['/job', jobConfig.job?.id, 'view']">{{ jobConfig.job?.id }}</a>
-                    </div>
+                    <span jhiTranslate="{{ 'pipelineApp.ConfigType.' + jobConfig.configType }}">{{ jobConfig.configType }}</span>
                 </dd>
             </dl>
 

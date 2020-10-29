@@ -2,9 +2,6 @@ package io.github.bkosaraju.pipeline.web.rest;
 
 import io.github.bkosaraju.pipeline.PipelineApp;
 import io.github.bkosaraju.pipeline.domain.Job;
-import io.github.bkosaraju.pipeline.domain.JobConfig;
-import io.github.bkosaraju.pipeline.domain.JobTaskOrder;
-import io.github.bkosaraju.pipeline.domain.JobExecution;
 import io.github.bkosaraju.pipeline.repository.JobRepository;
 import io.github.bkosaraju.pipeline.service.JobService;
 import io.github.bkosaraju.pipeline.service.dto.JobCriteria;
@@ -477,66 +474,6 @@ public class JobResourceIT {
 
         // Get all the jobList where createTimestamp is greater than SMALLER_CREATE_TIMESTAMP
         defaultJobShouldBeFound("createTimestamp.greaterThan=" + SMALLER_CREATE_TIMESTAMP);
-    }
-
-
-    @Test
-    @Transactional
-    public void getAllJobsByJobConfigIsEqualToSomething() throws Exception {
-        // Initialize the database
-        jobRepository.saveAndFlush(job);
-        JobConfig jobConfig = JobConfigResourceIT.createEntity(em);
-        em.persist(jobConfig);
-        em.flush();
-        job.addJobConfig(jobConfig);
-        jobRepository.saveAndFlush(job);
-        Long jobConfigId = jobConfig.getId();
-
-        // Get all the jobList where jobConfig equals to jobConfigId
-        defaultJobShouldBeFound("jobConfigId.equals=" + jobConfigId);
-
-        // Get all the jobList where jobConfig equals to jobConfigId + 1
-        defaultJobShouldNotBeFound("jobConfigId.equals=" + (jobConfigId + 1));
-    }
-
-
-    @Test
-    @Transactional
-    public void getAllJobsByJobTaskOrderIsEqualToSomething() throws Exception {
-        // Initialize the database
-        jobRepository.saveAndFlush(job);
-        JobTaskOrder jobTaskOrder = JobTaskOrderResourceIT.createEntity(em);
-        em.persist(jobTaskOrder);
-        em.flush();
-        job.addJobTaskOrder(jobTaskOrder);
-        jobRepository.saveAndFlush(job);
-        Long jobTaskOrderId = jobTaskOrder.getId();
-
-        // Get all the jobList where jobTaskOrder equals to jobTaskOrderId
-        defaultJobShouldBeFound("jobTaskOrderId.equals=" + jobTaskOrderId);
-
-        // Get all the jobList where jobTaskOrder equals to jobTaskOrderId + 1
-        defaultJobShouldNotBeFound("jobTaskOrderId.equals=" + (jobTaskOrderId + 1));
-    }
-
-
-    @Test
-    @Transactional
-    public void getAllJobsByJobExecutionIsEqualToSomething() throws Exception {
-        // Initialize the database
-        jobRepository.saveAndFlush(job);
-        JobExecution jobExecution = JobExecutionResourceIT.createEntity(em);
-        em.persist(jobExecution);
-        em.flush();
-        job.addJobExecution(jobExecution);
-        jobRepository.saveAndFlush(job);
-        Long jobExecutionId = jobExecution.getId();
-
-        // Get all the jobList where jobExecution equals to jobExecutionId
-        defaultJobShouldBeFound("jobExecutionId.equals=" + jobExecutionId);
-
-        // Get all the jobList where jobExecution equals to jobExecutionId + 1
-        defaultJobShouldNotBeFound("jobExecutionId.equals=" + (jobExecutionId + 1));
     }
 
     /**

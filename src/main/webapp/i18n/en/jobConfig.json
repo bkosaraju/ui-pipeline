@@ -18,8 +18,7 @@
       },
       "configKey": "Config Key",
       "configValue": "Config Value",
-      "configType": "Config Type",
-      "job": "Job"
+      "configType": "Config Type"
     }
   }
 }

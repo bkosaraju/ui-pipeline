@@ -1,12 +1,13 @@
 package io.github.bkosaraju.pipeline.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
 import java.io.Serializable;
+
+import io.github.bkosaraju.pipeline.domain.enumeration.ConfigType;
 
 /**
  * A TaskConfig.
@@ -29,15 +30,12 @@ public class TaskConfig implements Serializable {
     @Column(name = "config_value")
     private String configValue;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "config_type")
-    private String configType;
+    private ConfigType configType;
 
     @Column(name = "config_version")
     private Float configVersion;
-
-    @ManyToOne
-    @JsonIgnoreProperties(value = "taskConfigs", allowSetters = true)
-    private Task task;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -74,16 +72,16 @@ public class TaskConfig implements Serializable {
         this.configValue = configValue;
     }
 
-    public String getConfigType() {
+    public ConfigType getConfigType() {
         return configType;
     }
 
-    public TaskConfig configType(String configType) {
+    public TaskConfig configType(ConfigType configType) {
         this.configType = configType;
         return this;
     }
 
-    public void setConfigType(String configType) {
+    public void setConfigType(ConfigType configType) {
         this.configType = configType;
     }
 
@@ -98,19 +96,6 @@ public class TaskConfig implements Serializable {
 
     public void setConfigVersion(Float configVersion) {
         this.configVersion = configVersion;
-    }
-
-    public Task getTask() {
-        return task;
-    }
-
-    public TaskConfig task(Task task) {
-        this.task = task;
-        return this;
-    }
-
-    public void setTask(Task task) {
-        this.task = task;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 

@@ -11,18 +11,11 @@
     },
     {
       "fieldName": "configType",
-      "fieldType": "String"
+      "fieldType": "ConfigType",
+      "fieldValues": "STATIC,AWS_SSM,HASHICORP_VAULT"
     }
   ],
-  "relationships": [
-    {
-      "relationshipType": "many-to-one",
-      "otherEntityName": "job",
-      "otherEntityRelationshipName": "jobConfig",
-      "relationshipName": "job",
-      "otherEntityField": "id"
-    }
-  ],
+  "relationships": [],
   "changelogDate": "20201025235408",
   "entityTableName": "job_config",
   "dto": "no",
@@ -33,5 +26,5 @@
   "readOnly": false,
   "embedded": false,
   "clientRootFolder": "",
-  "applications": ["pipeline"]
+  "applications": "*"
 }

@@ -92,11 +92,7 @@ public class JobConfigQueryService extends QueryService<JobConfig> {
                 specification = specification.and(buildStringSpecification(criteria.getConfigValue(), JobConfig_.configValue));
             }
             if (criteria.getConfigType() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getConfigType(), JobConfig_.configType));
-            }
-            if (criteria.getJobId() != null) {
-                specification = specification.and(buildSpecification(criteria.getJobId(),
-                    root -> root.join(JobConfig_.job, JoinType.LEFT).get(Job_.id)));
+                specification = specification.and(buildSpecification(criteria.getConfigType(), JobConfig_.configType));
             }
         }
         return specification;

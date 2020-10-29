@@ -2,7 +2,6 @@ package io.github.bkosaraju.pipeline.web.rest;
 
 import io.github.bkosaraju.pipeline.PipelineApp;
 import io.github.bkosaraju.pipeline.domain.JobConfig;
-import io.github.bkosaraju.pipeline.domain.Job;
 import io.github.bkosaraju.pipeline.repository.JobConfigRepository;
 import io.github.bkosaraju.pipeline.service.JobConfigService;
 import io.github.bkosaraju.pipeline.service.dto.JobConfigCriteria;
@@ -26,6 +25,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import io.github.bkosaraju.pipeline.domain.enumeration.ConfigType;
 /**
  * Integration tests for the {@link JobConfigResource} REST controller.
  */
@@ -40,8 +40,8 @@ public class JobConfigResourceIT {
     private static final String DEFAULT_CONFIG_VALUE = "AAAAAAAAAA";
     private static final String UPDATED_CONFIG_VALUE = "BBBBBBBBBB";
 
-    private static final String DEFAULT_CONFIG_TYPE = "AAAAAAAAAA";
-    private static final String UPDATED_CONFIG_TYPE = "BBBBBBBBBB";
+    private static final ConfigType DEFAULT_CONFIG_TYPE = ConfigType.STATIC;
+    private static final ConfigType UPDATED_CONFIG_TYPE = ConfigType.AWS_SSM;
 
     @Autowired
     private JobConfigRepository jobConfigRepository;
@@ -144,7 +144,7 @@ public class JobConfigResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(jobConfig.getId().intValue())))
             .andExpect(jsonPath("$.[*].configKey").value(hasItem(DEFAULT_CONFIG_KEY)))
             .andExpect(jsonPath("$.[*].configValue").value(hasItem(DEFAULT_CONFIG_VALUE)))
-            .andExpect(jsonPath("$.[*].configType").value(hasItem(DEFAULT_CONFIG_TYPE)));
+            .andExpect(jsonPath("$.[*].configType").value(hasItem(DEFAULT_CONFIG_TYPE.toString())));
     }
     
     @Test
@@ -160,7 +160,7 @@ public class JobConfigResourceIT {
             .andExpect(jsonPath("$.id").value(jobConfig.getId().intValue()))
             .andExpect(jsonPath("$.configKey").value(DEFAULT_CONFIG_KEY))
             .andExpect(jsonPath("$.configValue").value(DEFAULT_CONFIG_VALUE))
-            .andExpect(jsonPath("$.configType").value(DEFAULT_CONFIG_TYPE));
+            .andExpect(jsonPath("$.configType").value(DEFAULT_CONFIG_TYPE.toString()));
     }
 
 
@@ -390,52 +390,6 @@ public class JobConfigResourceIT {
         // Get all the jobConfigList where configType is null
         defaultJobConfigShouldNotBeFound("configType.specified=false");
     }
-                @Test
-    @Transactional
-    public void getAllJobConfigsByConfigTypeContainsSomething() throws Exception {
-        // Initialize the database
-        jobConfigRepository.saveAndFlush(jobConfig);
-
-        // Get all the jobConfigList where configType contains DEFAULT_CONFIG_TYPE
-        defaultJobConfigShouldBeFound("configType.contains=" + DEFAULT_CONFIG_TYPE);
-
-        // Get all the jobConfigList where configType contains UPDATED_CONFIG_TYPE
-        defaultJobConfigShouldNotBeFound("configType.contains=" + UPDATED_CONFIG_TYPE);
-    }
-
-    @Test
-    @Transactional
-    public void getAllJobConfigsByConfigTypeNotContainsSomething() throws Exception {
-        // Initialize the database
-        jobConfigRepository.saveAndFlush(jobConfig);
-
-        // Get all the jobConfigList where configType does not contain DEFAULT_CONFIG_TYPE
-        defaultJobConfigShouldNotBeFound("configType.doesNotContain=" + DEFAULT_CONFIG_TYPE);
-
-        // Get all the jobConfigList where configType does not contain UPDATED_CONFIG_TYPE
-        defaultJobConfigShouldBeFound("configType.doesNotContain=" + UPDATED_CONFIG_TYPE);
-    }
-
-
-    @Test
-    @Transactional
-    public void getAllJobConfigsByJobIsEqualToSomething() throws Exception {
-        // Initialize the database
-        jobConfigRepository.saveAndFlush(jobConfig);
-        Job job = JobResourceIT.createEntity(em);
-        em.persist(job);
-        em.flush();
-        jobConfig.setJob(job);
-        jobConfigRepository.saveAndFlush(jobConfig);
-        Long jobId = job.getId();
-
-        // Get all the jobConfigList where job equals to jobId
-        defaultJobConfigShouldBeFound("jobId.equals=" + jobId);
-
-        // Get all the jobConfigList where job equals to jobId + 1
-        defaultJobConfigShouldNotBeFound("jobId.equals=" + (jobId + 1));
-    }
-
     /**
      * Executes the search, and checks that the default entity is returned.
      */
@@ -446,7 +400,7 @@ public class JobConfigResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(jobConfig.getId().intValue())))
             .andExpect(jsonPath("$.[*].configKey").value(hasItem(DEFAULT_CONFIG_KEY)))
             .andExpect(jsonPath("$.[*].configValue").value(hasItem(DEFAULT_CONFIG_VALUE)))
-            .andExpect(jsonPath("$.[*].configType").value(hasItem(DEFAULT_CONFIG_TYPE)));
+            .andExpect(jsonPath("$.[*].configType").value(hasItem(DEFAULT_CONFIG_TYPE.toString())));
 
         // Check, that the count call also returns 1
         restJobConfigMockMvc.perform(get("/api/job-configs/count?sort=id,desc&" + filter))

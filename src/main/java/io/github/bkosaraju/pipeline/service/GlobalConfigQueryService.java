@@ -92,7 +92,7 @@ public class GlobalConfigQueryService extends QueryService<GlobalConfig> {
                 specification = specification.and(buildStringSpecification(criteria.getConfigValue(), GlobalConfig_.configValue));
             }
             if (criteria.getConfigType() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getConfigType(), GlobalConfig_.configType));
+                specification = specification.and(buildSpecification(criteria.getConfigType(), GlobalConfig_.configType));
             }
         }
         return specification;

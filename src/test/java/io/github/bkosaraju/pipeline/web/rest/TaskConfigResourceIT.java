@@ -2,7 +2,6 @@ package io.github.bkosaraju.pipeline.web.rest;
 
 import io.github.bkosaraju.pipeline.PipelineApp;
 import io.github.bkosaraju.pipeline.domain.TaskConfig;
-import io.github.bkosaraju.pipeline.domain.Task;
 import io.github.bkosaraju.pipeline.repository.TaskConfigRepository;
 import io.github.bkosaraju.pipeline.service.TaskConfigService;
 import io.github.bkosaraju.pipeline.service.dto.TaskConfigCriteria;
@@ -26,6 +25,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import io.github.bkosaraju.pipeline.domain.enumeration.ConfigType;
 /**
  * Integration tests for the {@link TaskConfigResource} REST controller.
  */
@@ -40,8 +40,8 @@ public class TaskConfigResourceIT {
     private static final String DEFAULT_CONFIG_VALUE = "AAAAAAAAAA";
     private static final String UPDATED_CONFIG_VALUE = "BBBBBBBBBB";
 
-    private static final String DEFAULT_CONFIG_TYPE = "AAAAAAAAAA";
-    private static final String UPDATED_CONFIG_TYPE = "BBBBBBBBBB";
+    private static final ConfigType DEFAULT_CONFIG_TYPE = ConfigType.STATIC;
+    private static final ConfigType UPDATED_CONFIG_TYPE = ConfigType.AWS_SSM;
 
     private static final Float DEFAULT_CONFIG_VERSION = 1F;
     private static final Float UPDATED_CONFIG_VERSION = 2F;
@@ -151,7 +151,7 @@ public class TaskConfigResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(taskConfig.getId().intValue())))
             .andExpect(jsonPath("$.[*].configKey").value(hasItem(DEFAULT_CONFIG_KEY)))
             .andExpect(jsonPath("$.[*].configValue").value(hasItem(DEFAULT_CONFIG_VALUE)))
-            .andExpect(jsonPath("$.[*].configType").value(hasItem(DEFAULT_CONFIG_TYPE)))
+            .andExpect(jsonPath("$.[*].configType").value(hasItem(DEFAULT_CONFIG_TYPE.toString())))
             .andExpect(jsonPath("$.[*].configVersion").value(hasItem(DEFAULT_CONFIG_VERSION.doubleValue())));
     }
     
@@ -168,7 +168,7 @@ public class TaskConfigResourceIT {
             .andExpect(jsonPath("$.id").value(taskConfig.getId().intValue()))
             .andExpect(jsonPath("$.configKey").value(DEFAULT_CONFIG_KEY))
             .andExpect(jsonPath("$.configValue").value(DEFAULT_CONFIG_VALUE))
-            .andExpect(jsonPath("$.configType").value(DEFAULT_CONFIG_TYPE))
+            .andExpect(jsonPath("$.configType").value(DEFAULT_CONFIG_TYPE.toString()))
             .andExpect(jsonPath("$.configVersion").value(DEFAULT_CONFIG_VERSION.doubleValue()));
     }
 
@@ -399,32 +399,6 @@ public class TaskConfigResourceIT {
         // Get all the taskConfigList where configType is null
         defaultTaskConfigShouldNotBeFound("configType.specified=false");
     }
-                @Test
-    @Transactional
-    public void getAllTaskConfigsByConfigTypeContainsSomething() throws Exception {
-        // Initialize the database
-        taskConfigRepository.saveAndFlush(taskConfig);
-
-        // Get all the taskConfigList where configType contains DEFAULT_CONFIG_TYPE
-        defaultTaskConfigShouldBeFound("configType.contains=" + DEFAULT_CONFIG_TYPE);
-
-        // Get all the taskConfigList where configType contains UPDATED_CONFIG_TYPE
-        defaultTaskConfigShouldNotBeFound("configType.contains=" + UPDATED_CONFIG_TYPE);
-    }
-
-    @Test
-    @Transactional
-    public void getAllTaskConfigsByConfigTypeNotContainsSomething() throws Exception {
-        // Initialize the database
-        taskConfigRepository.saveAndFlush(taskConfig);
-
-        // Get all the taskConfigList where configType does not contain DEFAULT_CONFIG_TYPE
-        defaultTaskConfigShouldNotBeFound("configType.doesNotContain=" + DEFAULT_CONFIG_TYPE);
-
-        // Get all the taskConfigList where configType does not contain UPDATED_CONFIG_TYPE
-        defaultTaskConfigShouldBeFound("configType.doesNotContain=" + UPDATED_CONFIG_TYPE);
-    }
-
 
     @Test
     @Transactional
@@ -530,26 +504,6 @@ public class TaskConfigResourceIT {
         defaultTaskConfigShouldBeFound("configVersion.greaterThan=" + SMALLER_CONFIG_VERSION);
     }
 
-
-    @Test
-    @Transactional
-    public void getAllTaskConfigsByTaskIsEqualToSomething() throws Exception {
-        // Initialize the database
-        taskConfigRepository.saveAndFlush(taskConfig);
-        Task task = TaskResourceIT.createEntity(em);
-        em.persist(task);
-        em.flush();
-        taskConfig.setTask(task);
-        taskConfigRepository.saveAndFlush(taskConfig);
-        Long taskId = task.getId();
-
-        // Get all the taskConfigList where task equals to taskId
-        defaultTaskConfigShouldBeFound("taskId.equals=" + taskId);
-
-        // Get all the taskConfigList where task equals to taskId + 1
-        defaultTaskConfigShouldNotBeFound("taskId.equals=" + (taskId + 1));
-    }
-
     /**
      * Executes the search, and checks that the default entity is returned.
      */
@@ -560,7 +514,7 @@ public class TaskConfigResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(taskConfig.getId().intValue())))
             .andExpect(jsonPath("$.[*].configKey").value(hasItem(DEFAULT_CONFIG_KEY)))
             .andExpect(jsonPath("$.[*].configValue").value(hasItem(DEFAULT_CONFIG_VALUE)))
-            .andExpect(jsonPath("$.[*].configType").value(hasItem(DEFAULT_CONFIG_TYPE)))
+            .andExpect(jsonPath("$.[*].configType").value(hasItem(DEFAULT_CONFIG_TYPE.toString())))
             .andExpect(jsonPath("$.[*].configVersion").value(hasItem(DEFAULT_CONFIG_VERSION.doubleValue())));
 
         // Check, that the count call also returns 1

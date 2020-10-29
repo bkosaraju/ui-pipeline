@@ -26,7 +26,6 @@
                     <th scope="col"  jhiSortBy="configKey"><span jhiTranslate="pipelineApp.jobConfig.configKey">Config Key</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="configValue"><span jhiTranslate="pipelineApp.jobConfig.configValue">Config Value</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="configType"><span jhiTranslate="pipelineApp.jobConfig.configType">Config Type</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="job.id"><span jhiTranslate="pipelineApp.jobConfig.job">Job</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -35,12 +34,7 @@
                     <td><a [routerLink]="['/job-config', jobConfig.id, 'view']">{{ jobConfig.id }}</a></td>
                     <td>{{ jobConfig.configKey }}</td>
                     <td>{{ jobConfig.configValue }}</td>
-                    <td>{{ jobConfig.configType }}</td>
-                    <td>
-                        <div *ngIf="jobConfig.job">
-                            <a [routerLink]="['/job', jobConfig.job?.id, 'view']" >{{ jobConfig.job?.id }}</a>
-                        </div>
-                    </td>
+                    <td jhiTranslate="{{ 'pipelineApp.ConfigType.' + jobConfig.configType }}">{{ jobConfig.configType }}</td>
                     <td class="text-right">
                         <div class="btn-group">
                             <button type="submit"

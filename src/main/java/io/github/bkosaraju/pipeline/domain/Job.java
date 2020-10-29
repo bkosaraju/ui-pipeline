@@ -7,8 +7,6 @@ import javax.persistence.*;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * A Job.
@@ -33,18 +31,6 @@ public class Job implements Serializable {
 
     @Column(name = "create_timestamp")
     private ZonedDateTime createTimestamp;
-
-    @OneToMany(mappedBy = "job")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    private Set<JobConfig> jobConfigs = new HashSet<>();
-
-    @OneToMany(mappedBy = "job")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    private Set<JobTaskOrder> jobTaskOrders = new HashSet<>();
-
-    @OneToMany(mappedBy = "job")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    private Set<JobExecution> jobExecutions = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -92,81 +78,6 @@ public class Job implements Serializable {
 
     public void setCreateTimestamp(ZonedDateTime createTimestamp) {
         this.createTimestamp = createTimestamp;
-    }
-
-    public Set<JobConfig> getJobConfigs() {
-        return jobConfigs;
-    }
-
-    public Job jobConfigs(Set<JobConfig> jobConfigs) {
-        this.jobConfigs = jobConfigs;
-        return this;
-    }
-
-    public Job addJobConfig(JobConfig jobConfig) {
-        this.jobConfigs.add(jobConfig);
-        jobConfig.setJob(this);
-        return this;
-    }
-
-    public Job removeJobConfig(JobConfig jobConfig) {
-        this.jobConfigs.remove(jobConfig);
-        jobConfig.setJob(null);
-        return this;
-    }
-
-    public void setJobConfigs(Set<JobConfig> jobConfigs) {
-        this.jobConfigs = jobConfigs;
-    }
-
-    public Set<JobTaskOrder> getJobTaskOrders() {
-        return jobTaskOrders;
-    }
-
-    public Job jobTaskOrders(Set<JobTaskOrder> jobTaskOrders) {
-        this.jobTaskOrders = jobTaskOrders;
-        return this;
-    }
-
-    public Job addJobTaskOrder(JobTaskOrder jobTaskOrder) {
-        this.jobTaskOrders.add(jobTaskOrder);
-        jobTaskOrder.setJob(this);
-        return this;
-    }
-
-    public Job removeJobTaskOrder(JobTaskOrder jobTaskOrder) {
-        this.jobTaskOrders.remove(jobTaskOrder);
-        jobTaskOrder.setJob(null);
-        return this;
-    }
-
-    public void setJobTaskOrders(Set<JobTaskOrder> jobTaskOrders) {
-        this.jobTaskOrders = jobTaskOrders;
-    }
-
-    public Set<JobExecution> getJobExecutions() {
-        return jobExecutions;
-    }
-
-    public Job jobExecutions(Set<JobExecution> jobExecutions) {
-        this.jobExecutions = jobExecutions;
-        return this;
-    }
-
-    public Job addJobExecution(JobExecution jobExecution) {
-        this.jobExecutions.add(jobExecution);
-        jobExecution.setJob(this);
-        return this;
-    }
-
-    public Job removeJobExecution(JobExecution jobExecution) {
-        this.jobExecutions.remove(jobExecution);
-        jobExecution.setJob(null);
-        return this;
-    }
-
-    public void setJobExecutions(Set<JobExecution> jobExecutions) {
-        this.jobExecutions = jobExecutions;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 

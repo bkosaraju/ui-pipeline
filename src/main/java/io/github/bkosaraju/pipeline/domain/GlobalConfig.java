@@ -7,6 +7,8 @@ import javax.persistence.*;
 
 import java.io.Serializable;
 
+import io.github.bkosaraju.pipeline.domain.enumeration.ConfigType;
+
 /**
  * A GlobalConfig.
  */
@@ -28,8 +30,9 @@ public class GlobalConfig implements Serializable {
     @Column(name = "config_value")
     private String configValue;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "config_type")
-    private String configType;
+    private ConfigType configType;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -66,16 +69,16 @@ public class GlobalConfig implements Serializable {
         this.configValue = configValue;
     }
 
-    public String getConfigType() {
+    public ConfigType getConfigType() {
         return configType;
     }
 
-    public GlobalConfig configType(String configType) {
+    public GlobalConfig configType(ConfigType configType) {
         this.configType = configType;
         return this;
     }
 
-    public void setConfigType(String configType) {
+    public void setConfigType(ConfigType configType) {
         this.configType = configType;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

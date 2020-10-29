@@ -38,13 +38,7 @@ application {
     websocket false
   }
 
-  entities all
-}
-
-entity Job {
-  jobName String,
-  jobStatusFlag Integer,
-  createTimestamp ZonedDateTime
+  entities GlobalConfig, Job, JobConfig, JobExecution, JobTaskOrder, Task, TaskConfig, TaskExecution, TaskExecutionConfig
 }
 
 entity GlobalConfig {
@@ -52,22 +46,16 @@ entity GlobalConfig {
   configValue String,
   configType ConfigType
 }
-
-
+entity Job {
+  jobName String,
+  jobStatusFlag Integer,
+  createTimestamp ZonedDateTime
+}
 entity JobConfig {
   configKey String,
   configValue String,
   configType ConfigType
 }
-
-
-entity TaskConfig {
-  configKey String,
-  configValue String,
-  configType ConfigType,
-  configVersion Float 
-}
-
 entity JobExecution {
   jobOrderTimestamp ZonedDateTime,
   jobExecutionStatus String,
@@ -84,7 +72,12 @@ entity Task {
   taskType TaskType,
   createTimestamp ZonedDateTime
 }
-
+entity TaskConfig {
+  configKey String,
+  configValue String,
+  configType ConfigType,
+  configVersion Float
+}
 entity TaskExecution {
   jobOrderTimestamp ZonedDateTime,
   taskExecutionStatus String,
@@ -96,6 +89,11 @@ entity TaskExecutionConfig {
   configValue String,
   configVersion Float
 }
+enum ConfigType {
+  STATIC,
+  AWS_SSM,
+  HASHICORP_VAULT
+}
 enum TaskType {
   SFTP,
   SHELL,
@@ -105,24 +103,17 @@ enum TaskType {
   SPRAK_ON_EMR
 }
 
-
-enum ConfigType {
-	  STATIC,
-    AWS_SSM,
-    HASHICORP_VAULT
-}
-
 relationship OneToMany {
-  Job{jobConfig} to JobConfig{job},
-  Job{jobExecution} to JobExecution{job},
-  Job{jobTaskOrder} to JobTaskOrder{job},
-  Task{jobTaskOrder} to JobTaskOrder{task},
-  Task{taskConfig} to TaskConfig{task},
-  Task{taskExecution} to TaskExecution{task},
   JobExecution{taskExecution} to TaskExecution{jobExecution},
   TaskExecution{taskExecutionConfig} to TaskExecutionConfig{taskExecution}
 }
+relationship ManyToOne {
+  JobExecution{job} to Job,
+  JobTaskOrder{job} to Job,
+  JobTaskOrder{task} to Task,
+  TaskExecution{task} to Task
+}
 
-paginate all with pagination
-service all with serviceImpl
-filter all
+paginate GlobalConfig, Job, JobConfig, JobExecution, JobTaskOrder, Task, TaskConfig, TaskExecution, TaskExecutionConfig with pagination
+service GlobalConfig, Job, JobConfig, JobExecution, JobTaskOrder, Task, TaskConfig, TaskExecution, TaskExecutionConfig with serviceImpl
+filter GlobalConfig, Job, JobConfig, JobExecution, JobTaskOrder, Task, TaskConfig, TaskExecution, TaskExecutionConfig

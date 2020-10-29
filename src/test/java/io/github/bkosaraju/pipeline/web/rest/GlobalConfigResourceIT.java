@@ -25,6 +25,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import io.github.bkosaraju.pipeline.domain.enumeration.ConfigType;
 /**
  * Integration tests for the {@link GlobalConfigResource} REST controller.
  */
@@ -39,8 +40,8 @@ public class GlobalConfigResourceIT {
     private static final String DEFAULT_CONFIG_VALUE = "AAAAAAAAAA";
     private static final String UPDATED_CONFIG_VALUE = "BBBBBBBBBB";
 
-    private static final String DEFAULT_CONFIG_TYPE = "AAAAAAAAAA";
-    private static final String UPDATED_CONFIG_TYPE = "BBBBBBBBBB";
+    private static final ConfigType DEFAULT_CONFIG_TYPE = ConfigType.STATIC;
+    private static final ConfigType UPDATED_CONFIG_TYPE = ConfigType.AWS_SSM;
 
     @Autowired
     private GlobalConfigRepository globalConfigRepository;
@@ -143,7 +144,7 @@ public class GlobalConfigResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(globalConfig.getId().intValue())))
             .andExpect(jsonPath("$.[*].configKey").value(hasItem(DEFAULT_CONFIG_KEY)))
             .andExpect(jsonPath("$.[*].configValue").value(hasItem(DEFAULT_CONFIG_VALUE)))
-            .andExpect(jsonPath("$.[*].configType").value(hasItem(DEFAULT_CONFIG_TYPE)));
+            .andExpect(jsonPath("$.[*].configType").value(hasItem(DEFAULT_CONFIG_TYPE.toString())));
     }
     
     @Test
@@ -159,7 +160,7 @@ public class GlobalConfigResourceIT {
             .andExpect(jsonPath("$.id").value(globalConfig.getId().intValue()))
             .andExpect(jsonPath("$.configKey").value(DEFAULT_CONFIG_KEY))
             .andExpect(jsonPath("$.configValue").value(DEFAULT_CONFIG_VALUE))
-            .andExpect(jsonPath("$.configType").value(DEFAULT_CONFIG_TYPE));
+            .andExpect(jsonPath("$.configType").value(DEFAULT_CONFIG_TYPE.toString()));
     }
 
 
@@ -389,32 +390,6 @@ public class GlobalConfigResourceIT {
         // Get all the globalConfigList where configType is null
         defaultGlobalConfigShouldNotBeFound("configType.specified=false");
     }
-                @Test
-    @Transactional
-    public void getAllGlobalConfigsByConfigTypeContainsSomething() throws Exception {
-        // Initialize the database
-        globalConfigRepository.saveAndFlush(globalConfig);
-
-        // Get all the globalConfigList where configType contains DEFAULT_CONFIG_TYPE
-        defaultGlobalConfigShouldBeFound("configType.contains=" + DEFAULT_CONFIG_TYPE);
-
-        // Get all the globalConfigList where configType contains UPDATED_CONFIG_TYPE
-        defaultGlobalConfigShouldNotBeFound("configType.contains=" + UPDATED_CONFIG_TYPE);
-    }
-
-    @Test
-    @Transactional
-    public void getAllGlobalConfigsByConfigTypeNotContainsSomething() throws Exception {
-        // Initialize the database
-        globalConfigRepository.saveAndFlush(globalConfig);
-
-        // Get all the globalConfigList where configType does not contain DEFAULT_CONFIG_TYPE
-        defaultGlobalConfigShouldNotBeFound("configType.doesNotContain=" + DEFAULT_CONFIG_TYPE);
-
-        // Get all the globalConfigList where configType does not contain UPDATED_CONFIG_TYPE
-        defaultGlobalConfigShouldBeFound("configType.doesNotContain=" + UPDATED_CONFIG_TYPE);
-    }
-
     /**
      * Executes the search, and checks that the default entity is returned.
      */
@@ -425,7 +400,7 @@ public class GlobalConfigResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(globalConfig.getId().intValue())))
             .andExpect(jsonPath("$.[*].configKey").value(hasItem(DEFAULT_CONFIG_KEY)))
             .andExpect(jsonPath("$.[*].configValue").value(hasItem(DEFAULT_CONFIG_VALUE)))
-            .andExpect(jsonPath("$.[*].configType").value(hasItem(DEFAULT_CONFIG_TYPE)));
+            .andExpect(jsonPath("$.[*].configType").value(hasItem(DEFAULT_CONFIG_TYPE.toString())));
 
         // Check, that the count call also returns 1
         restGlobalConfigMockMvc.perform(get("/api/global-configs/count?sort=id,desc&" + filter))
