@@ -38,24 +38,36 @@ application {
     websocket false
   }
 
-  entities GlobalConfig, Job, JobConfig, JobExecution, JobTaskOrder, Task, TaskConfig, TaskExecution, TaskExecutionConfig
+  entities all
+}
+
+entity Job {
+  jobName String,
+  jobStatusFlag Integer,
+  createTimestamp ZonedDateTime
 }
 
 entity GlobalConfig {
   configKey String,
   configValue String,
-  configType String
+  configType ConfigType
 }
-entity Job {
-  jobName String,
-  jobStatusFlag Integer,
-  createTimeStamp ZonedDateTime
-}
+
+
 entity JobConfig {
   configKey String,
   configValue String,
-  configType String
+  configType ConfigType
 }
+
+
+entity TaskConfig {
+  configKey String,
+  configValue String,
+  configType ConfigType,
+  configVersion Float 
+}
+
 entity JobExecution {
   jobOrderTimestamp ZonedDateTime,
   jobExecutionStatus String,
@@ -70,14 +82,9 @@ entity JobTaskOrder {
 entity Task {
   taskName String,
   taskType TaskType,
-  createTimeStamp ZonedDateTime
+  createTimestamp ZonedDateTime
 }
-entity TaskConfig {
-  configKey String,
-  configValue String,
-  configType String,
-  configVersion Float
-}
+
 entity TaskExecution {
   jobOrderTimestamp ZonedDateTime,
   taskExecutionStatus String,
@@ -98,6 +105,13 @@ enum TaskType {
   SPRAK_ON_EMR
 }
 
+
+enum ConfigType {
+	  STATIC,
+    AWS_SSM,
+    HASHICORP_VAULT
+}
+
 relationship OneToMany {
   Job{jobConfig} to JobConfig{job},
   Job{jobExecution} to JobExecution{job},
@@ -109,6 +123,6 @@ relationship OneToMany {
   TaskExecution{taskExecutionConfig} to TaskExecutionConfig{taskExecution}
 }
 
-paginate GlobalConfig, Job, JobConfig, JobExecution, JobTaskOrder, Task, TaskConfig, TaskExecution, TaskExecutionConfig with pagination
-service GlobalConfig, Job, JobConfig, JobExecution, JobTaskOrder, Task, TaskConfig, TaskExecution, TaskExecutionConfig with serviceImpl
-filter GlobalConfig, Job, JobConfig, JobExecution, JobTaskOrder, Task, TaskConfig, TaskExecution, TaskExecutionConfig
+paginate all with pagination
+service all with serviceImpl
+filter all
