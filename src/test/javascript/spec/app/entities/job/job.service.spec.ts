@@ -24,7 +24,7 @@ describe('Service Tests', () => {
       httpMock = injector.get(HttpTestingController);
       currentDate = moment();
 
-      elemDefault = new Job(0, 'AAAAAAA', 0, currentDate);
+      elemDefault = new Job(0, 'AAAAAAA', false, currentDate);
     });
 
     describe('Service methods', () => {
@@ -70,7 +70,7 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             jobName: 'BBBBBB',
-            jobStatusFlag: 1,
+            jobStatusFlag: true,
             createTimestamp: currentDate.format(DATE_TIME_FORMAT),
           },
           elemDefault
@@ -94,7 +94,7 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             jobName: 'BBBBBB',
-            jobStatusFlag: 1,
+            jobStatusFlag: true,
             createTimestamp: currentDate.format(DATE_TIME_FORMAT),
           },
           elemDefault

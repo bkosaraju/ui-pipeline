@@ -7,14 +7,21 @@
     },
     {
       "fieldName": "jobStatusFlag",
-      "fieldType": "Integer"
+      "fieldType": "Boolean"
     },
     {
       "fieldName": "createTimestamp",
       "fieldType": "ZonedDateTime"
     }
   ],
-  "relationships": [],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "jobConfig",
+      "otherEntityRelationshipName": "job",
+      "relationshipName": "jobConfig"
+    }
+  ],
   "changelogDate": "20201025235008",
   "entityTableName": "job",
   "dto": "no",

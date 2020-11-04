@@ -18,7 +18,7 @@
             <column name="job_name" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="job_status_flag" type="integer">
+            <column name="job_status_flag" type="boolean">
                 <constraints nullable="true" />
             </column>
             <column name="create_timestamp" type="datetime">
@@ -49,7 +49,7 @@
                   tableName="job">
             <column name="id" type="numeric"/>
             <column name="job_name" type="string"/>
-            <column name="job_status_flag" type="numeric"/>
+            <column name="job_status_flag" type="boolean"/>
             <column name="create_timestamp" type="datetime"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>

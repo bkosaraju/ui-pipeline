@@ -31,6 +31,14 @@
                         <option value="HASHICORP_VAULT">{{ 'pipelineApp.ConfigType.HASHICORP_VAULT' | translate }}</option>
                     </select>
                 </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="pipelineApp.jobConfig.job" for="field_job">Job</label>
+                    <select class="form-control" id="field_job" name="job" formControlName="job">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="jobOption.id === editForm.get('job')!.value?.id ? editForm.get('job')!.value : jobOption" *ngFor="let jobOption of jobs; trackBy: trackById">{{ jobOption.id }}</option>
+                    </select>
+                </div>
             </div>
 
             <div>

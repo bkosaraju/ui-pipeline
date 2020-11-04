@@ -2,6 +2,7 @@ package io.github.bkosaraju.pipeline.web.rest;
 
 import io.github.bkosaraju.pipeline.PipelineApp;
 import io.github.bkosaraju.pipeline.domain.Task;
+import io.github.bkosaraju.pipeline.domain.TaskConfig;
 import io.github.bkosaraju.pipeline.repository.TaskRepository;
 import io.github.bkosaraju.pipeline.service.TaskService;
 import io.github.bkosaraju.pipeline.service.dto.TaskCriteria;
@@ -421,6 +422,26 @@ public class TaskResourceIT {
 
         // Get all the taskList where createTimestamp is greater than SMALLER_CREATE_TIMESTAMP
         defaultTaskShouldBeFound("createTimestamp.greaterThan=" + SMALLER_CREATE_TIMESTAMP);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllTasksByTaskConfigIsEqualToSomething() throws Exception {
+        // Initialize the database
+        taskRepository.saveAndFlush(task);
+        TaskConfig taskConfig = TaskConfigResourceIT.createEntity(em);
+        em.persist(taskConfig);
+        em.flush();
+        task.addTaskConfig(taskConfig);
+        taskRepository.saveAndFlush(task);
+        Long taskConfigId = taskConfig.getId();
+
+        // Get all the taskList where taskConfig equals to taskConfigId
+        defaultTaskShouldBeFound("taskConfigId.equals=" + taskConfigId);
+
+        // Get all the taskList where taskConfig equals to taskConfigId + 1
+        defaultTaskShouldNotBeFound("taskConfigId.equals=" + (taskConfigId + 1));
     }
 
     /**

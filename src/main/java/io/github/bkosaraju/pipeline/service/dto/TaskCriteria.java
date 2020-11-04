@@ -52,6 +52,8 @@ public class TaskCriteria implements Serializable, Criteria {
 
     private ZonedDateTimeFilter createTimestamp;
 
+    private LongFilter taskConfigId;
+
     public TaskCriteria() {
     }
 
@@ -60,6 +62,7 @@ public class TaskCriteria implements Serializable, Criteria {
         this.taskName = other.taskName == null ? null : other.taskName.copy();
         this.taskType = other.taskType == null ? null : other.taskType.copy();
         this.createTimestamp = other.createTimestamp == null ? null : other.createTimestamp.copy();
+        this.taskConfigId = other.taskConfigId == null ? null : other.taskConfigId.copy();
     }
 
     @Override
@@ -99,6 +102,14 @@ public class TaskCriteria implements Serializable, Criteria {
         this.createTimestamp = createTimestamp;
     }
 
+    public LongFilter getTaskConfigId() {
+        return taskConfigId;
+    }
+
+    public void setTaskConfigId(LongFilter taskConfigId) {
+        this.taskConfigId = taskConfigId;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -113,7 +124,8 @@ public class TaskCriteria implements Serializable, Criteria {
             Objects.equals(id, that.id) &&
             Objects.equals(taskName, that.taskName) &&
             Objects.equals(taskType, that.taskType) &&
-            Objects.equals(createTimestamp, that.createTimestamp);
+            Objects.equals(createTimestamp, that.createTimestamp) &&
+            Objects.equals(taskConfigId, that.taskConfigId);
     }
 
     @Override
@@ -122,7 +134,8 @@ public class TaskCriteria implements Serializable, Criteria {
         id,
         taskName,
         taskType,
-        createTimestamp
+        createTimestamp,
+        taskConfigId
         );
     }
 
@@ -134,6 +147,7 @@ public class TaskCriteria implements Serializable, Criteria {
                 (taskName != null ? "taskName=" + taskName + ", " : "") +
                 (taskType != null ? "taskType=" + taskType + ", " : "") +
                 (createTimestamp != null ? "createTimestamp=" + createTimestamp + ", " : "") +
+                (taskConfigId != null ? "taskConfigId=" + taskConfigId + ", " : "") +
             "}";
     }
 

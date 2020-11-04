@@ -24,6 +24,12 @@
                 <dd>
                     <span>{{ taskConfig.configVersion }}</span>
                 </dd>
+                <dt><span jhiTranslate="pipelineApp.taskConfig.task">Task</span></dt>
+                <dd>
+                    <div *ngIf="taskConfig.task">
+                        <a [routerLink]="['/task', taskConfig.task?.id, 'view']">{{ taskConfig.task?.id }}</a>
+                    </div>
+                </dd>
             </dl>
 
             <button type="submit"

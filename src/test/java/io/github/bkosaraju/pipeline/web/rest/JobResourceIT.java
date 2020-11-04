@@ -2,6 +2,7 @@ package io.github.bkosaraju.pipeline.web.rest;
 
 import io.github.bkosaraju.pipeline.PipelineApp;
 import io.github.bkosaraju.pipeline.domain.Job;
+import io.github.bkosaraju.pipeline.domain.JobConfig;
 import io.github.bkosaraju.pipeline.repository.JobRepository;
 import io.github.bkosaraju.pipeline.service.JobService;
 import io.github.bkosaraju.pipeline.service.dto.JobCriteria;
@@ -41,9 +42,8 @@ public class JobResourceIT {
     private static final String DEFAULT_JOB_NAME = "AAAAAAAAAA";
     private static final String UPDATED_JOB_NAME = "BBBBBBBBBB";
 
-    private static final Integer DEFAULT_JOB_STATUS_FLAG = 1;
-    private static final Integer UPDATED_JOB_STATUS_FLAG = 2;
-    private static final Integer SMALLER_JOB_STATUS_FLAG = 1 - 1;
+    private static final Boolean DEFAULT_JOB_STATUS_FLAG = false;
+    private static final Boolean UPDATED_JOB_STATUS_FLAG = true;
 
     private static final ZonedDateTime DEFAULT_CREATE_TIMESTAMP = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_CREATE_TIMESTAMP = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
@@ -113,7 +113,7 @@ public class JobResourceIT {
         assertThat(jobList).hasSize(databaseSizeBeforeCreate + 1);
         Job testJob = jobList.get(jobList.size() - 1);
         assertThat(testJob.getJobName()).isEqualTo(DEFAULT_JOB_NAME);
-        assertThat(testJob.getJobStatusFlag()).isEqualTo(DEFAULT_JOB_STATUS_FLAG);
+        assertThat(testJob.isJobStatusFlag()).isEqualTo(DEFAULT_JOB_STATUS_FLAG);
         assertThat(testJob.getCreateTimestamp()).isEqualTo(DEFAULT_CREATE_TIMESTAMP);
     }
 
@@ -149,7 +149,7 @@ public class JobResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(job.getId().intValue())))
             .andExpect(jsonPath("$.[*].jobName").value(hasItem(DEFAULT_JOB_NAME)))
-            .andExpect(jsonPath("$.[*].jobStatusFlag").value(hasItem(DEFAULT_JOB_STATUS_FLAG)))
+            .andExpect(jsonPath("$.[*].jobStatusFlag").value(hasItem(DEFAULT_JOB_STATUS_FLAG.booleanValue())))
             .andExpect(jsonPath("$.[*].createTimestamp").value(hasItem(sameInstant(DEFAULT_CREATE_TIMESTAMP))));
     }
     
@@ -165,7 +165,7 @@ public class JobResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(job.getId().intValue()))
             .andExpect(jsonPath("$.jobName").value(DEFAULT_JOB_NAME))
-            .andExpect(jsonPath("$.jobStatusFlag").value(DEFAULT_JOB_STATUS_FLAG))
+            .andExpect(jsonPath("$.jobStatusFlag").value(DEFAULT_JOB_STATUS_FLAG.booleanValue()))
             .andExpect(jsonPath("$.createTimestamp").value(sameInstant(DEFAULT_CREATE_TIMESTAMP)));
     }
 
@@ -321,59 +321,6 @@ public class JobResourceIT {
 
     @Test
     @Transactional
-    public void getAllJobsByJobStatusFlagIsGreaterThanOrEqualToSomething() throws Exception {
-        // Initialize the database
-        jobRepository.saveAndFlush(job);
-
-        // Get all the jobList where jobStatusFlag is greater than or equal to DEFAULT_JOB_STATUS_FLAG
-        defaultJobShouldBeFound("jobStatusFlag.greaterThanOrEqual=" + DEFAULT_JOB_STATUS_FLAG);
-
-        // Get all the jobList where jobStatusFlag is greater than or equal to UPDATED_JOB_STATUS_FLAG
-        defaultJobShouldNotBeFound("jobStatusFlag.greaterThanOrEqual=" + UPDATED_JOB_STATUS_FLAG);
-    }
-
-    @Test
-    @Transactional
-    public void getAllJobsByJobStatusFlagIsLessThanOrEqualToSomething() throws Exception {
-        // Initialize the database
-        jobRepository.saveAndFlush(job);
-
-        // Get all the jobList where jobStatusFlag is less than or equal to DEFAULT_JOB_STATUS_FLAG
-        defaultJobShouldBeFound("jobStatusFlag.lessThanOrEqual=" + DEFAULT_JOB_STATUS_FLAG);
-
-        // Get all the jobList where jobStatusFlag is less than or equal to SMALLER_JOB_STATUS_FLAG
-        defaultJobShouldNotBeFound("jobStatusFlag.lessThanOrEqual=" + SMALLER_JOB_STATUS_FLAG);
-    }
-
-    @Test
-    @Transactional
-    public void getAllJobsByJobStatusFlagIsLessThanSomething() throws Exception {
-        // Initialize the database
-        jobRepository.saveAndFlush(job);
-
-        // Get all the jobList where jobStatusFlag is less than DEFAULT_JOB_STATUS_FLAG
-        defaultJobShouldNotBeFound("jobStatusFlag.lessThan=" + DEFAULT_JOB_STATUS_FLAG);
-
-        // Get all the jobList where jobStatusFlag is less than UPDATED_JOB_STATUS_FLAG
-        defaultJobShouldBeFound("jobStatusFlag.lessThan=" + UPDATED_JOB_STATUS_FLAG);
-    }
-
-    @Test
-    @Transactional
-    public void getAllJobsByJobStatusFlagIsGreaterThanSomething() throws Exception {
-        // Initialize the database
-        jobRepository.saveAndFlush(job);
-
-        // Get all the jobList where jobStatusFlag is greater than DEFAULT_JOB_STATUS_FLAG
-        defaultJobShouldNotBeFound("jobStatusFlag.greaterThan=" + DEFAULT_JOB_STATUS_FLAG);
-
-        // Get all the jobList where jobStatusFlag is greater than SMALLER_JOB_STATUS_FLAG
-        defaultJobShouldBeFound("jobStatusFlag.greaterThan=" + SMALLER_JOB_STATUS_FLAG);
-    }
-
-
-    @Test
-    @Transactional
     public void getAllJobsByCreateTimestampIsEqualToSomething() throws Exception {
         // Initialize the database
         jobRepository.saveAndFlush(job);
@@ -476,6 +423,26 @@ public class JobResourceIT {
         defaultJobShouldBeFound("createTimestamp.greaterThan=" + SMALLER_CREATE_TIMESTAMP);
     }
 
+
+    @Test
+    @Transactional
+    public void getAllJobsByJobConfigIsEqualToSomething() throws Exception {
+        // Initialize the database
+        jobRepository.saveAndFlush(job);
+        JobConfig jobConfig = JobConfigResourceIT.createEntity(em);
+        em.persist(jobConfig);
+        em.flush();
+        job.addJobConfig(jobConfig);
+        jobRepository.saveAndFlush(job);
+        Long jobConfigId = jobConfig.getId();
+
+        // Get all the jobList where jobConfig equals to jobConfigId
+        defaultJobShouldBeFound("jobConfigId.equals=" + jobConfigId);
+
+        // Get all the jobList where jobConfig equals to jobConfigId + 1
+        defaultJobShouldNotBeFound("jobConfigId.equals=" + (jobConfigId + 1));
+    }
+
     /**
      * Executes the search, and checks that the default entity is returned.
      */
@@ -485,7 +452,7 @@ public class JobResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(job.getId().intValue())))
             .andExpect(jsonPath("$.[*].jobName").value(hasItem(DEFAULT_JOB_NAME)))
-            .andExpect(jsonPath("$.[*].jobStatusFlag").value(hasItem(DEFAULT_JOB_STATUS_FLAG)))
+            .andExpect(jsonPath("$.[*].jobStatusFlag").value(hasItem(DEFAULT_JOB_STATUS_FLAG.booleanValue())))
             .andExpect(jsonPath("$.[*].createTimestamp").value(hasItem(sameInstant(DEFAULT_CREATE_TIMESTAMP))));
 
         // Check, that the count call also returns 1
@@ -547,7 +514,7 @@ public class JobResourceIT {
         assertThat(jobList).hasSize(databaseSizeBeforeUpdate);
         Job testJob = jobList.get(jobList.size() - 1);
         assertThat(testJob.getJobName()).isEqualTo(UPDATED_JOB_NAME);
-        assertThat(testJob.getJobStatusFlag()).isEqualTo(UPDATED_JOB_STATUS_FLAG);
+        assertThat(testJob.isJobStatusFlag()).isEqualTo(UPDATED_JOB_STATUS_FLAG);
         assertThat(testJob.getCreateTimestamp()).isEqualTo(UPDATED_CREATE_TIMESTAMP);
     }
 

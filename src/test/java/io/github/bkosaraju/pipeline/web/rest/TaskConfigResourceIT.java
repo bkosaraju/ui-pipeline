@@ -2,6 +2,7 @@ package io.github.bkosaraju.pipeline.web.rest;
 
 import io.github.bkosaraju.pipeline.PipelineApp;
 import io.github.bkosaraju.pipeline.domain.TaskConfig;
+import io.github.bkosaraju.pipeline.domain.Task;
 import io.github.bkosaraju.pipeline.repository.TaskConfigRepository;
 import io.github.bkosaraju.pipeline.service.TaskConfigService;
 import io.github.bkosaraju.pipeline.service.dto.TaskConfigCriteria;
@@ -502,6 +503,26 @@ public class TaskConfigResourceIT {
 
         // Get all the taskConfigList where configVersion is greater than SMALLER_CONFIG_VERSION
         defaultTaskConfigShouldBeFound("configVersion.greaterThan=" + SMALLER_CONFIG_VERSION);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllTaskConfigsByTaskIsEqualToSomething() throws Exception {
+        // Initialize the database
+        taskConfigRepository.saveAndFlush(taskConfig);
+        Task task = TaskResourceIT.createEntity(em);
+        em.persist(task);
+        em.flush();
+        taskConfig.setTask(task);
+        taskConfigRepository.saveAndFlush(taskConfig);
+        Long taskId = task.getId();
+
+        // Get all the taskConfigList where task equals to taskId
+        defaultTaskConfigShouldBeFound("taskId.equals=" + taskId);
+
+        // Get all the taskConfigList where task equals to taskId + 1
+        defaultTaskConfigShouldNotBeFound("taskId.equals=" + (taskId + 1));
     }
 
     /**

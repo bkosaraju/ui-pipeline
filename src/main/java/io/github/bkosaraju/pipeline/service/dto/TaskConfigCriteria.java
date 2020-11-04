@@ -53,6 +53,8 @@ public class TaskConfigCriteria implements Serializable, Criteria {
 
     private FloatFilter configVersion;
 
+    private LongFilter taskId;
+
     public TaskConfigCriteria() {
     }
 
@@ -62,6 +64,7 @@ public class TaskConfigCriteria implements Serializable, Criteria {
         this.configValue = other.configValue == null ? null : other.configValue.copy();
         this.configType = other.configType == null ? null : other.configType.copy();
         this.configVersion = other.configVersion == null ? null : other.configVersion.copy();
+        this.taskId = other.taskId == null ? null : other.taskId.copy();
     }
 
     @Override
@@ -109,6 +112,14 @@ public class TaskConfigCriteria implements Serializable, Criteria {
         this.configVersion = configVersion;
     }
 
+    public LongFilter getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(LongFilter taskId) {
+        this.taskId = taskId;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -124,7 +135,8 @@ public class TaskConfigCriteria implements Serializable, Criteria {
             Objects.equals(configKey, that.configKey) &&
             Objects.equals(configValue, that.configValue) &&
             Objects.equals(configType, that.configType) &&
-            Objects.equals(configVersion, that.configVersion);
+            Objects.equals(configVersion, that.configVersion) &&
+            Objects.equals(taskId, that.taskId);
     }
 
     @Override
@@ -134,7 +146,8 @@ public class TaskConfigCriteria implements Serializable, Criteria {
         configKey,
         configValue,
         configType,
-        configVersion
+        configVersion,
+        taskId
         );
     }
 
@@ -147,6 +160,7 @@ public class TaskConfigCriteria implements Serializable, Criteria {
                 (configValue != null ? "configValue=" + configValue + ", " : "") +
                 (configType != null ? "configType=" + configType + ", " : "") +
                 (configVersion != null ? "configVersion=" + configVersion + ", " : "") +
+                (taskId != null ? "taskId=" + taskId + ", " : "") +
             "}";
     }
 

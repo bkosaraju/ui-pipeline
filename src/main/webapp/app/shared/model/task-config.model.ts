@@ -1,3 +1,4 @@
+import { ITask } from 'app/shared/model/task.model';
 import { ConfigType } from 'app/shared/model/enumerations/config-type.model';
 
 export interface ITaskConfig {
@@ -6,6 +7,7 @@ export interface ITaskConfig {
   configValue?: string;
   configType?: ConfigType;
   configVersion?: number;
+  task?: ITask;
 }
 
 export class TaskConfig implements ITaskConfig {
@@ -14,6 +16,7 @@ export class TaskConfig implements ITaskConfig {
     public configKey?: string,
     public configValue?: string,
     public configType?: ConfigType,
-    public configVersion?: number
+    public configVersion?: number,
+    public task?: ITask
   ) {}
 }

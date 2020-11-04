@@ -1,5 +1,6 @@
 package io.github.bkosaraju.pipeline.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -36,6 +37,10 @@ public class TaskConfig implements Serializable {
 
     @Column(name = "config_version")
     private Float configVersion;
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = "taskConfigs", allowSetters = true)
+    private Task task;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -96,6 +101,19 @@ public class TaskConfig implements Serializable {
 
     public void setConfigVersion(Float configVersion) {
         this.configVersion = configVersion;
+    }
+
+    public Task getTask() {
+        return task;
+    }
+
+    public TaskConfig task(Task task) {
+        this.task = task;
+        return this;
+    }
+
+    public void setTask(Task task) {
+        this.task = task;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 

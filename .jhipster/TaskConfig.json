@@ -19,7 +19,15 @@
       "fieldType": "Float"
     }
   ],
-  "relationships": [],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "task",
+      "otherEntityRelationshipName": "taskConfig",
+      "relationshipName": "task",
+      "otherEntityField": "id"
+    }
+  ],
   "changelogDate": "20201025235508",
   "entityTableName": "task_config",
   "dto": "no",

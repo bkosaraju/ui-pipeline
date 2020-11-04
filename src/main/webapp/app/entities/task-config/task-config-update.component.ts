@@ -7,6 +7,8 @@ import { Observable } from 'rxjs';
 
 import { ITaskConfig, TaskConfig } from 'app/shared/model/task-config.model';
 import { TaskConfigService } from './task-config.service';
+import { ITask } from 'app/shared/model/task.model';
+import { TaskService } from 'app/entities/task/task.service';
 
 @Component({
   selector: 'jhi-task-config-update',
@@ -14,6 +16,7 @@ import { TaskConfigService } from './task-config.service';
 })
 export class TaskConfigUpdateComponent implements OnInit {
   isSaving = false;
+  tasks: ITask[] = [];
 
   editForm = this.fb.group({
     id: [],
@@ -21,13 +24,21 @@ export class TaskConfigUpdateComponent implements OnInit {
     configValue: [],
     configType: [],
     configVersion: [],
+    task: [],
   });
 
-  constructor(protected taskConfigService: TaskConfigService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
+  constructor(
+    protected taskConfigService: TaskConfigService,
+    protected taskService: TaskService,
+    protected activatedRoute: ActivatedRoute,
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ taskConfig }) => {
       this.updateForm(taskConfig);
+
+      this.taskService.query().subscribe((res: HttpResponse<ITask[]>) => (this.tasks = res.body || []));
     });
   }
 
@@ -38,6 +49,7 @@ export class TaskConfigUpdateComponent implements OnInit {
       configValue: taskConfig.configValue,
       configType: taskConfig.configType,
       configVersion: taskConfig.configVersion,
+      task: taskConfig.task,
     });
   }
 
@@ -63,6 +75,7 @@ export class TaskConfigUpdateComponent implements OnInit {
       configValue: this.editForm.get(['configValue'])!.value,
       configType: this.editForm.get(['configType'])!.value,
       configVersion: this.editForm.get(['configVersion'])!.value,
+      task: this.editForm.get(['task'])!.value,
     };
   }
 
@@ -80,5 +93,9 @@ export class TaskConfigUpdateComponent implements OnInit {
 
   protected onSaveError(): void {
     this.isSaving = false;
+  }
+
+  trackById(index: number, item: ITask): any {
+    return item.id;
   }
 }

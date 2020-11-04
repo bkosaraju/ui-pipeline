@@ -79,6 +79,7 @@ spring:
       hibernate.connection.provider_disables_autocommit: true
       hibernate.cache.use_second_level_cache: true
       hibernate.cache.use_query_cache: false
+      hibernate.default_schema: meta
       hibernate.generate_statistics: false
       # modify batch size as necessary
       hibernate.jdbc.batch_size: 25
@@ -161,5 +162,12 @@ jhipster:
 # More documentation is available at:
 # https://www.jhipster.tech/common-application-properties/
 # ===================================================================
-
 # application:
+pipeline:
+  app:
+    jdbcHostname: 127.0.0.1
+    jdbcPort: 5432
+    jdbcDatabase: imf_jdbi
+    jdbcUsername: kosab1
+    jdbcPassword: kosab1
+    jdbcSchema: meta

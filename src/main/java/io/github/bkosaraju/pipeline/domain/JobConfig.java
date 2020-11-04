@@ -1,5 +1,6 @@
 package io.github.bkosaraju.pipeline.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -33,6 +34,10 @@ public class JobConfig implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "config_type")
     private ConfigType configType;
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = "jobConfigs", allowSetters = true)
+    private Job job;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -80,6 +85,19 @@ public class JobConfig implements Serializable {
 
     public void setConfigType(ConfigType configType) {
         this.configType = configType;
+    }
+
+    public Job getJob() {
+        return job;
+    }
+
+    public JobConfig job(Job job) {
+        this.job = job;
+        return this;
+    }
+
+    public void setJob(Job job) {
+        this.job = job;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 

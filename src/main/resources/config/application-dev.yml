@@ -37,21 +37,32 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:h2:mem:pipeline;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    username: pipeline
-    password:
+    url: jdbc:postgresql://localhost:5432/imf_jdbi
+    username: kosab1
+    password: kosab1
     hikari:
       poolName: Hikari
       auto-commit: false
+  #  datasource:
+  #    type: com.zaxxer.hikari.HikariDataSource
+  #    url: jdbc:h2:mem:pipeline;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=PostgreSQL;INIT=CREATE SCHEMA IF NOT EXISTS meta
+  #    username: pipeline
+  #    password:
+  #    hikari:
+  #      poolName: Hikari
+  #      auto-commit: false
   h2:
     console:
       enabled: false
   jpa:
-    database-platform: io.github.jhipster.domain.util.FixedH2Dialect
+    database-platform: io.github.jhipster.domain.util.FixedPostgreSQL10Dialect
+    #database-platform: io.github.jhipster.domain.util.FixedH2Dialect
     show-sql: true
   liquibase:
     # Remove 'faker' if you do not want the sample data to be loaded automatically
     contexts: dev, faker
+    #, faker
+    default-schema: meta
   mail:
     host: localhost
     port: 25

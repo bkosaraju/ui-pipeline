@@ -89,10 +89,14 @@ public class JobQueryService extends QueryService<Job> {
                 specification = specification.and(buildStringSpecification(criteria.getJobName(), Job_.jobName));
             }
             if (criteria.getJobStatusFlag() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getJobStatusFlag(), Job_.jobStatusFlag));
+                specification = specification.and(buildSpecification(criteria.getJobStatusFlag(), Job_.jobStatusFlag));
             }
             if (criteria.getCreateTimestamp() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getCreateTimestamp(), Job_.createTimestamp));
+            }
+            if (criteria.getJobConfigId() != null) {
+                specification = specification.and(buildSpecification(criteria.getJobConfigId(),
+                    root -> root.join(Job_.jobConfigs, JoinType.LEFT).get(JobConfig_.id)));
             }
         }
         return specification;

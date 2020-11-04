@@ -1,11 +1,11 @@
 id;job_name;job_status_flag;create_timestamp
-1;Armenia compelling;49592;2020-10-25T21:02:12
-2;Codes specifically reserved for testing purposes Auto Loan Account Plastic;38525;2020-10-25T09:19:38
-3;Metal Health Garden;91153;2020-10-25T08:34:48
-4;Drive Ball back up;79478;2020-10-25T21:31:49
-5;Stravenue dynamic Beauty;50561;2020-10-25T13:15:07
-6;mission-critical;43568;2020-10-25T03:35:03
-7;auxiliary action-items sensor;22647;2020-10-25T18:35:01
-8;ADP Ecuador;9938;2020-10-25T21:41:13
-9;Sleek Somoni;46196;2020-10-25T06:43:59
-10;Multi-channelled;50469;2020-10-25T09:35:27
+1;Armenia compelling;false;2020-10-25T21:02:12
+2;Codes specifically reserved for testing purposes Auto Loan Account Plastic;false;2020-10-25T09:19:38
+3;Metal Health Garden;true;2020-10-25T08:34:48
+4;Drive Ball back up;true;2020-10-25T21:31:49
+5;Stravenue dynamic Beauty;true;2020-10-25T13:15:07
+6;mission-critical;false;2020-10-25T03:35:03
+7;auxiliary action-items sensor;false;2020-10-25T18:35:01
+8;ADP Ecuador;false;2020-10-25T21:41:13
+9;Sleek Somoni;false;2020-10-25T06:43:59
+10;Multi-channelled;true;2020-10-25T09:35:27

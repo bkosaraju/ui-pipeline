@@ -15,7 +15,15 @@
       "fieldValues": "STATIC,AWS_SSM,HASHICORP_VAULT"
     }
   ],
-  "relationships": [],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "job",
+      "otherEntityRelationshipName": "jobConfig",
+      "relationshipName": "job",
+      "otherEntityField": "id"
+    }
+  ],
   "changelogDate": "20201025235408",
   "entityTableName": "job_config",
   "dto": "no",

@@ -9,7 +9,7 @@ enum TaskType {
 
 
 enum ConfigType {
-	  STATIC,
+	STATIC,
     AWS_SSM,
     HASHICORP_VAULT
 }
@@ -37,7 +37,7 @@ entity TaskConfig {
 
 entity Job {
   jobName String,
-  jobStatusFlag Integer,
+  jobStatusFlag Boolean,
   createTimestamp ZonedDateTime
 }
 
@@ -47,6 +47,11 @@ entity Task {
   createTimestamp ZonedDateTime
 }
 
+
+relationship OneToMany {
+    Job to JobConfig{job},
+    Task to TaskConfig{task},
+}
 
 
 paginate GlobalConfig,JobConfig,TaskConfig,Job,Task with pagination

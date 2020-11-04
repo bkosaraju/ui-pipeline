@@ -51,6 +51,8 @@ public class JobConfigCriteria implements Serializable, Criteria {
 
     private ConfigTypeFilter configType;
 
+    private LongFilter jobId;
+
     public JobConfigCriteria() {
     }
 
@@ -59,6 +61,7 @@ public class JobConfigCriteria implements Serializable, Criteria {
         this.configKey = other.configKey == null ? null : other.configKey.copy();
         this.configValue = other.configValue == null ? null : other.configValue.copy();
         this.configType = other.configType == null ? null : other.configType.copy();
+        this.jobId = other.jobId == null ? null : other.jobId.copy();
     }
 
     @Override
@@ -98,6 +101,14 @@ public class JobConfigCriteria implements Serializable, Criteria {
         this.configType = configType;
     }
 
+    public LongFilter getJobId() {
+        return jobId;
+    }
+
+    public void setJobId(LongFilter jobId) {
+        this.jobId = jobId;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -112,7 +123,8 @@ public class JobConfigCriteria implements Serializable, Criteria {
             Objects.equals(id, that.id) &&
             Objects.equals(configKey, that.configKey) &&
             Objects.equals(configValue, that.configValue) &&
-            Objects.equals(configType, that.configType);
+            Objects.equals(configType, that.configType) &&
+            Objects.equals(jobId, that.jobId);
     }
 
     @Override
@@ -121,7 +133,8 @@ public class JobConfigCriteria implements Serializable, Criteria {
         id,
         configKey,
         configValue,
-        configType
+        configType,
+        jobId
         );
     }
 
@@ -133,6 +146,7 @@ public class JobConfigCriteria implements Serializable, Criteria {
                 (configKey != null ? "configKey=" + configKey + ", " : "") +
                 (configValue != null ? "configValue=" + configValue + ", " : "") +
                 (configType != null ? "configType=" + configType + ", " : "") +
+                (jobId != null ? "jobId=" + jobId + ", " : "") +
             "}";
     }
 

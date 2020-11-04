@@ -18,7 +18,8 @@
       },
       "jobName": "Job Name",
       "jobStatusFlag": "Job Status Flag",
-      "createTimestamp": "Create Timestamp"
+      "createTimestamp": "Create Timestamp",
+      "jobConfig": "Job Config"
     }
   }
 }

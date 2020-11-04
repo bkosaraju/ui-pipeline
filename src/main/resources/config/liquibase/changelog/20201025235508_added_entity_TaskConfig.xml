@@ -27,6 +27,9 @@
             <column name="config_version" type="${floatType}">
                 <constraints nullable="true" />
             </column>
+            <column name="task_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
     </changeSet>

@@ -7,6 +7,8 @@ import javax.persistence.*;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 import io.github.bkosaraju.pipeline.domain.enumeration.TaskType;
 
@@ -34,6 +36,10 @@ public class Task implements Serializable {
 
     @Column(name = "create_timestamp")
     private ZonedDateTime createTimestamp;
+
+    @OneToMany(mappedBy = "task")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    private Set<TaskConfig> taskConfigs = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -81,6 +87,31 @@ public class Task implements Serializable {
 
     public void setCreateTimestamp(ZonedDateTime createTimestamp) {
         this.createTimestamp = createTimestamp;
+    }
+
+    public Set<TaskConfig> getTaskConfigs() {
+        return taskConfigs;
+    }
+
+    public Task taskConfigs(Set<TaskConfig> taskConfigs) {
+        this.taskConfigs = taskConfigs;
+        return this;
+    }
+
+    public Task addTaskConfig(TaskConfig taskConfig) {
+        this.taskConfigs.add(taskConfig);
+        taskConfig.setTask(this);
+        return this;
+    }
+
+    public Task removeTaskConfig(TaskConfig taskConfig) {
+        this.taskConfigs.remove(taskConfig);
+        taskConfig.setTask(null);
+        return this;
+    }
+
+    public void setTaskConfigs(Set<TaskConfig> taskConfigs) {
+        this.taskConfigs = taskConfigs;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 

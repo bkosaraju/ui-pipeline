@@ -29,9 +29,11 @@ public class JobCriteria implements Serializable, Criteria {
 
     private StringFilter jobName;
 
-    private IntegerFilter jobStatusFlag;
+    private BooleanFilter jobStatusFlag;
 
     private ZonedDateTimeFilter createTimestamp;
+
+    private LongFilter jobConfigId;
 
     public JobCriteria() {
     }
@@ -41,6 +43,7 @@ public class JobCriteria implements Serializable, Criteria {
         this.jobName = other.jobName == null ? null : other.jobName.copy();
         this.jobStatusFlag = other.jobStatusFlag == null ? null : other.jobStatusFlag.copy();
         this.createTimestamp = other.createTimestamp == null ? null : other.createTimestamp.copy();
+        this.jobConfigId = other.jobConfigId == null ? null : other.jobConfigId.copy();
     }
 
     @Override
@@ -64,11 +67,11 @@ public class JobCriteria implements Serializable, Criteria {
         this.jobName = jobName;
     }
 
-    public IntegerFilter getJobStatusFlag() {
+    public BooleanFilter getJobStatusFlag() {
         return jobStatusFlag;
     }
 
-    public void setJobStatusFlag(IntegerFilter jobStatusFlag) {
+    public void setJobStatusFlag(BooleanFilter jobStatusFlag) {
         this.jobStatusFlag = jobStatusFlag;
     }
 
@@ -78,6 +81,14 @@ public class JobCriteria implements Serializable, Criteria {
 
     public void setCreateTimestamp(ZonedDateTimeFilter createTimestamp) {
         this.createTimestamp = createTimestamp;
+    }
+
+    public LongFilter getJobConfigId() {
+        return jobConfigId;
+    }
+
+    public void setJobConfigId(LongFilter jobConfigId) {
+        this.jobConfigId = jobConfigId;
     }
 
 
@@ -94,7 +105,8 @@ public class JobCriteria implements Serializable, Criteria {
             Objects.equals(id, that.id) &&
             Objects.equals(jobName, that.jobName) &&
             Objects.equals(jobStatusFlag, that.jobStatusFlag) &&
-            Objects.equals(createTimestamp, that.createTimestamp);
+            Objects.equals(createTimestamp, that.createTimestamp) &&
+            Objects.equals(jobConfigId, that.jobConfigId);
     }
 
     @Override
@@ -103,7 +115,8 @@ public class JobCriteria implements Serializable, Criteria {
         id,
         jobName,
         jobStatusFlag,
-        createTimestamp
+        createTimestamp,
+        jobConfigId
         );
     }
 
@@ -115,6 +128,7 @@ public class JobCriteria implements Serializable, Criteria {
                 (jobName != null ? "jobName=" + jobName + ", " : "") +
                 (jobStatusFlag != null ? "jobStatusFlag=" + jobStatusFlag + ", " : "") +
                 (createTimestamp != null ? "createTimestamp=" + createTimestamp + ", " : "") +
+                (jobConfigId != null ? "jobConfigId=" + jobConfigId + ", " : "") +
             "}";
     }
 

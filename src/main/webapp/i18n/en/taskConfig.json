@@ -19,7 +19,8 @@
       "configKey": "Config Key",
       "configValue": "Config Value",
       "configType": "Config Type",
-      "configVersion": "Config Version"
+      "configVersion": "Config Version",
+      "task": "Task"
     }
   }
 }

@@ -7,6 +7,8 @@ import { Observable } from 'rxjs';
 
 import { IJobConfig, JobConfig } from 'app/shared/model/job-config.model';
 import { JobConfigService } from './job-config.service';
+import { IJob } from 'app/shared/model/job.model';
+import { JobService } from 'app/entities/job/job.service';
 
 @Component({
   selector: 'jhi-job-config-update',
@@ -14,19 +16,28 @@ import { JobConfigService } from './job-config.service';
 })
 export class JobConfigUpdateComponent implements OnInit {
   isSaving = false;
+  jobs: IJob[] = [];
 
   editForm = this.fb.group({
     id: [],
     configKey: [],
     configValue: [],
     configType: [],
+    job: [],
   });
 
-  constructor(protected jobConfigService: JobConfigService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
+  constructor(
+    protected jobConfigService: JobConfigService,
+    protected jobService: JobService,
+    protected activatedRoute: ActivatedRoute,
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ jobConfig }) => {
       this.updateForm(jobConfig);
+
+      this.jobService.query().subscribe((res: HttpResponse<IJob[]>) => (this.jobs = res.body || []));
     });
   }
 
@@ -36,6 +47,7 @@ export class JobConfigUpdateComponent implements OnInit {
       configKey: jobConfig.configKey,
       configValue: jobConfig.configValue,
       configType: jobConfig.configType,
+      job: jobConfig.job,
     });
   }
 
@@ -60,6 +72,7 @@ export class JobConfigUpdateComponent implements OnInit {
       configKey: this.editForm.get(['configKey'])!.value,
       configValue: this.editForm.get(['configValue'])!.value,
       configType: this.editForm.get(['configType'])!.value,
+      job: this.editForm.get(['job'])!.value,
     };
   }
 
@@ -77,5 +90,9 @@ export class JobConfigUpdateComponent implements OnInit {
 
   protected onSaveError(): void {
     this.isSaving = false;
+  }
+
+  trackById(index: number, item: IJob): any {
+    return item.id;
   }
 }

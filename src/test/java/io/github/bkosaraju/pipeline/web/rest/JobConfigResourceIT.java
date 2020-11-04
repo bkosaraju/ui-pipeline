@@ -2,6 +2,7 @@ package io.github.bkosaraju.pipeline.web.rest;
 
 import io.github.bkosaraju.pipeline.PipelineApp;
 import io.github.bkosaraju.pipeline.domain.JobConfig;
+import io.github.bkosaraju.pipeline.domain.Job;
 import io.github.bkosaraju.pipeline.repository.JobConfigRepository;
 import io.github.bkosaraju.pipeline.service.JobConfigService;
 import io.github.bkosaraju.pipeline.service.dto.JobConfigCriteria;
@@ -390,6 +391,26 @@ public class JobConfigResourceIT {
         // Get all the jobConfigList where configType is null
         defaultJobConfigShouldNotBeFound("configType.specified=false");
     }
+
+    @Test
+    @Transactional
+    public void getAllJobConfigsByJobIsEqualToSomething() throws Exception {
+        // Initialize the database
+        jobConfigRepository.saveAndFlush(jobConfig);
+        Job job = JobResourceIT.createEntity(em);
+        em.persist(job);
+        em.flush();
+        jobConfig.setJob(job);
+        jobConfigRepository.saveAndFlush(jobConfig);
+        Long jobId = job.getId();
+
+        // Get all the jobConfigList where job equals to jobId
+        defaultJobConfigShouldBeFound("jobId.equals=" + jobId);
+
+        // Get all the jobConfigList where job equals to jobId + 1
+        defaultJobConfigShouldNotBeFound("jobId.equals=" + (jobId + 1));
+    }
+
     /**
      * Executes the search, and checks that the default entity is returned.
      */

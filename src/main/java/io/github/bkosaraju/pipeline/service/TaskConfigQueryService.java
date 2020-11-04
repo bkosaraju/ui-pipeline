@@ -97,6 +97,10 @@ public class TaskConfigQueryService extends QueryService<TaskConfig> {
             if (criteria.getConfigVersion() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getConfigVersion(), TaskConfig_.configVersion));
             }
+            if (criteria.getTaskId() != null) {
+                specification = specification.and(buildSpecification(criteria.getTaskId(),
+                    root -> root.join(TaskConfig_.task, JoinType.LEFT).get(Task_.id)));
+            }
         }
         return specification;
     }

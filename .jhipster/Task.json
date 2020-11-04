@@ -15,7 +15,14 @@
       "fieldType": "ZonedDateTime"
     }
   ],
-  "relationships": [],
+  "relationships": [
+    {
+      "relationshipName": "taskConfig",
+      "otherEntityName": "taskConfig",
+      "relationshipType": "one-to-many",
+      "otherEntityRelationshipName": "task"
+    }
+  ],
   "changelogDate": "20201025235108",
   "entityTableName": "task",
   "dto": "no",
