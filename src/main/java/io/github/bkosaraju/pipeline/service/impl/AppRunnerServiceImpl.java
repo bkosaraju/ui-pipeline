@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 
 @Service
@@ -32,7 +33,7 @@ public class AppRunnerServiceImpl implements AppRunnerService{
         sConfig.put("jdbcPassword",metaConfig.getJdbcPassword());
         sConfig.put("jdbcType",metaConfig.getJdbcType());
         sConfig.put("jobId",Long.toString(runConfig.getJobId()));
-        sConfig.put("jobOrderTimestamp",runConfig.getJobOrderTimestamp().toString());
+        sConfig.put("jobOrderTimestamp",DateTimeFormatter.ISO_INSTANT.format(runConfig.getJobOrderTimestamp()));
         sConfig.put("rerunFlag",Boolean.toString(runConfig.getRerunFlag()));
         sConfig.put("endRunFlag",Boolean.toString(runConfig.getEndRunFlag()));
         runJob.runJob(sConfig);

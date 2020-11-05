@@ -30,12 +30,12 @@ public class AppRunnerResource {
     private static final String ENTITY_NAME = "appRunnerConfig";
 
     @PostMapping("/apprunner/run")
-    public ResponseEntity<Void> updateGlobalConfig(@RequestBody AppRunnerDTO runnerConfig) throws URISyntaxException {
+    public ResponseEntity<Void> runPipelineJob(@RequestBody AppRunnerDTO runnerConfig) throws URISyntaxException {
         log.debug("REST request to Run application : {}", runnerConfig);
         if (runnerConfig.getJobId() == null) {
             throw new BadRequestAlertException("Invalid JobIDid", ENTITY_NAME, "jobIdnull");
         }
-         appRunnerService.runPipelineApp(runnerConfig);
+        appRunnerService.runPipelineApp(runnerConfig);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, runnerConfig.getJobId().toString()))
