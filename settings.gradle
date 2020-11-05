@@ -13,6 +13,24 @@ pluginManagement {
           id 'net.ltgt.apt' version "${apt_plugin_version}"
           id "io.spring.nohttp" version "${spring_no_http_plugin_version}"
      }
+    repositories {
+        maven {
+            url((System.getenv("ARTIFACTORY_URL") ?: "https://plugins.gradle.org/m2/"))
+            if (System.getenv("ARTIFACTORY_USER") || Project.hasProperty('artifactoryUser') ) {
+                credentials {
+                    username = System.getenv("ARTIFACTORY_USER") ?: artifactoryUser
+                    password = System.getenv("ARTIFACTORY_PASSWORD") ?: artifactoryPassword
+                }
+            }
+        }
+    }
 }
 
 rootProject.name = "pipeline"
+gradle.ext.projectGroup = "io.github.bkosaraju"
+gradle.ext.projectName = "pipeline"
+include ':pipeline'
+project(':pipeline').projectDir = new File('../bkosaraju/pipeline')
+gradle.ext.artifactoryUrl = System.getenv("ARTIFACTORY_URL") ?: "https://repo1.maven.org/maven2/"
+
+

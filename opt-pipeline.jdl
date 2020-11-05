@@ -48,8 +48,8 @@ entity GlobalConfig {
 }
 entity Job {
   jobName String,
-  createTimestamp ZonedDateTime,
-  jobStatusFlag Boolean
+  jobStatusFlag Boolean,
+  createTimestamp ZonedDateTime
 }
 entity JobConfig {
   configKey String,
@@ -104,12 +104,14 @@ enum TaskType {
 }
 
 relationship OneToMany {
-  Job{jobTaskOrder} to JobTaskOrder{job},
+  Job{jobConfig} to JobConfig{job},
+  Task{taskConfig} to TaskConfig{task},
   JobExecution{taskExecution} to TaskExecution{jobExecution},
   TaskExecution{taskExecutionConfig} to TaskExecutionConfig{taskExecution}
 }
 relationship ManyToOne {
   JobExecution{job} to Job,
+  JobTaskOrder{job} to Job,
   JobTaskOrder{task} to Task,
   TaskExecution{task} to Task
 }

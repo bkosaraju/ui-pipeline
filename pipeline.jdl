@@ -1,113 +1,121 @@
 application {
   config {
-    applicationType monolith,
-    languages [en],
-    authenticationType session,
-    baseName pipeline,
-    clientTheme sandstone,
-    clientThemeVariant primary,
-    embeddableLaunchScript true,
-    buildTool gradle,
-	cacheProvider ehcache,
-    devDatabaseType h2Memory,
-    enableSwaggerCodegen true,
-    packageName io.github.bkosaraju.pipeline,
-	prodDatabaseType postgresql,
-    serverPort 8081,
-    
+    applicationType monolith
+    authenticationType session
+    baseName pipeline
+    blueprints []
+    buildTool gradle
+    cacheProvider ehcache
+    clientFramework angularX
+    clientPackageManager npm
+    clientTheme sandstone
+    clientThemeVariant primary
+    creationTimestamp 1603669740451
+    databaseType sql
+    devDatabaseType h2Memory
+    dtoSuffix DTO
+    embeddableLaunchScript true
+    enableHibernateCache true
+    enableSwaggerCodegen true
+    enableTranslation true
+    jhiPrefix jhi
+    jhipsterVersion "6.10.4"
+    languages [en]
+    messageBroker false
+    nativeLanguage en
+    otherModules []
+    packageName io.github.bkosaraju.pipeline
+    prodDatabaseType postgresql
+    rememberMeKey "9cdd77a1729d306b232b24b8a2f399b0b3a40c91aca11fbd483be32ba0b6887e9ef239c026823afc4778b754c7bacf8cadc3"
+    searchEngine false
+    serverPort 8081
+    serviceDiscoveryType false
+    skipClient false
+    skipServer false
+    skipUserManagement false
+    testFrameworks []
+    useSass true
+    websocket false
   }
-    entities all
-}
-entity Job {
- jobName String,
- jobStatusFlag Integer,
- createTimeStamp ZonedDateTime 
-}
 
-enum TaskType {
-        SFTP,
-        SHELL,
-        SPARK,
-        SPRAK_ON_DATABRICS,
-        SPRAK_ON_KUBERNETES,
-        SPRAK_ON_EMR
-}
-
-entity Task {
- taskName String,
- taskType TaskType,
- createTimeStamp ZonedDateTime 
-}
-
-entity JobTaskOrder {
- taskSeqId Integer,
- jobTaskStatusFlag Boolean,
- configVersion Float 
+  entities GlobalConfig, Job, JobConfig, JobExecution, JobTaskOrder, Task, TaskConfig, TaskExecution, TaskExecutionConfig
 }
 
 entity GlobalConfig {
   configKey String,
   configValue String,
-  configType String
+  configType ConfigType
 }
-
-
+entity Job {
+  jobName String,
+  jobStatusFlag Boolean,
+  createTimestamp ZonedDateTime
+}
 entity JobConfig {
   configKey String,
   configValue String,
-  configType String
+  configType ConfigType
 }
-
-
+entity JobExecution {
+  jobOrderTimestamp ZonedDateTime,
+  jobExecutionStatus String,
+  jobExecutionEndTimestamp ZonedDateTime,
+  jobExecutionStartTimestamp ZonedDateTime
+}
+entity JobTaskOrder {
+  taskSeqId Integer,
+  jobTaskStatusFlag Boolean,
+  configVersion Float
+}
+entity Task {
+  taskName String,
+  taskType TaskType,
+  createTimestamp ZonedDateTime
+}
 entity TaskConfig {
   configKey String,
   configValue String,
-  configType String,
-  configVersion Float 
+  configType ConfigType,
+  configVersion Float
 }
-
-entity JobExecution {
-    jobExecutionTimestamp ZonedDateTime,
-    jobOrderTimestamp ZonedDateTime,
-    jobExecutionStatus String
-}
-
 entity TaskExecution {
-    taskExecutionTimestamp ZonedDateTime,
-    jobOrderTimestamp ZonedDateTime,
-    taskExecutionStatus String
+  jobOrderTimestamp ZonedDateTime,
+  taskExecutionStatus String,
+  taskExecutionStartTimestamp ZonedDateTime,
+  taskExecutionEndTimestamp ZonedDateTime
 }
-
 entity TaskExecutionConfig {
-    configKey String,
-    configValue String,
-    configVersion Float
+  configKey String,
+  configValue String,
+  configVersion Float
 }
-
-//Config Entities
+enum ConfigType {
+  STATIC,
+  AWS_SSM,
+  HASHICORP_VAULT
+}
+enum TaskType {
+  SFTP,
+  SHELL,
+  SPARK,
+  SPRAK_ON_DATABRICS,
+  SPRAK_ON_KUBERNETES,
+  SPRAK_ON_EMR
+}
 
 relationship OneToMany {
-    Job to JobConfig{job},
-    Task to TaskConfig{task},
-    Job to JobTaskOrder{job},
-    Task to JobTaskOrder{task}
+  Job{jobConfig} to JobConfig{job},
+  Task{taskConfig} to TaskConfig{task},
+  JobExecution{taskExecution} to TaskExecution{jobExecution},
+  TaskExecution{taskExecutionConfig} to TaskExecutionConfig{taskExecution}
+}
+relationship ManyToOne {
+  JobExecution{job} to Job,
+  JobTaskOrder{job} to Job,
+  JobTaskOrder{task} to Task,
+  TaskExecution{task} to Task
 }
 
-
-// Execution Entities
-
-relationship OneToMany {
-    Job to JobExecution{job}
-    Task to TaskExecution{task}
-    JobExecution to TaskExecution{jobExecution}
-    TaskExecution to TaskExecutionConfig{taskExecution}
-}
-
-
-//Filters
-filter all
-//Empty Fields
-//jhipster entity EntityName --skip-server
-paginate all with pagination
-//Services (for future Use)
-service all with serviceImpl
+paginate GlobalConfig, Job, JobConfig, JobExecution, JobTaskOrder, Task, TaskConfig, TaskExecution, TaskExecutionConfig with pagination
+service GlobalConfig, Job, JobConfig, JobExecution, JobTaskOrder, Task, TaskConfig, TaskExecution, TaskExecutionConfig with serviceImpl
+filter GlobalConfig, Job, JobConfig, JobExecution, JobTaskOrder, Task, TaskConfig, TaskExecution, TaskExecutionConfig
