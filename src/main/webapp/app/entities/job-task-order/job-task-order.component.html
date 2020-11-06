@@ -26,8 +26,8 @@
                     <th scope="col"  jhiSortBy="taskSeqId"><span jhiTranslate="pipelineApp.jobTaskOrder.taskSeqId">Task Seq Id</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="jobTaskStatusFlag"><span jhiTranslate="pipelineApp.jobTaskOrder.jobTaskStatusFlag">Job Task Status Flag</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="configVersion"><span jhiTranslate="pipelineApp.jobTaskOrder.configVersion">Config Version</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="job.id"><span jhiTranslate="pipelineApp.jobTaskOrder.job">Job</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="task.id"><span jhiTranslate="pipelineApp.jobTaskOrder.task">Task</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="job.jobId"><span jhiTranslate="pipelineApp.jobTaskOrder.job">Job</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="task.taskId"><span jhiTranslate="pipelineApp.jobTaskOrder.task">Task</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -72,12 +72,12 @@
                     <td>{{ jobTaskOrder.configVersion }}</td>
                     <td>
                         <div *ngIf="jobTaskOrder.job">
-                            <a [routerLink]="['/job', jobTaskOrder.job?.id, 'view']" >{{ jobTaskOrder.job?.id }}</a>
+                            <a [routerLink]="['/job', jobTaskOrder.job?.id, 'view']" >{{ jobTaskOrder.job?.jobId }}</a>
                         </div>
                     </td>
                     <td>
                         <div *ngIf="jobTaskOrder.task">
-                            <a [routerLink]="['/task', jobTaskOrder.task?.id, 'view']" >{{ jobTaskOrder.task?.id }}</a>
+                            <a [routerLink]="['/task', jobTaskOrder.task?.id, 'view']" >{{ jobTaskOrder.task?.taskId }}</a>
                         </div>
                     </td>
                     <td class="text-right">

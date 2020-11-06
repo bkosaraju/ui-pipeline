@@ -39,6 +39,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockUser
 public class JobResourceIT {
 
+    private static final Integer DEFAULT_JOB_ID = 1;
+    private static final Integer UPDATED_JOB_ID = 2;
+    private static final Integer SMALLER_JOB_ID = 1 - 1;
+
     private static final String DEFAULT_JOB_NAME = "AAAAAAAAAA";
     private static final String UPDATED_JOB_NAME = "BBBBBBBBBB";
 
@@ -74,6 +78,7 @@ public class JobResourceIT {
      */
     public static Job createEntity(EntityManager em) {
         Job job = new Job()
+            .jobId(DEFAULT_JOB_ID)
             .jobName(DEFAULT_JOB_NAME)
             .jobStatusFlag(DEFAULT_JOB_STATUS_FLAG)
             .createTimestamp(DEFAULT_CREATE_TIMESTAMP);
@@ -87,6 +92,7 @@ public class JobResourceIT {
      */
     public static Job createUpdatedEntity(EntityManager em) {
         Job job = new Job()
+            .jobId(UPDATED_JOB_ID)
             .jobName(UPDATED_JOB_NAME)
             .jobStatusFlag(UPDATED_JOB_STATUS_FLAG)
             .createTimestamp(UPDATED_CREATE_TIMESTAMP);
@@ -112,6 +118,7 @@ public class JobResourceIT {
         List<Job> jobList = jobRepository.findAll();
         assertThat(jobList).hasSize(databaseSizeBeforeCreate + 1);
         Job testJob = jobList.get(jobList.size() - 1);
+        assertThat(testJob.getJobId()).isEqualTo(DEFAULT_JOB_ID);
         assertThat(testJob.getJobName()).isEqualTo(DEFAULT_JOB_NAME);
         assertThat(testJob.isJobStatusFlag()).isEqualTo(DEFAULT_JOB_STATUS_FLAG);
         assertThat(testJob.getCreateTimestamp()).isEqualTo(DEFAULT_CREATE_TIMESTAMP);
@@ -148,6 +155,7 @@ public class JobResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(job.getId().intValue())))
+            .andExpect(jsonPath("$.[*].jobId").value(hasItem(DEFAULT_JOB_ID)))
             .andExpect(jsonPath("$.[*].jobName").value(hasItem(DEFAULT_JOB_NAME)))
             .andExpect(jsonPath("$.[*].jobStatusFlag").value(hasItem(DEFAULT_JOB_STATUS_FLAG.booleanValue())))
             .andExpect(jsonPath("$.[*].createTimestamp").value(hasItem(sameInstant(DEFAULT_CREATE_TIMESTAMP))));
@@ -164,6 +172,7 @@ public class JobResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(job.getId().intValue()))
+            .andExpect(jsonPath("$.jobId").value(DEFAULT_JOB_ID))
             .andExpect(jsonPath("$.jobName").value(DEFAULT_JOB_NAME))
             .andExpect(jsonPath("$.jobStatusFlag").value(DEFAULT_JOB_STATUS_FLAG.booleanValue()))
             .andExpect(jsonPath("$.createTimestamp").value(sameInstant(DEFAULT_CREATE_TIMESTAMP)));
@@ -186,6 +195,111 @@ public class JobResourceIT {
 
         defaultJobShouldBeFound("id.lessThanOrEqual=" + id);
         defaultJobShouldNotBeFound("id.lessThan=" + id);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllJobsByJobIdIsEqualToSomething() throws Exception {
+        // Initialize the database
+        jobRepository.saveAndFlush(job);
+
+        // Get all the jobList where jobId equals to DEFAULT_JOB_ID
+        defaultJobShouldBeFound("jobId.equals=" + DEFAULT_JOB_ID);
+
+        // Get all the jobList where jobId equals to UPDATED_JOB_ID
+        defaultJobShouldNotBeFound("jobId.equals=" + UPDATED_JOB_ID);
+    }
+
+    @Test
+    @Transactional
+    public void getAllJobsByJobIdIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        jobRepository.saveAndFlush(job);
+
+        // Get all the jobList where jobId not equals to DEFAULT_JOB_ID
+        defaultJobShouldNotBeFound("jobId.notEquals=" + DEFAULT_JOB_ID);
+
+        // Get all the jobList where jobId not equals to UPDATED_JOB_ID
+        defaultJobShouldBeFound("jobId.notEquals=" + UPDATED_JOB_ID);
+    }
+
+    @Test
+    @Transactional
+    public void getAllJobsByJobIdIsInShouldWork() throws Exception {
+        // Initialize the database
+        jobRepository.saveAndFlush(job);
+
+        // Get all the jobList where jobId in DEFAULT_JOB_ID or UPDATED_JOB_ID
+        defaultJobShouldBeFound("jobId.in=" + DEFAULT_JOB_ID + "," + UPDATED_JOB_ID);
+
+        // Get all the jobList where jobId equals to UPDATED_JOB_ID
+        defaultJobShouldNotBeFound("jobId.in=" + UPDATED_JOB_ID);
+    }
+
+    @Test
+    @Transactional
+    public void getAllJobsByJobIdIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        jobRepository.saveAndFlush(job);
+
+        // Get all the jobList where jobId is not null
+        defaultJobShouldBeFound("jobId.specified=true");
+
+        // Get all the jobList where jobId is null
+        defaultJobShouldNotBeFound("jobId.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllJobsByJobIdIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        jobRepository.saveAndFlush(job);
+
+        // Get all the jobList where jobId is greater than or equal to DEFAULT_JOB_ID
+        defaultJobShouldBeFound("jobId.greaterThanOrEqual=" + DEFAULT_JOB_ID);
+
+        // Get all the jobList where jobId is greater than or equal to UPDATED_JOB_ID
+        defaultJobShouldNotBeFound("jobId.greaterThanOrEqual=" + UPDATED_JOB_ID);
+    }
+
+    @Test
+    @Transactional
+    public void getAllJobsByJobIdIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        jobRepository.saveAndFlush(job);
+
+        // Get all the jobList where jobId is less than or equal to DEFAULT_JOB_ID
+        defaultJobShouldBeFound("jobId.lessThanOrEqual=" + DEFAULT_JOB_ID);
+
+        // Get all the jobList where jobId is less than or equal to SMALLER_JOB_ID
+        defaultJobShouldNotBeFound("jobId.lessThanOrEqual=" + SMALLER_JOB_ID);
+    }
+
+    @Test
+    @Transactional
+    public void getAllJobsByJobIdIsLessThanSomething() throws Exception {
+        // Initialize the database
+        jobRepository.saveAndFlush(job);
+
+        // Get all the jobList where jobId is less than DEFAULT_JOB_ID
+        defaultJobShouldNotBeFound("jobId.lessThan=" + DEFAULT_JOB_ID);
+
+        // Get all the jobList where jobId is less than UPDATED_JOB_ID
+        defaultJobShouldBeFound("jobId.lessThan=" + UPDATED_JOB_ID);
+    }
+
+    @Test
+    @Transactional
+    public void getAllJobsByJobIdIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        jobRepository.saveAndFlush(job);
+
+        // Get all the jobList where jobId is greater than DEFAULT_JOB_ID
+        defaultJobShouldNotBeFound("jobId.greaterThan=" + DEFAULT_JOB_ID);
+
+        // Get all the jobList where jobId is greater than SMALLER_JOB_ID
+        defaultJobShouldBeFound("jobId.greaterThan=" + SMALLER_JOB_ID);
     }
 
 
@@ -451,6 +565,7 @@ public class JobResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(job.getId().intValue())))
+            .andExpect(jsonPath("$.[*].jobId").value(hasItem(DEFAULT_JOB_ID)))
             .andExpect(jsonPath("$.[*].jobName").value(hasItem(DEFAULT_JOB_NAME)))
             .andExpect(jsonPath("$.[*].jobStatusFlag").value(hasItem(DEFAULT_JOB_STATUS_FLAG.booleanValue())))
             .andExpect(jsonPath("$.[*].createTimestamp").value(hasItem(sameInstant(DEFAULT_CREATE_TIMESTAMP))));
@@ -500,6 +615,7 @@ public class JobResourceIT {
         // Disconnect from session so that the updates on updatedJob are not directly saved in db
         em.detach(updatedJob);
         updatedJob
+            .jobId(UPDATED_JOB_ID)
             .jobName(UPDATED_JOB_NAME)
             .jobStatusFlag(UPDATED_JOB_STATUS_FLAG)
             .createTimestamp(UPDATED_CREATE_TIMESTAMP);
@@ -513,6 +629,7 @@ public class JobResourceIT {
         List<Job> jobList = jobRepository.findAll();
         assertThat(jobList).hasSize(databaseSizeBeforeUpdate);
         Job testJob = jobList.get(jobList.size() - 1);
+        assertThat(testJob.getJobId()).isEqualTo(UPDATED_JOB_ID);
         assertThat(testJob.getJobName()).isEqualTo(UPDATED_JOB_NAME);
         assertThat(testJob.isJobStatusFlag()).isEqualTo(UPDATED_JOB_STATUS_FLAG);
         assertThat(testJob.getCreateTimestamp()).isEqualTo(UPDATED_CREATE_TIMESTAMP);

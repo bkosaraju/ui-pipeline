@@ -40,7 +40,6 @@ export const taskExecutionConfigRoute: Routes = [
     component: TaskExecutionConfigComponent,
     data: {
       authorities: [Authority.USER],
-      defaultSort: 'id,asc',
       pageTitle: 'pipelineApp.taskExecutionConfig.home.title',
     },
     canActivate: [UserRouteAccessService],

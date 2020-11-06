@@ -85,6 +85,9 @@ public class JobQueryService extends QueryService<Job> {
             if (criteria.getId() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getId(), Job_.id));
             }
+            if (criteria.getJobId() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getJobId(), Job_.jobId));
+            }
             if (criteria.getJobName() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getJobName(), Job_.jobName));
             }

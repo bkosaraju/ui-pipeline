@@ -23,7 +23,7 @@
                 <dt><span jhiTranslate="pipelineApp.jobConfig.job">Job</span></dt>
                 <dd>
                     <div *ngIf="jobConfig.job">
-                        <a [routerLink]="['/job', jobConfig.job?.id, 'view']">{{ jobConfig.job?.id }}</a>
+                        <a [routerLink]="['/job', jobConfig.job?.id, 'view']">{{ jobConfig.job?.jobId }}</a>
                     </div>
                 </dd>
             </dl>

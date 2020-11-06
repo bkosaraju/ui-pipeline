@@ -3,6 +3,7 @@ import { IJobConfig } from 'app/shared/model/job-config.model';
 
 export interface IJob {
   id?: number;
+  jobId?: number;
   jobName?: string;
   jobStatusFlag?: boolean;
   createTimestamp?: Moment;
@@ -12,6 +13,7 @@ export interface IJob {
 export class Job implements IJob {
   constructor(
     public id?: number,
+    public jobId?: number,
     public jobName?: string,
     public jobStatusFlag?: boolean,
     public createTimestamp?: Moment,

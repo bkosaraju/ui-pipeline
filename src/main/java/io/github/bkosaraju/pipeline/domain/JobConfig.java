@@ -21,8 +21,10 @@ public class JobConfig implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+//    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="job_config_id_seq")
+    @SequenceGenerator(name="job_config_id_seq", sequenceName="job_config_id_seq", allocationSize=1)
     private Long id;
 
     @Column(name = "config_key")
@@ -37,6 +39,7 @@ public class JobConfig implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties(value = "jobConfigs", allowSetters = true)
+    @JoinColumn(name="job_id")
     private Job job;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

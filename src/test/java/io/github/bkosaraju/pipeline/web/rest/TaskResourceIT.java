@@ -40,6 +40,10 @@ import io.github.bkosaraju.pipeline.domain.enumeration.TaskType;
 @WithMockUser
 public class TaskResourceIT {
 
+    private static final Integer DEFAULT_TASK_ID = 1;
+    private static final Integer UPDATED_TASK_ID = 2;
+    private static final Integer SMALLER_TASK_ID = 1 - 1;
+
     private static final String DEFAULT_TASK_NAME = "AAAAAAAAAA";
     private static final String UPDATED_TASK_NAME = "BBBBBBBBBB";
 
@@ -75,6 +79,7 @@ public class TaskResourceIT {
      */
     public static Task createEntity(EntityManager em) {
         Task task = new Task()
+            .taskId(DEFAULT_TASK_ID)
             .taskName(DEFAULT_TASK_NAME)
             .taskType(DEFAULT_TASK_TYPE)
             .createTimestamp(DEFAULT_CREATE_TIMESTAMP);
@@ -88,6 +93,7 @@ public class TaskResourceIT {
      */
     public static Task createUpdatedEntity(EntityManager em) {
         Task task = new Task()
+            .taskId(UPDATED_TASK_ID)
             .taskName(UPDATED_TASK_NAME)
             .taskType(UPDATED_TASK_TYPE)
             .createTimestamp(UPDATED_CREATE_TIMESTAMP);
@@ -113,6 +119,7 @@ public class TaskResourceIT {
         List<Task> taskList = taskRepository.findAll();
         assertThat(taskList).hasSize(databaseSizeBeforeCreate + 1);
         Task testTask = taskList.get(taskList.size() - 1);
+        assertThat(testTask.getTaskId()).isEqualTo(DEFAULT_TASK_ID);
         assertThat(testTask.getTaskName()).isEqualTo(DEFAULT_TASK_NAME);
         assertThat(testTask.getTaskType()).isEqualTo(DEFAULT_TASK_TYPE);
         assertThat(testTask.getCreateTimestamp()).isEqualTo(DEFAULT_CREATE_TIMESTAMP);
@@ -149,6 +156,7 @@ public class TaskResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(task.getId().intValue())))
+            .andExpect(jsonPath("$.[*].taskId").value(hasItem(DEFAULT_TASK_ID)))
             .andExpect(jsonPath("$.[*].taskName").value(hasItem(DEFAULT_TASK_NAME)))
             .andExpect(jsonPath("$.[*].taskType").value(hasItem(DEFAULT_TASK_TYPE.toString())))
             .andExpect(jsonPath("$.[*].createTimestamp").value(hasItem(sameInstant(DEFAULT_CREATE_TIMESTAMP))));
@@ -165,6 +173,7 @@ public class TaskResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(task.getId().intValue()))
+            .andExpect(jsonPath("$.taskId").value(DEFAULT_TASK_ID))
             .andExpect(jsonPath("$.taskName").value(DEFAULT_TASK_NAME))
             .andExpect(jsonPath("$.taskType").value(DEFAULT_TASK_TYPE.toString()))
             .andExpect(jsonPath("$.createTimestamp").value(sameInstant(DEFAULT_CREATE_TIMESTAMP)));
@@ -187,6 +196,111 @@ public class TaskResourceIT {
 
         defaultTaskShouldBeFound("id.lessThanOrEqual=" + id);
         defaultTaskShouldNotBeFound("id.lessThan=" + id);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllTasksByTaskIdIsEqualToSomething() throws Exception {
+        // Initialize the database
+        taskRepository.saveAndFlush(task);
+
+        // Get all the taskList where taskId equals to DEFAULT_TASK_ID
+        defaultTaskShouldBeFound("taskId.equals=" + DEFAULT_TASK_ID);
+
+        // Get all the taskList where taskId equals to UPDATED_TASK_ID
+        defaultTaskShouldNotBeFound("taskId.equals=" + UPDATED_TASK_ID);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTasksByTaskIdIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        taskRepository.saveAndFlush(task);
+
+        // Get all the taskList where taskId not equals to DEFAULT_TASK_ID
+        defaultTaskShouldNotBeFound("taskId.notEquals=" + DEFAULT_TASK_ID);
+
+        // Get all the taskList where taskId not equals to UPDATED_TASK_ID
+        defaultTaskShouldBeFound("taskId.notEquals=" + UPDATED_TASK_ID);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTasksByTaskIdIsInShouldWork() throws Exception {
+        // Initialize the database
+        taskRepository.saveAndFlush(task);
+
+        // Get all the taskList where taskId in DEFAULT_TASK_ID or UPDATED_TASK_ID
+        defaultTaskShouldBeFound("taskId.in=" + DEFAULT_TASK_ID + "," + UPDATED_TASK_ID);
+
+        // Get all the taskList where taskId equals to UPDATED_TASK_ID
+        defaultTaskShouldNotBeFound("taskId.in=" + UPDATED_TASK_ID);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTasksByTaskIdIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        taskRepository.saveAndFlush(task);
+
+        // Get all the taskList where taskId is not null
+        defaultTaskShouldBeFound("taskId.specified=true");
+
+        // Get all the taskList where taskId is null
+        defaultTaskShouldNotBeFound("taskId.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllTasksByTaskIdIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        taskRepository.saveAndFlush(task);
+
+        // Get all the taskList where taskId is greater than or equal to DEFAULT_TASK_ID
+        defaultTaskShouldBeFound("taskId.greaterThanOrEqual=" + DEFAULT_TASK_ID);
+
+        // Get all the taskList where taskId is greater than or equal to UPDATED_TASK_ID
+        defaultTaskShouldNotBeFound("taskId.greaterThanOrEqual=" + UPDATED_TASK_ID);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTasksByTaskIdIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        taskRepository.saveAndFlush(task);
+
+        // Get all the taskList where taskId is less than or equal to DEFAULT_TASK_ID
+        defaultTaskShouldBeFound("taskId.lessThanOrEqual=" + DEFAULT_TASK_ID);
+
+        // Get all the taskList where taskId is less than or equal to SMALLER_TASK_ID
+        defaultTaskShouldNotBeFound("taskId.lessThanOrEqual=" + SMALLER_TASK_ID);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTasksByTaskIdIsLessThanSomething() throws Exception {
+        // Initialize the database
+        taskRepository.saveAndFlush(task);
+
+        // Get all the taskList where taskId is less than DEFAULT_TASK_ID
+        defaultTaskShouldNotBeFound("taskId.lessThan=" + DEFAULT_TASK_ID);
+
+        // Get all the taskList where taskId is less than UPDATED_TASK_ID
+        defaultTaskShouldBeFound("taskId.lessThan=" + UPDATED_TASK_ID);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTasksByTaskIdIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        taskRepository.saveAndFlush(task);
+
+        // Get all the taskList where taskId is greater than DEFAULT_TASK_ID
+        defaultTaskShouldNotBeFound("taskId.greaterThan=" + DEFAULT_TASK_ID);
+
+        // Get all the taskList where taskId is greater than SMALLER_TASK_ID
+        defaultTaskShouldBeFound("taskId.greaterThan=" + SMALLER_TASK_ID);
     }
 
 
@@ -452,6 +566,7 @@ public class TaskResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(task.getId().intValue())))
+            .andExpect(jsonPath("$.[*].taskId").value(hasItem(DEFAULT_TASK_ID)))
             .andExpect(jsonPath("$.[*].taskName").value(hasItem(DEFAULT_TASK_NAME)))
             .andExpect(jsonPath("$.[*].taskType").value(hasItem(DEFAULT_TASK_TYPE.toString())))
             .andExpect(jsonPath("$.[*].createTimestamp").value(hasItem(sameInstant(DEFAULT_CREATE_TIMESTAMP))));
@@ -501,6 +616,7 @@ public class TaskResourceIT {
         // Disconnect from session so that the updates on updatedTask are not directly saved in db
         em.detach(updatedTask);
         updatedTask
+            .taskId(UPDATED_TASK_ID)
             .taskName(UPDATED_TASK_NAME)
             .taskType(UPDATED_TASK_TYPE)
             .createTimestamp(UPDATED_CREATE_TIMESTAMP);
@@ -514,6 +630,7 @@ public class TaskResourceIT {
         List<Task> taskList = taskRepository.findAll();
         assertThat(taskList).hasSize(databaseSizeBeforeUpdate);
         Task testTask = taskList.get(taskList.size() - 1);
+        assertThat(testTask.getTaskId()).isEqualTo(UPDATED_TASK_ID);
         assertThat(testTask.getTaskName()).isEqualTo(UPDATED_TASK_NAME);
         assertThat(testTask.getTaskType()).isEqualTo(UPDATED_TASK_TYPE);
         assertThat(testTask.getCreateTimestamp()).isEqualTo(UPDATED_CREATE_TIMESTAMP);

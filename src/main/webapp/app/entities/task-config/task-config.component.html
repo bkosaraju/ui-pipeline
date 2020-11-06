@@ -27,7 +27,7 @@
                     <th scope="col"  jhiSortBy="configValue"><span jhiTranslate="pipelineApp.taskConfig.configValue">Config Value</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="configType"><span jhiTranslate="pipelineApp.taskConfig.configType">Config Type</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="configVersion"><span jhiTranslate="pipelineApp.taskConfig.configVersion">Config Version</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="task.id"><span jhiTranslate="pipelineApp.taskConfig.task">Task</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="task.taskId"><span jhiTranslate="pipelineApp.taskConfig.task">Task</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -40,7 +40,7 @@
                     <td>{{ taskConfig.configVersion }}</td>
                     <td>
                         <div *ngIf="taskConfig.task">
-                            <a [routerLink]="['/task', taskConfig.task?.id, 'view']" >{{ taskConfig.task?.id }}</a>
+                            <a [routerLink]="['/task', taskConfig.task?.id, 'view']" >{{ taskConfig.task?.taskId }}</a>
                         </div>
                     </td>
                     <td class="text-right">

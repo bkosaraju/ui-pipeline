@@ -16,6 +16,7 @@
       "detail": {
         "title": "Task"
       },
+      "taskId": "Task Id",
       "taskName": "Task Name",
       "taskType": "Task Type",
       "createTimestamp": "Create Timestamp",

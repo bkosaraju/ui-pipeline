@@ -23,9 +23,14 @@ public class Task implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="task_id_seq")
+    @SequenceGenerator(name="task_id_seq", sequenceName="task_id_seq", allocationSize=1)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+//    @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
+
+    @Column(name = "task_id")
+    private Integer taskId;
 
     @Column(name = "task_name")
     private String taskName;
@@ -48,6 +53,19 @@ public class Task implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Integer getTaskId() {
+        return taskId;
+    }
+
+    public Task taskId(Integer taskId) {
+        this.taskId = taskId;
+        return this;
+    }
+
+    public void setTaskId(Integer taskId) {
+        this.taskId = taskId;
     }
 
     public String getTaskName() {
@@ -136,6 +154,7 @@ public class Task implements Serializable {
     public String toString() {
         return "Task{" +
             "id=" + getId() +
+            ", taskId=" + getTaskId() +
             ", taskName='" + getTaskName() + "'" +
             ", taskType='" + getTaskType() + "'" +
             ", createTimestamp='" + getCreateTimestamp() + "'" +

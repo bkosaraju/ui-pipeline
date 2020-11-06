@@ -21,9 +21,14 @@ public class Job implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="job_id_seq")
+    @SequenceGenerator(name="job_id_seq", sequenceName="job_id_seq", allocationSize=1)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+//    @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
+
+    @Column(name = "job_id")
+    private Integer jobId;
 
     @Column(name = "job_name")
     private String jobName;
@@ -45,6 +50,19 @@ public class Job implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Integer getJobId() {
+        return jobId;
+    }
+
+    public Job jobId(Integer jobId) {
+        this.jobId = jobId;
+        return this;
+    }
+
+    public void setJobId(Integer jobId) {
+        this.jobId = jobId;
     }
 
     public String getJobName() {
@@ -133,6 +151,7 @@ public class Job implements Serializable {
     public String toString() {
         return "Job{" +
             "id=" + getId() +
+            ", jobId=" + getJobId() +
             ", jobName='" + getJobName() + "'" +
             ", jobStatusFlag='" + isJobStatusFlag() + "'" +
             ", createTimestamp='" + getCreateTimestamp() + "'" +

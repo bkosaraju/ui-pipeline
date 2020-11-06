@@ -27,7 +27,7 @@
                     <th scope="col"  jhiSortBy="taskExecutionStatus"><span jhiTranslate="pipelineApp.taskExecution.taskExecutionStatus">Task Execution Status</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="taskExecutionStartTimestamp"><span jhiTranslate="pipelineApp.taskExecution.taskExecutionStartTimestamp">Task Execution Start Timestamp</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="taskExecutionEndTimestamp"><span jhiTranslate="pipelineApp.taskExecution.taskExecutionEndTimestamp">Task Execution End Timestamp</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="task.id"><span jhiTranslate="pipelineApp.taskExecution.task">Task</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="task.taskId"><span jhiTranslate="pipelineApp.taskExecution.task">Task</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="jobExecution.id"><span jhiTranslate="pipelineApp.taskExecution.jobExecution">Job Execution</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"></th>
                 </tr>
@@ -41,7 +41,7 @@
                     <td>{{ taskExecution.taskExecutionEndTimestamp | date:'medium' }}</td>
                     <td>
                         <div *ngIf="taskExecution.task">
-                            <a [routerLink]="['/task', taskExecution.task?.id, 'view']" >{{ taskExecution.task?.id }}</a>
+                            <a [routerLink]="['/task', taskExecution.task?.id, 'view']" >{{ taskExecution.task?.taskId }}</a>
                         </div>
                     </td>
                     <td>

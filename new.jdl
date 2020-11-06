@@ -1,17 +1,17 @@
+enum ConfigType {
+  STATIC,
+  AWS_SSM,
+  HASHICORP_VAULT
+}
 enum TaskType {
   SFTP,
   SHELL,
   SPARK,
-  SPRAK_ON_DATABRICS,
-  SPRAK_ON_KUBERNETES,
-  SPRAK_ON_EMR
-}
-
-
-enum ConfigType {
-	STATIC,
-    AWS_SSM,
-    HASHICORP_VAULT
+  S3COPY,
+  S3PUSH,
+  SPARK_ON_DATABRICS,
+  SPARK_ON_KUBERNETES,
+  SPARK_ON_EMR
 }
 
 entity GlobalConfig {
@@ -36,24 +36,57 @@ entity TaskConfig {
 }
 
 entity Job {
+  jobNumber Integer,
   jobName String,
   jobStatusFlag Boolean,
   createTimestamp ZonedDateTime
 }
 
 entity Task {
+  taskNumber Integer,
   taskName String,
   taskType TaskType,
   createTimestamp ZonedDateTime
 }
 
+entity JobTaskOrder {
+  taskSeqId Integer,
+  jobTaskStatusFlag Boolean,
+  configVersion Float
+}
+
+entity JobExecution {
+  jobOrderTimestamp ZonedDateTime,
+  jobExecutionStatus String,
+  jobExecutionEndTimestamp ZonedDateTime,
+  jobExecutionStartTimestamp ZonedDateTime
+}
+entity TaskExecution {
+  jobOrderTimestamp ZonedDateTime,
+  taskExecutionStatus String,
+  taskExecutionStartTimestamp ZonedDateTime,
+  taskExecutionEndTimestamp ZonedDateTime
+}
+entity TaskExecutionConfig {
+  configKey String,
+  configValue String,
+  configVersion Float
+}
 
 relationship OneToMany {
-    Job to JobConfig{job},
-    Task to TaskConfig{task},
+  Job{jobConfig} to JobConfig{job(jobNumber)},
+  Task{taskConfig} to TaskConfig{task(taskNumber)},
+  JobExecution{taskExecution} to TaskExecution{jobExecution},
+  TaskExecution{taskExecutionConfig} to TaskExecutionConfig{taskExecution}
+}
+relationship ManyToOne {
+  JobExecution{job(jobNumber)} to Job,
+  JobTaskOrder{job(jobNumber)} to Job,
+  JobTaskOrder{task(taskNumber)} to Task,
+  TaskExecution{task(taskNumber)} to Task
 }
 
 
-paginate GlobalConfig,JobConfig,TaskConfig,Job,Task with pagination
-service GlobalConfig,JobConfig,TaskConfig,Job,Task with serviceImpl
-filter GlobalConfig,JobConfig,TaskConfig,Job,Task    
+paginate GlobalConfig,JobConfig,TaskConfig,Job,Task,JobExecution,TaskExecution,JobTaskOrder,TaskExecutionConfig with pagination
+service GlobalConfig,JobConfig,TaskConfig,Job,Task,JobExecution,TaskExecution,JobTaskOrder,TaskExecutionConfig  with serviceImpl
+filter GlobalConfig,JobConfig,TaskConfig,Job,Task,JobExecution,TaskExecution,JobTaskOrder,TaskExecutionConfig     

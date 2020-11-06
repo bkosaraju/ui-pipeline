@@ -19,8 +19,10 @@ public class JobTaskOrder implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="job_task_order_id_seq")
+    @SequenceGenerator(name="job_task_order_id_seq", sequenceName="job_task_order_id_seq", allocationSize=1)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+//    @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
     @Column(name = "task_seq_id")

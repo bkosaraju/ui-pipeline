@@ -2,6 +2,10 @@
   "name": "Job",
   "fields": [
     {
+      "fieldName": "jobId",
+      "fieldType": "Integer"
+    },
+    {
       "fieldName": "jobName",
       "fieldType": "String"
     },

@@ -23,6 +23,7 @@
             <thead>
                 <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
                     <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="taskId"><span jhiTranslate="pipelineApp.task.taskId">Task Id</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="taskName"><span jhiTranslate="pipelineApp.task.taskName">Task Name</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="taskType"><span jhiTranslate="pipelineApp.task.taskType">Task Type</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="createTimestamp"><span jhiTranslate="pipelineApp.task.createTimestamp">Create Timestamp</span> <fa-icon icon="sort"></fa-icon></th>
@@ -32,6 +33,7 @@
             <tbody>
                 <tr *ngFor="let task of tasks ;trackBy: trackId">
                     <td><a [routerLink]="['/task', task.id, 'view']">{{ task.id }}</a></td>
+                    <td>{{ task.taskId }}</td>
                     <td>{{ task.taskName }}</td>
                     <td jhiTranslate="{{ 'pipelineApp.TaskType.' + task.taskType }}">{{ task.taskType }}</td>
                     <td>{{ task.createTimestamp | date:'medium' }}</td>

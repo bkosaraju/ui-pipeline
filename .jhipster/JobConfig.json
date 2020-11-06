@@ -21,7 +21,7 @@
       "otherEntityName": "job",
       "otherEntityRelationshipName": "jobConfig",
       "relationshipName": "job",
-      "otherEntityField": "id"
+      "otherEntityField": "jobId"
     }
   ],
   "changelogDate": "20201025235408",

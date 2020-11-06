@@ -19,6 +19,7 @@ export class JobUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
+    jobId: [],
     jobName: [],
     jobStatusFlag: [],
     createTimestamp: [],
@@ -40,6 +41,7 @@ export class JobUpdateComponent implements OnInit {
   updateForm(job: IJob): void {
     this.editForm.patchValue({
       id: job.id,
+      jobId: job.jobId,
       jobName: job.jobName,
       jobStatusFlag: job.jobStatusFlag,
       createTimestamp: job.createTimestamp ? job.createTimestamp.format(DATE_TIME_FORMAT) : null,
@@ -64,6 +66,7 @@ export class JobUpdateComponent implements OnInit {
     return {
       ...new Job(),
       id: this.editForm.get(['id'])!.value,
+      jobId: this.editForm.get(['jobId'])!.value,
       jobName: this.editForm.get(['jobName'])!.value,
       jobStatusFlag: this.editForm.get(['jobStatusFlag'])!.value,
       createTimestamp: this.editForm.get(['createTimestamp'])!.value

@@ -23,13 +23,13 @@
                 <dt><span jhiTranslate="pipelineApp.jobTaskOrder.job">Job</span></dt>
                 <dd>
                     <div *ngIf="jobTaskOrder.job">
-                        <a [routerLink]="['/job', jobTaskOrder.job?.id, 'view']">{{ jobTaskOrder.job?.id }}</a>
+                        <a [routerLink]="['/job', jobTaskOrder.job?.id, 'view']">{{ jobTaskOrder.job?.jobId }}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="pipelineApp.jobTaskOrder.task">Task</span></dt>
                 <dd>
                     <div *ngIf="jobTaskOrder.task">
-                        <a [routerLink]="['/task', jobTaskOrder.task?.id, 'view']">{{ jobTaskOrder.task?.id }}</a>
+                        <a [routerLink]="['/task', jobTaskOrder.task?.id, 'view']">{{ jobTaskOrder.task?.taskId }}</a>
                     </div>
                 </dd>
             </dl>

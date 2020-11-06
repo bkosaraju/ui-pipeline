@@ -30,7 +30,7 @@
       "otherEntityName": "job",
       "otherEntityRelationshipName": "jobExecution",
       "relationshipName": "job",
-      "otherEntityField": "id"
+      "otherEntityField": "jobId"
     }
   ],
   "changelogDate": "20201025235608",
@@ -43,7 +43,7 @@
   "readOnly": false,
   "embedded": false,
   "clientRootFolder": "",
-  "applications": ["pipeline"],
+  "applications": "*",
   "searchEngine": false,
   "databaseType": "sql"
 }

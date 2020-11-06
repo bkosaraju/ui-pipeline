@@ -27,7 +27,7 @@
                 <dt><span jhiTranslate="pipelineApp.taskExecution.task">Task</span></dt>
                 <dd>
                     <div *ngIf="taskExecution.task">
-                        <a [routerLink]="['/task', taskExecution.task?.id, 'view']">{{ taskExecution.task?.id }}</a>
+                        <a [routerLink]="['/task', taskExecution.task?.id, 'view']">{{ taskExecution.task?.taskId }}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="pipelineApp.taskExecution.jobExecution">Job Execution</span></dt>

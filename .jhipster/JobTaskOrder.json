@@ -20,14 +20,14 @@
       "otherEntityName": "job",
       "otherEntityRelationshipName": "jobTaskOrder",
       "relationshipName": "job",
-      "otherEntityField": "id"
+      "otherEntityField": "jobId"
     },
     {
       "relationshipType": "many-to-one",
       "otherEntityName": "task",
       "otherEntityRelationshipName": "jobTaskOrder",
       "relationshipName": "task",
-      "otherEntityField": "id"
+      "otherEntityField": "taskId"
     }
   ],
   "changelogDate": "20201025235208",
@@ -40,5 +40,5 @@
   "readOnly": false,
   "embedded": false,
   "clientRootFolder": "",
-  "applications": ["pipeline"]
+  "applications": "*"
 }

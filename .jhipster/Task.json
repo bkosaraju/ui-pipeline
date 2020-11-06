@@ -2,13 +2,17 @@
   "name": "Task",
   "fields": [
     {
+      "fieldName": "taskId",
+      "fieldType": "Integer"
+    },
+    {
       "fieldName": "taskName",
       "fieldType": "String"
     },
     {
       "fieldName": "taskType",
       "fieldType": "TaskType",
-      "fieldValues": "SFTP,SHELL,SPARK,SPRAK_ON_DATABRICS,SPRAK_ON_KUBERNETES,SPRAK_ON_EMR"
+      "fieldValues": "SFTP,SHELL,SPARK,S3COPY,S3PUSH,SPARK_ON_DATABRICS,SPARK_ON_KUBERNETES,SPARK_ON_EMR"
     },
     {
       "fieldName": "createTimestamp",
@@ -17,10 +21,10 @@
   ],
   "relationships": [
     {
-      "relationshipName": "taskConfig",
-      "otherEntityName": "taskConfig",
       "relationshipType": "one-to-many",
-      "otherEntityRelationshipName": "task"
+      "otherEntityName": "taskConfig",
+      "otherEntityRelationshipName": "task",
+      "relationshipName": "taskConfig"
     }
   ],
   "changelogDate": "20201025235108",

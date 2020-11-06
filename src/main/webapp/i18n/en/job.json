@@ -16,6 +16,7 @@
       "detail": {
         "title": "Job"
       },
+      "jobId": "Job Id",
       "jobName": "Job Name",
       "jobStatusFlag": "Job Status Flag",
       "createTimestamp": "Create Timestamp",

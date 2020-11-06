@@ -85,6 +85,9 @@ public class TaskQueryService extends QueryService<Task> {
             if (criteria.getId() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getId(), Task_.id));
             }
+            if (criteria.getTaskId() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getTaskId(), Task_.taskId));
+            }
             if (criteria.getTaskName() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getTaskName(), Task_.taskName));
             }

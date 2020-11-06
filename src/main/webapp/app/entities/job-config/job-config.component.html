@@ -26,7 +26,7 @@
                     <th scope="col"  jhiSortBy="configKey"><span jhiTranslate="pipelineApp.jobConfig.configKey">Config Key</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="configValue"><span jhiTranslate="pipelineApp.jobConfig.configValue">Config Value</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="configType"><span jhiTranslate="pipelineApp.jobConfig.configType">Config Type</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="job.id"><span jhiTranslate="pipelineApp.jobConfig.job">Job</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="job.jobId"><span jhiTranslate="pipelineApp.jobConfig.job">Job</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -38,7 +38,7 @@
                     <td jhiTranslate="{{ 'pipelineApp.ConfigType.' + jobConfig.configType }}">{{ jobConfig.configType }}</td>
                     <td>
                         <div *ngIf="jobConfig.job">
-                            <a [routerLink]="['/job', jobConfig.job?.id, 'view']" >{{ jobConfig.job?.id }}</a>
+                            <a [routerLink]="['/job', jobConfig.job?.id, 'view']" >{{ jobConfig.job?.jobId }}</a>
                         </div>
                     </td>
                     <td class="text-right">

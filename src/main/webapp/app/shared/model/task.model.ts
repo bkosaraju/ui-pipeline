@@ -4,6 +4,7 @@ import { TaskType } from 'app/shared/model/enumerations/task-type.model';
 
 export interface ITask {
   id?: number;
+  taskId?: number;
   taskName?: string;
   taskType?: TaskType;
   createTimestamp?: Moment;
@@ -13,6 +14,7 @@ export interface ITask {
 export class Task implements ITask {
   constructor(
     public id?: number,
+    public taskId?: number,
     public taskName?: string,
     public taskType?: TaskType,
     public createTimestamp?: Moment,

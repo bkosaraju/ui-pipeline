@@ -26,7 +26,6 @@ application {
     otherModules []
     packageName io.github.bkosaraju.pipeline
     prodDatabaseType postgresql
-    rememberMeKey "9cdd77a1729d306b232b24b8a2f399b0b3a40c91aca11fbd483be32ba0b6887e9ef239c026823afc4778b754c7bacf8cadc3"
     searchEngine false
     serverPort 8081
     serviceDiscoveryType false
@@ -48,6 +47,7 @@ entity GlobalConfig {
 }
 entity Job {
   jobName String,
+  jobId Integer,
   jobStatusFlag Boolean,
   createTimestamp ZonedDateTime
 }
@@ -69,6 +69,7 @@ entity JobTaskOrder {
 }
 entity Task {
   taskName String,
+  taskId Integer,
   taskType TaskType,
   createTimestamp ZonedDateTime
 }
@@ -98,22 +99,24 @@ enum TaskType {
   SFTP,
   SHELL,
   SPARK,
-  SPRAK_ON_DATABRICS,
-  SPRAK_ON_KUBERNETES,
-  SPRAK_ON_EMR
+  S3COPY,
+  S3PUSH,
+  SPARK_ON_DATABRICS,
+  SPARK_ON_KUBERNETES,
+  SPARK_ON_EMR
 }
 
 relationship OneToMany {
-  Job{jobConfig} to JobConfig{job},
-  Task{taskConfig} to TaskConfig{task},
+  Job{jobConfig} to JobConfig{job(jobId)},
+  Task{taskConfig} to TaskConfig{task(taskId)},
   JobExecution{taskExecution} to TaskExecution{jobExecution},
   TaskExecution{taskExecutionConfig} to TaskExecutionConfig{taskExecution}
 }
 relationship ManyToOne {
-  JobExecution{job} to Job,
-  JobTaskOrder{job} to Job,
-  JobTaskOrder{task} to Task,
-  TaskExecution{task} to Task
+  JobExecution{job(jobId)} to Job,
+  JobTaskOrder{job(jobId)} to Job,
+  JobTaskOrder{task(taskId)} to Task,
+  TaskExecution{task(taskId)} to Task
 }
 
 paginate GlobalConfig, Job, JobConfig, JobExecution, JobTaskOrder, Task, TaskConfig, TaskExecution, TaskExecutionConfig with pagination

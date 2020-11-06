@@ -46,6 +46,8 @@ public class TaskCriteria implements Serializable, Criteria {
 
     private LongFilter id;
 
+    private IntegerFilter taskId;
+
     private StringFilter taskName;
 
     private TaskTypeFilter taskType;
@@ -59,6 +61,7 @@ public class TaskCriteria implements Serializable, Criteria {
 
     public TaskCriteria(TaskCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
+        this.taskId = other.taskId == null ? null : other.taskId.copy();
         this.taskName = other.taskName == null ? null : other.taskName.copy();
         this.taskType = other.taskType == null ? null : other.taskType.copy();
         this.createTimestamp = other.createTimestamp == null ? null : other.createTimestamp.copy();
@@ -76,6 +79,14 @@ public class TaskCriteria implements Serializable, Criteria {
 
     public void setId(LongFilter id) {
         this.id = id;
+    }
+
+    public IntegerFilter getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(IntegerFilter taskId) {
+        this.taskId = taskId;
     }
 
     public StringFilter getTaskName() {
@@ -122,6 +133,7 @@ public class TaskCriteria implements Serializable, Criteria {
         final TaskCriteria that = (TaskCriteria) o;
         return
             Objects.equals(id, that.id) &&
+            Objects.equals(taskId, that.taskId) &&
             Objects.equals(taskName, that.taskName) &&
             Objects.equals(taskType, that.taskType) &&
             Objects.equals(createTimestamp, that.createTimestamp) &&
@@ -132,6 +144,7 @@ public class TaskCriteria implements Serializable, Criteria {
     public int hashCode() {
         return Objects.hash(
         id,
+        taskId,
         taskName,
         taskType,
         createTimestamp,
@@ -144,6 +157,7 @@ public class TaskCriteria implements Serializable, Criteria {
     public String toString() {
         return "TaskCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
+                (taskId != null ? "taskId=" + taskId + ", " : "") +
                 (taskName != null ? "taskName=" + taskName + ", " : "") +
                 (taskType != null ? "taskType=" + taskType + ", " : "") +
                 (createTimestamp != null ? "createTimestamp=" + createTimestamp + ", " : "") +

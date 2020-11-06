@@ -27,6 +27,8 @@ public class JobCriteria implements Serializable, Criteria {
 
     private LongFilter id;
 
+    private IntegerFilter jobId;
+
     private StringFilter jobName;
 
     private BooleanFilter jobStatusFlag;
@@ -40,6 +42,7 @@ public class JobCriteria implements Serializable, Criteria {
 
     public JobCriteria(JobCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
+        this.jobId = other.jobId == null ? null : other.jobId.copy();
         this.jobName = other.jobName == null ? null : other.jobName.copy();
         this.jobStatusFlag = other.jobStatusFlag == null ? null : other.jobStatusFlag.copy();
         this.createTimestamp = other.createTimestamp == null ? null : other.createTimestamp.copy();
@@ -57,6 +60,14 @@ public class JobCriteria implements Serializable, Criteria {
 
     public void setId(LongFilter id) {
         this.id = id;
+    }
+
+    public IntegerFilter getJobId() {
+        return jobId;
+    }
+
+    public void setJobId(IntegerFilter jobId) {
+        this.jobId = jobId;
     }
 
     public StringFilter getJobName() {
@@ -103,6 +114,7 @@ public class JobCriteria implements Serializable, Criteria {
         final JobCriteria that = (JobCriteria) o;
         return
             Objects.equals(id, that.id) &&
+            Objects.equals(jobId, that.jobId) &&
             Objects.equals(jobName, that.jobName) &&
             Objects.equals(jobStatusFlag, that.jobStatusFlag) &&
             Objects.equals(createTimestamp, that.createTimestamp) &&
@@ -113,6 +125,7 @@ public class JobCriteria implements Serializable, Criteria {
     public int hashCode() {
         return Objects.hash(
         id,
+        jobId,
         jobName,
         jobStatusFlag,
         createTimestamp,
@@ -125,6 +138,7 @@ public class JobCriteria implements Serializable, Criteria {
     public String toString() {
         return "JobCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
+                (jobId != null ? "jobId=" + jobId + ", " : "") +
                 (jobName != null ? "jobName=" + jobName + ", " : "") +
                 (jobStatusFlag != null ? "jobStatusFlag=" + jobStatusFlag + ", " : "") +
                 (createTimestamp != null ? "createTimestamp=" + createTimestamp + ", " : "") +

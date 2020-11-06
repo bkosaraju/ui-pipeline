@@ -26,12 +26,12 @@
   "changelogDate": "20201025235808",
   "entityTableName": "task_execution_config",
   "dto": "no",
-  "pagination": "pagination",
-  "service": "serviceImpl",
-  "jpaMetamodelFiltering": true,
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
   "fluentMethods": true,
   "readOnly": false,
   "embedded": false,
   "clientRootFolder": "",
-  "applications": ["pipeline"]
+  "applications": "*"
 }

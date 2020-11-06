@@ -33,7 +33,7 @@
                     <label class="form-control-label" jhiTranslate="pipelineApp.jobTaskOrder.job" for="field_job">Job</label>
                     <select class="form-control" id="field_job" name="job" formControlName="job">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="jobOption.id === editForm.get('job')!.value?.id ? editForm.get('job')!.value : jobOption" *ngFor="let jobOption of jobs; trackBy: trackById">{{ jobOption.id }}</option>
+                        <option [ngValue]="jobOption.id === editForm.get('job')!.value?.id ? editForm.get('job')!.value : jobOption" *ngFor="let jobOption of jobs; trackBy: trackById">{{ jobOption.jobId }}</option>
                     </select>
                 </div>
 
@@ -41,7 +41,7 @@
                     <label class="form-control-label" jhiTranslate="pipelineApp.jobTaskOrder.task" for="field_task">Task</label>
                     <select class="form-control" id="field_task" name="task" formControlName="task">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="taskOption.id === editForm.get('task')!.value?.id ? editForm.get('task')!.value : taskOption" *ngFor="let taskOption of tasks; trackBy: trackById">{{ taskOption.id }}</option>
+                        <option [ngValue]="taskOption.id === editForm.get('task')!.value?.id ? editForm.get('task')!.value : taskOption" *ngFor="let taskOption of tasks; trackBy: trackById">{{ taskOption.taskId }}</option>
                     </select>
                 </div>
             </div>

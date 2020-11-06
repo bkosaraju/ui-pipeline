@@ -30,7 +30,7 @@
       "otherEntityName": "task",
       "otherEntityRelationshipName": "taskExecution",
       "relationshipName": "task",
-      "otherEntityField": "id"
+      "otherEntityField": "taskId"
     },
     {
       "relationshipType": "many-to-one",
@@ -50,7 +50,7 @@
   "readOnly": false,
   "embedded": false,
   "clientRootFolder": "",
-  "applications": ["pipeline"],
+  "applications": "*",
   "searchEngine": false,
   "databaseType": "sql"
 }

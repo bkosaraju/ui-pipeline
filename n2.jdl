@@ -1,0 +1,4 @@
+
+paginate TaskExecutionConfig with pagination
+service TaskExecutionConfig  with serviceImpl
+filter TaskExecutionConfig    

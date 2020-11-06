@@ -23,6 +23,7 @@
             <thead>
                 <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
                     <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="jobId"><span jhiTranslate="pipelineApp.job.jobId">Job Id</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="jobName"><span jhiTranslate="pipelineApp.job.jobName">Job Name</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="jobStatusFlag"><span jhiTranslate="pipelineApp.job.jobStatusFlag">Job Status Flag</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="createTimestamp"><span jhiTranslate="pipelineApp.job.createTimestamp">Create Timestamp</span> <fa-icon icon="sort"></fa-icon></th>
@@ -32,6 +33,7 @@
             <tbody>
                 <tr *ngFor="let job of jobs ;trackBy: trackId">
                     <td><a [routerLink]="['/job', job.id, 'view']">{{ job.id }}</a></td>
+                    <td>{{ job.jobId }}</td>
                     <td>{{ job.jobName }}</td>
                     <td>{{ job.jobStatusFlag }}</td>
                     <td>{{ job.createTimestamp | date:'medium' }}</td>

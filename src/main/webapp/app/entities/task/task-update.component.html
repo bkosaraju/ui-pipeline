@@ -12,6 +12,12 @@
                 </div>
 
                 <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="pipelineApp.task.taskId" for="field_taskId">Task Id</label>
+                    <input type="number" class="form-control" name="taskId" id="field_taskId"
+                           formControlName="taskId"/>
+                </div>
+
+                <div class="form-group">
                     <label class="form-control-label" jhiTranslate="pipelineApp.task.taskName" for="field_taskName">Task Name</label>
                     <input type="text" class="form-control" name="taskName" id="field_taskName"
                            formControlName="taskName"/>
@@ -23,7 +29,9 @@
                         <option value="SFTP">{{ 'pipelineApp.TaskType.SFTP' | translate }}</option>
                         <option value="SHELL">{{ 'pipelineApp.TaskType.SHELL' | translate }}</option>
                         <option value="SPARK">{{ 'pipelineApp.TaskType.SPARK' | translate }}</option>
-                        <option value="SPARK_ON_DATABRICKS">{{ 'pipelineApp.TaskType.SPARK_ON_DATABRICKS' | translate }}</option>
+                        <option value="S3COPY">{{ 'pipelineApp.TaskType.S3COPY' | translate }}</option>
+                        <option value="S3PUSH">{{ 'pipelineApp.TaskType.S3PUSH' | translate }}</option>
+                        <option value="SPARK_ON_DATABRICS">{{ 'pipelineApp.TaskType.SPARK_ON_DATABRICS' | translate }}</option>
                         <option value="SPARK_ON_KUBERNETES">{{ 'pipelineApp.TaskType.SPARK_ON_KUBERNETES' | translate }}</option>
                         <option value="SPARK_ON_EMR">{{ 'pipelineApp.TaskType.SPARK_ON_EMR' | translate }}</option>
                     </select>
